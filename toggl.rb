@@ -3,7 +3,7 @@ module Toggl
   require 'base64'
 
   class Timer
-    def initialize()
+    def initialize
       puts 'inside Toggl.Timer.initialize'
       @api_token = api_token
       @workspace_id = workspace_id
@@ -20,6 +20,14 @@ module Toggl
 
     def authorize
       @request_adapter.get_request(auth_address, auth_headers)
+    end
+
+    def get_work_start_time(the_day_in_question)
+      the_day_in_question - 4 * 3600
+    end
+
+    def get_total_work_time(the_day_in_question)
+      2 * 3600
     end
 
     private
