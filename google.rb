@@ -18,6 +18,7 @@ module Google
     private
 
     def query_successful?
+      puts 'Not implemented yet.'
       false
     end
   end

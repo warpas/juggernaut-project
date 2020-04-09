@@ -15,8 +15,11 @@ module Requests
           request.headers[header[:key]] = header[:value]
         end
       end
-      puts "response.status = #{response.status}"
-      response
+      if response.status == 200
+        response.to_hash
+      else
+        "Something went wrong in GET request to #{address}"
+      end
     end
 
     def basic_auth_token(auth_address, username, password)

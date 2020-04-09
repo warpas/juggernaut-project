@@ -19,7 +19,11 @@ module Toggl
     end
 
     def authorize
-      @request_adapter.get_request(auth_address, auth_headers)
+      response = @request_adapter.get_request(auth_address, auth_headers)
+      puts "response inside authorize = #{response}"
+      @user_agent = response[:body]#[:data]#[:email]
+      puts "@user_agent = #{@user_agent}"
+      @user_agent
     end
 
     def get_work_start_time(the_day_in_question)
@@ -46,9 +50,9 @@ module Toggl
 
     def basic_auth_token
       # TODO: replace with calculated_token when that's working
-      puts "external_token: \n#{external_token}"
-      puts "base64_calculated_basic_auth_token: \n#{base64_calculated_basic_auth_token}"
-      puts "request_adapter_basic_auth: \n#{request_adapter_basic_auth}"
+      # puts "external_token: \n#{external_token}"
+      # puts "base64_calculated_basic_auth_token: \n#{base64_calculated_basic_auth_token}"
+      # puts "request_adapter_basic_auth: \n#{request_adapter_basic_auth}"
       external_token
     end
 
