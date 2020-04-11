@@ -5,6 +5,10 @@ def readable_time(time)
   "5 hours, 17 minutes and 42 seconds"
 end
 
+def formatted_date(date)
+  "#{date.year}-#{date.month}-#{date.day}"
+end
+
 def client_name
   File.read('.client_name.secret')
 end
@@ -14,13 +18,15 @@ def project_name
 end
 
 def build_calendar_entry
-  toggl = Toggl::Timer.new
-  toggl.print_config
-  toggl.authorize
-
   time = Time.now
   one_day = 86400
   yesterday = time - one_day
+
+  toggl = Toggl::Timer.new(formatted_date(yesterday))
+  toggl.print_config
+  toggl.authorize
+  toggl.report_summary
+
   work_start_time_yesterday = toggl.get_work_start_time(yesterday)
   one_hour = 3600
   title = "Work for #{client_name}"

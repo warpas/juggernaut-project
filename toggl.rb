@@ -1,13 +1,16 @@
 module Toggl
   require_relative 'Requests'
   require 'base64'
+  require 'json'
 
   class Timer
-    def initialize
+    def initialize(only_date)
       puts 'inside Toggl.Timer.initialize'
       @api_token = api_token
       @workspace_id = workspace_id
       @user_agent = user_agent
+      @start_date = only_date
+      @end_date = only_date
       @request_adapter = Requests::Adapter.new()
     end
 
@@ -20,10 +23,14 @@ module Toggl
 
     def authorize
       response = @request_adapter.get_request(auth_address, auth_headers)
-      puts "response inside authorize = #{response}"
-      @user_agent = response[:body]#[:data]#[:email]
-      puts "@user_agent = #{@user_agent}"
-      @user_agent
+      body = JSON.parse(response[:body])
+      @user_agent = body["data"]["email"]
+    end
+
+    def report_summary
+      response = @request_adapter.get_request(report_summary_address, auth_headers)
+      body = JSON.parse(response[:body])
+      response
     end
 
     def get_work_start_time(the_day_in_question)
@@ -78,6 +85,10 @@ module Toggl
 
     def auth_address
       'https://www.toggl.com/api/v8/me'
+    end
+
+    def report_summary_address
+      "https://toggl.com/reports/api/v2/summary?user_agent=#{@user_agent}&workspace_id=#{@workspace_id}&since=#{@start_date}&until=#{@end_date}&grouping=clients&subgrouping=projects&rounding=on"
     end
 
     def auth_headers
