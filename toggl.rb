@@ -44,7 +44,8 @@ module Toggl
     def get_work_start_time(the_day_in_question)
       report = report_details
       time_entry = get_first_time_entry_of_the_day(report)
-      parse_time(time_entry['start'])
+      # parse_time(time_entry['start'])
+      time_entry['start']
     end
 
     def get_total_work_time(the_day_in_question)

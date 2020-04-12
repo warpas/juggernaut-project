@@ -14,7 +14,7 @@ module Google
     # created automatically when the authorization flow completes for the first
     # time.
     TOKEN_PATH = "google/token.secret.yaml".freeze
-    SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR_READONLY
+    SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
 
     def initialize(cal_id = 'primary')
       @service = Google::Apis::CalendarV3::CalendarService.new
@@ -42,12 +42,18 @@ module Google
     def add_work_entry(entry_details)
       puts "\ninside Google::Calendar.add_work_entry/1"
       puts "Argument received: #{entry_details}"
+      # TODO: maybe send POST through requests.rb to https://www.googleapis.com/calendar/v3/calendars/calendarId/events
 
-      if query_successful?
-        puts 'Entry added successfully!'
-      else
-        puts 'Something went wrong :('
-      end
+      event = Google::Apis::CalendarV3::Event.new(
+          start: Google::Apis::CalendarV3::EventDateTime.new(
+            date_time: entry_details[:start],
+          ),
+          end: Google::Apis::CalendarV3::EventDateTime.new(
+            date_time: entry_details[:start],
+          ),
+      )
+      result = @service.insert_event(@calendar_id, event)
+      puts "Event created: #{result.html_link}"
     end
 
     private
