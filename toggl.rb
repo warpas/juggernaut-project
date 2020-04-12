@@ -8,10 +8,9 @@ module Toggl
       puts 'inside Toggl.Timer.initialize'
       @api_token = api_token
       @workspace_id = workspace_id
-      @user_agent = user_agent
       @start_date = only_date
       @end_date = only_date
-      @request_adapter = Requests::Adapter.new()
+      @request_adapter = Requests::Adapter.new
       @user_agent = get_user_email
     end
 
@@ -64,10 +63,6 @@ module Toggl
 
     def workspace_id
       File.read('.workspace_id.secret')
-    end
-
-    def user_agent
-      File.read('.user_agent.secret')
     end
 
     def basic_auth_token
