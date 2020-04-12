@@ -18,6 +18,8 @@ def project_name
 end
 
 def build_calendar_entry_from_x_days_ago(days_ago)
+  puts "\ninitiating Toggl integration"
+
   time = Time.now
   one_day = 86400
   date_time = time - one_day * days_ago
@@ -40,7 +42,9 @@ def build_calendar_entry_from_x_days_ago(days_ago)
 end
 
 def add_to_calendar(entry)
+  puts "\ninitiating Google Calendar integration"
   calendar = Google::Calendar.new
+  calendar.fetch_next_events(5)
   calendar.add_work_entry(entry)
 end
 
