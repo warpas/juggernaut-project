@@ -1,5 +1,5 @@
 require_relative 'Toggl'
-require_relative 'Google'
+require_relative 'Google/Calendar'
 
 def readable_time(time)
   "5 hours, 17 minutes and 42 seconds"
@@ -17,30 +17,27 @@ def project_name
   File.read('.project_name.secret')
 end
 
-def build_calendar_entry
+def build_calendar_entry_days_ago(days_ago)
   time = Time.now
   one_day = 86400
-  yesterday = time - one_day
+  date_time = time - one_day * days_ago
 
-  toggl = Toggl::Timer.new(formatted_date(yesterday))
+  toggl = Toggl::Timer.new(formatted_date(date_time))
   toggl.print_config
-  toggl.authorize
-  toggl.report_summary
-
-  work_start_time_yesterday = toggl.get_work_start_time(yesterday)
-  one_hour = 3600
+  work_start_time = toggl.get_work_start_time(date_time)
   title = "Work for #{client_name}"
-  work_time_yesterday = toggl.get_total_work_time(yesterday)
-  human_readable_work_time_yesterday = readable_time(work_time_yesterday)
-  description = "Time: #{human_readable_work_time_yesterday}\nProject: #{project_name}"
+  duration = toggl.get_total_time
+  total_work_time = toggl.get_total_work_time(date_time)
+  human_readable_total_work_time = readable_time(total_work_time)
+  description = "Time: #{human_readable_total_work_time}\nProject: #{project_name}"
 
   {
-    start: work_start_time_yesterday,
-    duration: one_hour,
+    start: work_start_time,
+    duration: duration,
     title: title,
     description: description,
   }
 end
 
 calendar = Google::Calendar.new
-calendar.add_work_entry(build_calendar_entry)
+calendar.add_work_entry(build_calendar_entry_days_ago(6))
