@@ -17,7 +17,7 @@ def project_name
   File.read('.project_name.secret')
 end
 
-def build_calendar_entry_days_ago(days_ago)
+def build_calendar_entry_from_x_days_ago(days_ago)
   time = Time.now
   one_day = 86400
   date_time = time - one_day * days_ago
@@ -39,5 +39,10 @@ def build_calendar_entry_days_ago(days_ago)
   }
 end
 
-calendar = Google::Calendar.new
-calendar.add_work_entry(build_calendar_entry_days_ago(6))
+def add_to_calendar(entry)
+  calendar = Google::Calendar.new
+  calendar.add_work_entry(entry)
+end
+
+prepared_entry = build_calendar_entry_from_x_days_ago(6)
+add_to_calendar(prepared_entry)
