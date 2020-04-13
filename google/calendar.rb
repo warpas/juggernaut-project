@@ -51,6 +51,8 @@ module Google
           end: Google::Apis::CalendarV3::EventDateTime.new(
             date_time: entry_details[:start],
           ),
+          description: entry_details[:description],
+          summary: entry_details[:title],
       )
       result = @service.insert_event(@calendar_id, event)
       puts "Event created: #{result.html_link}"
