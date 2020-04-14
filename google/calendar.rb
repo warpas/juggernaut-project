@@ -6,6 +6,9 @@ module Google
   require "fileutils"
 
   class Calendar
+    # TODO: Design a clear and minimal interface.
+    # TODO: Add unit tests.
+
     OOB_URI = "urn:ietf:wg:oauth:2.0:oob".freeze
     APPLICATION_NAME = "Toggl Report Importer".freeze
     CREDENTIALS_PATH = "google/credentials.secret.json".freeze
@@ -40,6 +43,7 @@ module Google
     end
 
     def add_work_entry(entry_details)
+      # TODO: add entry if it wasn't added already
       puts "\ninside Google::Calendar.add_work_entry/1"
       puts "Argument received: #{entry_details}"
       # TODO: maybe send POST through requests.rb to https://www.googleapis.com/calendar/v3/calendars/calendarId/events
@@ -49,7 +53,7 @@ module Google
             date_time: entry_details[:start],
           ),
           end: Google::Apis::CalendarV3::EventDateTime.new(
-            date_time: entry_details[:start],
+            date_time: entry_details[:end],
           ),
           description: entry_details[:description],
           summary: entry_details[:title],

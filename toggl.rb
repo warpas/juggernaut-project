@@ -4,6 +4,8 @@ module Toggl
   require 'json'
 
   class Timer
+    # TODO: Add unit tests.
+
     def initialize(only_date)
       puts 'inside Toggl.Timer.initialize'
       @api_token = api_token

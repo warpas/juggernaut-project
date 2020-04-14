@@ -6,6 +6,8 @@ module Requests
     end
 
     def get_request(address, headers)
+    # TODO: Add unit tests.
+
       puts 'inside RequestAdapter.get_request'
       puts "sending a GET request to #{address}"
 
@@ -20,6 +22,10 @@ module Requests
       else
         "Something went wrong in GET request to #{address}"
       end
+    end
+
+    def post_request(address, headers, body)
+      # TODO: Add handling.
     end
 
     def basic_auth_token(auth_address, username, password)
