@@ -18,6 +18,10 @@ def formatted_date(date)
   "#{date.year}-#{date.month}-#{date.day}"
 end
 
+def calendar_id
+  File.read('.calendar_id.secret')
+end
+
 # TODO: add a function to creat a week summary (total time logged) event on Monday morning
 def build_calendar_entry_from_x_days_ago(days_ago)
   # TODO: move what should be in Toggl API to toggl file.
@@ -49,7 +53,7 @@ def add_to_calendar(entry_list)
   # TODO: move what should be in calendar API to calendar file.
   puts "\ninitiating Google Calendar integration"
   # TODO: Add calendar id to config files
-  calendar = Google::Calendar.new
+  calendar = Google::Calendar.new(calendar_id)
   calendar.fetch_next_events(5)
   entry_list.each do |entry|
     calendar.add_work_entry(entry)
