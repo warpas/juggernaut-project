@@ -53,7 +53,7 @@ def add_to_calendar(entry_list)
   # TODO: move what should be in calendar API to calendar file.
   puts "\ninitiating Google Calendar integration"
   # TODO: Add calendar id to config files
-  calendar = Google::Calendar.new(calendar_id)
+  calendar = Google::Calendar.new(calendar_id.strip)
   calendar.fetch_next_events(5)
   entry_list.each do |entry|
     calendar.add_work_entry(entry)
