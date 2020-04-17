@@ -22,6 +22,22 @@ def calendar_id
   File.read('.calendar_id.secret')
 end
 
+# TODO: helper, similar to the one in toggl.rb. Move everything to one place
+def parse_date(date_string)
+  date_elements = date_string.split('-')
+  year = date_elements[0].to_i
+  month = date_elements[1].to_i
+  day = date_elements[2].to_i
+  Time.new(year, month, day)
+end
+
+def build_calendar_entry_from_date(date_string)
+  date_time = parse_date(date_string)
+  puts "date_time = #{date_time}"
+
+  process_timer(date_time)
+end
+
 # TODO: add a function to creat a week summary (total time logged) event on Monday morning
 def build_calendar_entry_from_x_days_ago(days_ago)
   # TODO: move what should be in Toggl API to toggl file.
@@ -30,7 +46,12 @@ def build_calendar_entry_from_x_days_ago(days_ago)
   time = Time.now
   one_day = 86400
   date_time = time - one_day * days_ago
+  puts "date_time = #{date_time}"
 
+  process_timer(date_time)
+end
+
+def process_timer(date_time)
   toggl = Toggl::Timer.new(formatted_date(date_time))
   toggl.print_config
   detailed_report = toggl.report_details
@@ -61,5 +82,6 @@ def add_to_calendar(entry_list)
 end
 
 # TODO: change the way date is given. Ideally a GUI with a date picker. For now it could just be date given as a command line argument.
-prepared_entry_list = build_calendar_entry_from_x_days_ago(1)
+# prepared_entry_list = build_calendar_entry_from_x_days_ago(1)
+prepared_entry_list = build_calendar_entry_from_date('2020-04-1')
 add_to_calendar(prepared_entry_list)
