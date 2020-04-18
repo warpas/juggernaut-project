@@ -37,13 +37,14 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
         - add a query for all calendars from Google Calendar if possible
     - streamline public interfaces
     - add tests
-    - specify the shape of v1.0 and move to Github issues after that point
+    - specify the shape of v1.0
+
+5. After v1.0
+
+    - move to Github issues after this point
+    - add the weekly summary entry for "Work" calendar
 
 4. Nice to have, but not necessary
 
     - add the ability to change calendar entry color
     - add the ability to specify Toggl workspaces
-
-5. After 1.0
-
-    - add the weekly summary entry for "Work" calendar
