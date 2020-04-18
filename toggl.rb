@@ -16,6 +16,10 @@ module Toggl
       @user_agent = get_user_email
     end
 
+    def start_date
+      @start_date
+    end
+
     def print_config
       puts "Toggl API config"
       puts "@api_token = #{@api_token}"

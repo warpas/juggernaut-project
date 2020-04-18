@@ -82,6 +82,6 @@ def add_to_calendar(entry_list)
 end
 
 # TODO: change the way date is given. Ideally a GUI with a date picker. For now it could just be date given as a command line argument.
-# prepared_entry_list = build_calendar_entry_from_x_days_ago(1)
-prepared_entry_list = build_calendar_entry_from_date('2020-04-1')
+prepared_entry_list = build_calendar_entry_from_x_days_ago(1)
+# prepared_entry_list = build_calendar_entry_from_date('2020-04-1')
 add_to_calendar(prepared_entry_list)
