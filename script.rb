@@ -1,18 +1,8 @@
 require_relative 'Toggl'
+require_relative 'date_time_helper'
 require_relative 'Google/Calendar'
 
 # TODO: Add unit tests.
-
-def readable_time(time)
-  # TODO: move parsing and other helpers to a different file.
-  time_integer = time.to_i
-  time_in_seconds = time_integer/1000
-  hours = time_in_seconds/3600
-  minutes_in_seconds = time_in_seconds % 3600
-  minutes = minutes_in_seconds/60
-  seconds = minutes_in_seconds % 60
-  "#{hours} hours, #{minutes} minutes and #{seconds} seconds"
-end
 
 def formatted_date(date)
   "#{date.year}-#{date.month}-#{date.day}"
@@ -65,7 +55,7 @@ def process_timer(date_time)
       end: entry['end'],
       title: entry['description'],
       duration: entry['dur'],
-      description: "Duration: #{readable_time(entry['dur'])}\nClient: #{entry['client']}\nProject: #{entry['project']}\nTotal time logged today: #{readable_time(total_time_logged)}",
+      description: "Duration: #{DateTimeHelper.readable_duration(entry['dur'])}\nClient: #{entry['client']}\nProject: #{entry['project']}\nTotal time logged today: #{DateTimeHelper.readable_duration(total_time_logged)}",
     }
   end
 end
