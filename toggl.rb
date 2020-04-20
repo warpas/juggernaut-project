@@ -6,12 +6,12 @@ module Toggl
   class Timer
     # TODO: Add unit tests.
 
-    def initialize(only_date)
+    def initialize(first_date, second_date = '')
       puts 'inside Toggl.Timer.initialize'
       @api_token = api_token
       @workspace_id = workspace_id
-      @start_date = only_date
-      @end_date = only_date
+      @start_date = first_date
+      @end_date = (second_date.empty?) ? first_date : second_date
       @request_adapter = Requests::Adapter.new
       @user_agent = get_user_email
     end
