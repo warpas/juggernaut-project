@@ -30,6 +30,8 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
 
     ✅ add the option to input date instead of "days ago"
 
+    ✅ add the weekly summary entry for "Work" calendar
+
 3. Next step - Streamlining configuration and release
 
     - minimize required configuration (too many `*.secret` files now)
@@ -42,7 +44,6 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
 5. After v1.0
 
     - move to Github issues after this point
-    - add the weekly summary entry for "Work" calendar
 
 4. Nice to have, but not necessary
 
