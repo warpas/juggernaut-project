@@ -40,6 +40,7 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
     - streamline public interfaces
     - add tests
     - specify the shape of v1.0
+    - add 'Getting started' section
 
 5. After v1.0
 
