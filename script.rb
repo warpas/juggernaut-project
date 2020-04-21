@@ -56,7 +56,7 @@ def build_weekly_summary(week_start_string, week_end_string)
   report_string = report['data'].map do |entry|
     "Project: #{entry['title']['project']}, client: #{entry['title']['client']}\n#{DateTimeHelper.readable_duration(entry['time'])}\n"
   end
-  description = "Total time spent last week:\n" + report_string.join("\n")
+  description = "Total time logged last week:\n#{DateTimeHelper.readable_duration(total_time_logged)}\n" + report_string.join("\n")
   [
     {
       start: "#{next_week_start.year}-#{next_week_start.month}-#{next_week_start.day}T06:04:59+02:00",
@@ -99,7 +99,7 @@ def add_to_calendar(entry_list)
 end
 
 # TODO: change the way date is given. Ideally a GUI with a date picker. For now it could just be date given as a command line argument.
-prepared_entry_list = build_weekly_summary('2020-04-13', '2020-04-19')
+prepared_entry_list = build_weekly_summary('2020-04-20', '2020-03-26')
 prepared_entry_list = build_calendar_entry_from_x_days_ago(1)
-# prepared_entry_list = build_calendar_entry_from_date('2020-04-1')
+# prepared_entry_list = build_calendar_entry_from_date('2020-03-30')
 add_to_calendar(prepared_entry_list)
