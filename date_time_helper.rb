@@ -8,4 +8,8 @@ module DateTimeHelper
     seconds = minutes_in_seconds % 60
     "#{hours} hours, #{minutes} minutes and #{seconds} seconds"
   end
+
+  def self.formatted_date(date)
+    "#{date.year}-#{date.month}-#{date.day}"
+  end
 end
