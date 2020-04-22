@@ -4,10 +4,6 @@ require_relative 'Google/Calendar'
 
 # TODO: Add unit tests.
 
-def formatted_date(date)
-  "#{date.year}-#{date.month}-#{date.day}"
-end
-
 def calendar_id
   File.read('.calendar_id.secret')
 end
@@ -47,7 +43,7 @@ def build_weekly_summary(week_start_string, week_end_string)
   one_day = 86400
   next_week_start = week_end + one_day
 
-  toggl = Toggl::Timer.new(formatted_date(week_start), formatted_date(week_end))
+  toggl = Toggl::Timer.new(DateTimeHelper.formatted_date(week_start), DateTimeHelper.formatted_date(week_end))
   toggl.print_config
   report = toggl.report_summary
   puts "\nBuilding the list of events"
@@ -69,7 +65,7 @@ def build_weekly_summary(week_start_string, week_end_string)
 end
 
 def process_timer(date_time)
-  toggl = Toggl::Timer.new(formatted_date(date_time))
+  toggl = Toggl::Timer.new(DateTimeHelper.formatted_date(date_time))
   toggl.print_config
   detailed_report = toggl.report_details
 
@@ -99,7 +95,7 @@ def add_to_calendar(entry_list)
 end
 
 # TODO: change the way date is given. Ideally a GUI with a date picker. For now it could just be date given as a command line argument.
-prepared_entry_list = build_weekly_summary('2020-04-20', '2020-03-26')
+prepared_entry_list = build_weekly_summary('2020-04-20', '2020-04-26')
 prepared_entry_list = build_calendar_entry_from_x_days_ago(1)
 # prepared_entry_list = build_calendar_entry_from_date('2020-03-30')
 add_to_calendar(prepared_entry_list)
