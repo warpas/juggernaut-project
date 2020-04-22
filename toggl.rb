@@ -1,24 +1,22 @@
 module Toggl
-  require_relative 'Requests'
-  require 'base64'
-  require 'json'
+  require_relative "Requests"
+  require "base64"
+  require "json"
 
   class Timer
     # TODO: Add unit tests.
 
-    def initialize(first_date, second_date = '')
-      puts 'inside Toggl.Timer.initialize'
+    def initialize(first_date, second_date = "")
+      puts "inside Toggl.Timer.initialize"
       @api_token = api_token
       @workspace_id = workspace_id
       @start_date = first_date
-      @end_date = (second_date.empty?) ? first_date : second_date
+      @end_date = second_date.empty? ? first_date : second_date
       @request_adapter = Requests::Adapter.new
       @user_agent = get_user_email
     end
 
-    def start_date
-      @start_date
-    end
+    attr_reader :start_date
 
     def print_config
       puts "Toggl API config"
@@ -36,14 +34,14 @@ module Toggl
     def report_summary
       response = @request_adapter.get_request(report_summary_address, auth_headers)
       body = JSON.parse(response[:body])
-      @total_time = body['total_grand']
+      @total_time = body["total_grand"]
       body
     end
 
     def report_details
       response = @request_adapter.get_request(report_details_address, auth_headers)
       body = JSON.parse(response[:body])
-      @total_time = body['total_grand']
+      @total_time = body["total_grand"]
       body
     end
 
@@ -51,7 +49,7 @@ module Toggl
       report = report_details
       time_entry = get_first_time_entry_of_the_day(report)
       # parse_time(time_entry['start'])
-      time_entry['start']
+      time_entry["start"]
     end
 
     def get_total_work_time(the_day_in_question)
@@ -65,11 +63,11 @@ module Toggl
     private
 
     def api_token
-      File.read('.api_token.secret')
+      File.read(".api_token.secret")
     end
 
     def workspace_id
-      File.read('.workspace_id.secret')
+      File.read(".workspace_id.secret")
     end
 
     def basic_auth_token
@@ -81,11 +79,11 @@ module Toggl
     end
 
     def external_token
-      'Basic ' + File.read('.basic_auth_token.secret')
+      "Basic " + File.read(".basic_auth_token.secret")
     end
 
     def base64_calculated_basic_auth_token
-      'Basic ' + Base64.encode64(username + ':' + password).strip
+      "Basic " + Base64.encode64(username + ":" + password).strip
     end
 
     def request_adapter_basic_auth
@@ -97,11 +95,11 @@ module Toggl
     end
 
     def password
-      'api_token'
+      "api_token"
     end
 
     def auth_address
-      'https://www.toggl.com/api/v8/me'
+      "https://www.toggl.com/api/v8/me"
     end
 
     def report_summary_address
@@ -113,7 +111,7 @@ module Toggl
     end
 
     def reports_api_base_url
-      'https://toggl.com/reports/api/v2'
+      "https://toggl.com/reports/api/v2"
     end
 
     def reports_api_params
@@ -129,29 +127,29 @@ module Toggl
     end
 
     def grouping_params
-      'grouping=projects&subgrouping=time_entries'
+      "grouping=projects&subgrouping=time_entries"
     end
 
     def auth_headers
-      [{ key: 'Authorization', value: basic_auth_token }]
+      [{key: "Authorization", value: basic_auth_token}]
     end
 
     def get_first_time_entry_of_the_day(report)
       # TODO: this needs to choose the correct entry instead. Could use a project or client argument
-      report['data'].first
+      report["data"].first
     end
 
     def parse_time(toggl_time)
-      date_time = toggl_time.split('T')
+      date_time = toggl_time.split("T")
       date_string = date_time.first
-      time_and_zone = date_time.last.split('+')
+      time_and_zone = date_time.last.split("+")
       time_string = time_and_zone.first
-      time_zone_string = '+' + time_and_zone.last
-      date_elements = date_string.split('-')
+      time_zone_string = "+" + time_and_zone.last
+      date_elements = date_string.split("-")
       year = date_elements[0].to_i
       month = date_elements[1].to_i
       day = date_elements[2].to_i
-      time_elements = time_string.split(':')
+      time_elements = time_string.split(":")
       hour = time_elements[0].to_i
       minute = time_elements[1].to_i
       second = time_elements[2].to_i

@@ -1,16 +1,16 @@
-require_relative 'Toggl'
-require_relative 'date_time_helper'
-require_relative 'Google/Calendar'
+require_relative "Toggl"
+require_relative "date_time_helper"
+require_relative "Google/Calendar"
 
 # TODO: Add unit tests.
 
 def calendar_id
-  File.read('.calendar_id.secret')
+  File.read(".calendar_id.secret")
 end
 
 # TODO: helper, similar to the one in toggl.rb. Move everything to one place
 def parse_date(date_string)
-  date_elements = date_string.split('-')
+  date_elements = date_string.split("-")
   year = date_elements[0].to_i
   month = date_elements[1].to_i
   day = date_elements[2].to_i
@@ -47,11 +47,11 @@ def build_weekly_summary(week_start_string, week_end_string)
   toggl.print_config
   report = toggl.report_summary
   puts "\nBuilding the list of events"
-  total_time_logged = report['total_grand']
+  total_time_logged = report["total_grand"]
   puts "total_time_logged = #{DateTimeHelper.readable_duration(total_time_logged)}"
-  report_string = report['data'].map do |entry|
-    "Project: #{entry['title']['project']}, client: #{entry['title']['client']}\n#{DateTimeHelper.readable_duration(entry['time'])}\n"
-  end
+  report_string = report["data"].map { |entry|
+    "Project: #{entry["title"]["project"]}, client: #{entry["title"]["client"]}\n#{DateTimeHelper.readable_duration(entry["time"])}\n"
+  }
   description = "Total time logged last week:\n#{DateTimeHelper.readable_duration(total_time_logged)}\n" + report_string.join("\n")
   [
     {
@@ -70,15 +70,15 @@ def process_timer(date_time)
   detailed_report = toggl.report_details
 
   puts "\nBuilding the list of events"
-  total_time_logged = detailed_report['total_grand']
+  total_time_logged = detailed_report["total_grand"]
   # TODO: handle report without entries
-  detailed_report['data'].map do |entry|
+  detailed_report["data"].map do |entry|
     {
-      start: entry['start'],
-      end: entry['end'],
-      title: entry['description'],
-      duration: entry['dur'],
-      description: "Duration: #{DateTimeHelper.readable_duration(entry['dur'])}\nClient: #{entry['client']}\nProject: #{entry['project']}\nTotal time logged today: #{DateTimeHelper.readable_duration(total_time_logged)}",
+      start: entry["start"],
+      end: entry["end"],
+      title: entry["description"],
+      duration: entry["dur"],
+      description: "Duration: #{DateTimeHelper.readable_duration(entry["dur"])}\nClient: #{entry["client"]}\nProject: #{entry["project"]}\nTotal time logged today: #{DateTimeHelper.readable_duration(total_time_logged)}"
     }
   end
 end
@@ -95,7 +95,7 @@ def add_to_calendar(entry_list)
 end
 
 # TODO: change the way date is given. Ideally a GUI with a date picker. For now it could just be date given as a command line argument.
-prepared_entry_list = build_weekly_summary('2020-04-20', '2020-04-26')
+# prepared_entry_list = build_weekly_summary("2020-04-20", "2020-04-26")
 prepared_entry_list = build_calendar_entry_from_x_days_ago(1)
 # prepared_entry_list = build_calendar_entry_from_date('2020-03-30')
 add_to_calendar(prepared_entry_list)

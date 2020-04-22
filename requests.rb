@@ -1,22 +1,22 @@
 module Requests
-  require 'faraday'
+  require "faraday"
   class Adapter
     def initialize
-      puts 'inside RequestAdapter.initialize'
+      puts "inside RequestAdapter.initialize"
     end
 
     def get_request(address, headers)
-    # TODO: Add unit tests.
+      # TODO: Add unit tests.
 
-      puts 'inside RequestAdapter.get_request'
+      puts "inside RequestAdapter.get_request"
       puts "sending a GET request to #{address}"
 
       # TODO: replace it with Faraday.new?
-      response = Faraday.get(address) do |request|
+      response = Faraday.get(address) { |request|
         headers.each do |header|
           request.headers[header[:key]] = header[:value]
         end
-      end
+      }
       if response.status == 200
         response.to_hash
       else

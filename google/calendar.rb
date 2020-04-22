@@ -19,7 +19,7 @@ module Google
     TOKEN_PATH = "google/token.secret.yaml".freeze
     SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
 
-    def initialize(cal_id = 'primary')
+    def initialize(cal_id = "primary")
       @service = Google::Apis::CalendarV3::CalendarService.new
       @service.client_options.application_name = APPLICATION_NAME
       @service.authorization = authorize
@@ -30,10 +30,10 @@ module Google
     def fetch_next_events(count)
       # Fetch the next 'count' events for the user
       response = @service.list_events(calendar_id,
-                                    max_results:   count,
-                                    single_events: true,
-                                    order_by:      "startTime",
-                                    time_min:      DateTime.now.rfc3339)
+        max_results: count,
+        single_events: true,
+        order_by: "startTime",
+        time_min: DateTime.now.rfc3339)
       puts "Upcoming events:"
       puts "No upcoming events found" if response.items.empty?
       response.items.each do |event|
@@ -49,14 +49,14 @@ module Google
       # TODO: maybe send POST through requests.rb to https://www.googleapis.com/calendar/v3/calendars/calendarId/events
 
       event = Google::Apis::CalendarV3::Event.new(
-          start: Google::Apis::CalendarV3::EventDateTime.new(
-            date_time: entry_details[:start],
-          ),
-          end: Google::Apis::CalendarV3::EventDateTime.new(
-            date_time: entry_details[:end],
-          ),
-          description: entry_details[:description],
-          summary: entry_details[:title],
+        start: Google::Apis::CalendarV3::EventDateTime.new(
+          date_time: entry_details[:start]
+        ),
+        end: Google::Apis::CalendarV3::EventDateTime.new(
+          date_time: entry_details[:end]
+        ),
+        description: entry_details[:description],
+        summary: entry_details[:title]
       )
       result = @service.insert_event(@calendar_id, event)
       puts "Event created: #{result.html_link}"
@@ -64,9 +64,7 @@ module Google
 
     private
 
-    def calendar_id
-      @calendar_id
-    end
+    attr_reader :calendar_id
 
     ##
     # Ensure valid credentials, either by restoring from the saved credentials
@@ -93,7 +91,7 @@ module Google
     end
 
     def query_successful?
-      puts 'Not implemented yet.'
+      puts "Not implemented yet."
       false
     end
   end
