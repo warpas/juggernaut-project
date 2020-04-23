@@ -20,11 +20,4 @@ describe DateTimeHelper do
       expect(subject.readable_duration("asfdfs")).to eq("0 hours, 0 minutes and 0 seconds")
     end
   end
-
-  describe "#formatted_date" do
-    it "shoud successfully parse Time instance to YYYY-mm-dd format" do
-      expect(subject.formatted_date(april)).to eq("2020-4-22")
-    end
-    # TODO: add unhappy path
-  end
 end

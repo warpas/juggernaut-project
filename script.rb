@@ -8,17 +8,8 @@ def calendar_id
   File.read(".calendar_id.secret")
 end
 
-# TODO: helper, similar to the one in toggl.rb. Move everything to one place
-def parse_date(date_string)
-  date_elements = date_string.split("-")
-  year = date_elements[0].to_i
-  month = date_elements[1].to_i
-  day = date_elements[2].to_i
-  Time.new(year, month, day)
-end
-
 def build_calendar_entry_from_date(date_string)
-  date_time = parse_date(date_string)
+  date_time = Time.parse(date_string)
   puts "date_time = #{date_time}"
 
   process_timer(date_time)
@@ -38,12 +29,12 @@ def build_calendar_entry_from_x_days_ago(days_ago)
 end
 
 def build_weekly_summary(week_start_string, week_end_string)
-  week_start = parse_date(week_start_string)
-  week_end = parse_date(week_end_string)
+  week_start = Time.parse(week_start_string)
+  week_end = Time.parse(week_end_string)
   one_day = 86400
   next_week_start = week_end + one_day
 
-  toggl = Toggl::Timer.new(DateTimeHelper.formatted_date(week_start), DateTimeHelper.formatted_date(week_end))
+  toggl = Toggl::Timer.new(week_start.strftime("%Y-%m-%d"), week_end.strftime("%Y-%m-%d"))
   toggl.print_config
   report = toggl.report_summary
   puts "\nBuilding the list of events"
@@ -65,7 +56,7 @@ def build_weekly_summary(week_start_string, week_end_string)
 end
 
 def process_timer(date_time)
-  toggl = Toggl::Timer.new(DateTimeHelper.formatted_date(date_time))
+  toggl = Toggl::Timer.new(date_time.strftime("%Y-%m-%d"))
   toggl.print_config
   detailed_report = toggl.report_details
 
