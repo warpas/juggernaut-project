@@ -4,10 +4,6 @@ require_relative "Google/Calendar"
 
 # TODO: Add unit tests.
 
-def calendar_id
-  File.read(".calendar_id.secret")
-end
-
 def build_calendar_entry_from_date(date_string)
   date_time = Time.parse(date_string)
   puts "date_time = #{date_time}"
@@ -78,7 +74,7 @@ def add_to_calendar(entry_list)
   # TODO: move what should be in calendar API to calendar file.
   puts "\ninitiating Google Calendar integration"
   # TODO: Add calendar id to config files
-  calendar = Google::Calendar.new(calendar_id.strip)
+  calendar = Google::Calendar.new
   calendar.fetch_next_events(5)
   entry_list.each do |entry|
     calendar.add_work_entry(entry)

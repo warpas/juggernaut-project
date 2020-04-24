@@ -19,12 +19,15 @@ module Google
     TOKEN_PATH = "google/token.secret.yaml".freeze
     SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
 
-    def initialize(cal_id = "primary")
+    def calendar_string
+      File.read(".calendar_id.secret").strip
+    end
+
+    def initialize
+      @calendar_id = calendar_string.empty? ? "primary" : calendar_string
       @service = Google::Apis::CalendarV3::CalendarService.new
       @service.client_options.application_name = APPLICATION_NAME
       @service.authorization = authorize
-
-      @calendar_id = cal_id
     end
 
     def fetch_next_events(count)
