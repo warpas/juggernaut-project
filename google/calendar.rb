@@ -20,7 +20,7 @@ module Google
     SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
 
     def calendar_string
-      File.read(".calendar_id.secret").strip
+      File.read("google/.calendar_id.secret").strip
     end
 
     def initialize
