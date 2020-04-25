@@ -70,19 +70,15 @@ def process_timer(date_time)
   end
 end
 
-def add_to_calendar(entry_list)
-  # TODO: move what should be in calendar API to calendar file.
-  puts "\ninitiating Google Calendar integration"
-  # TODO: Add calendar id to config files
-  calendar = Google::Calendar.new
-  calendar.fetch_next_events(5)
-  entry_list.each do |entry|
-    calendar.add_work_entry(entry)
-  end
-end
-
 # TODO: change the way date is given. Ideally a GUI with a date picker. For now it could just be date given as a command line argument.
 # prepared_entry_list = build_weekly_summary("2020-04-20", "2020-04-26")
 prepared_entry_list = build_calendar_entry_from_x_days_ago(1)
 # prepared_entry_list = build_calendar_entry_from_date('2020-03-30')
-add_to_calendar(prepared_entry_list)
+
+
+puts "\ninitiating Google Calendar integration"
+calendar = Google::Calendar.new
+calendar.fetch_next_events(5)
+calendar.add_list_of_entries(prepared_entry_list)
+
+# add_list_to_calendar(prepared_entry_list)

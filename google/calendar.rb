@@ -45,6 +45,12 @@ module Google
       end
     end
 
+    def add_list_of_entries(entry_list)
+      entry_list.each do |entry|
+        add_work_entry(entry)
+      end
+    end
+
     def add_work_entry(entry_details)
       # TODO: add entry if it wasn't added already. Handle duplicates.
       puts "\ninside Google::Calendar.add_work_entry/1"
