@@ -10,6 +10,7 @@ module Google
     # TODO: Add unit tests.
 
     OOB_URI = "urn:ietf:wg:oauth:2.0:oob".freeze
+    # TODO: Figure out a better place for those app/calendar -specific configs
     APPLICATION_NAME = "Toggl Report Importer".freeze
     CREDENTIALS_PATH = "google/credentials.secret.json".freeze
 
@@ -19,7 +20,7 @@ module Google
     TOKEN_PATH = "google/token.secret.yaml".freeze
     SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
 
-    def initialize(calendar_string)
+    def initialize(calendar_string = "primary")
       @calendar_id = calendar_string.empty? ? "primary" : calendar_string
       @service = Google::Apis::CalendarV3::CalendarService.new
       @service.client_options.application_name = APPLICATION_NAME

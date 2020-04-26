@@ -75,9 +75,12 @@ end
 prepared_entry_list = build_calendar_entry_from_x_days_ago(1)
 # prepared_entry_list = build_calendar_entry_from_date('2020-03-30')
 
+def work_calendar_id
+  File.read("google/.calendar_id.secret").strip
+end
 
 puts "\ninitiating Google Calendar integration"
-calendar = Google::Calendar.new
+calendar = Google::Calendar.new(work_calendar_id)
 calendar.fetch_next_events(5)
 calendar.add_list_of_entries(prepared_entry_list)
 
