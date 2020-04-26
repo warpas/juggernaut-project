@@ -19,11 +19,7 @@ module Google
     TOKEN_PATH = "google/token.secret.yaml".freeze
     SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
 
-    def calendar_string
-      File.read("google/.calendar_id.secret").strip
-    end
-
-    def initialize
+    def initialize(calendar_string)
       @calendar_id = calendar_string.empty? ? "primary" : calendar_string
       @service = Google::Apis::CalendarV3::CalendarService.new
       @service.client_options.application_name = APPLICATION_NAME
@@ -32,17 +28,32 @@ module Google
 
     def fetch_next_events(count)
       # Fetch the next 'count' events for the user
-      response = @service.list_events(calendar_id,
+      optional_params =
+      {
         max_results: count,
         single_events: true,
         order_by: "startTime",
-        time_min: DateTime.now.rfc3339)
+        time_min: DateTime.now.rfc3339
+      }
+      response = @service.list_events(calendar_id, optional_params)
       puts "Upcoming events:"
       puts "No upcoming events found" if response.items.empty?
       response.items.each do |event|
         start = event.start.date || event.start.date_time
         puts "- #{event.summary} (#{start})"
       end
+    end
+
+    def fetch_events(date)
+      optional_params =
+      {
+        single_events: true,
+        # order_by: "startTime",
+        time_min: "#{date}T00:00:01+02:00",
+        time_max: "#{date}T23:59:59+02:00",
+      }
+      response = @service.list_events(calendar_id, optional_params)
+      response.items
     end
 
     def add_list_of_entries(entry_list)
@@ -65,10 +76,16 @@ module Google
           date_time: entry_details[:end]
         ),
         description: entry_details[:description],
-        summary: entry_details[:title]
+        summary: entry_details[:title],
+        # color_id: entry_details[:colorId],
       )
       result = @service.insert_event(@calendar_id, event)
       puts "Event created: #{result.html_link}"
+    end
+
+    def get_colours
+      # GET https://www.googleapis.com/calendar/v3/colors
+      @service.get_color
     end
 
     private
