@@ -8,6 +8,7 @@ module Toggl
 
     def initialize(first_date, second_date = "")
       puts "inside Toggl.Timer.initialize"
+      @config = get_json_from_file("toggl_config.secret.json")
       @api_token = api_token
       @workspace_id = workspace_id
       @start_date = first_date
@@ -62,12 +63,17 @@ module Toggl
 
     private
 
+    def get_json_from_file(file_path)
+      file = File.read(file_path)
+      JSON.parse(file)
+    end
+
     def api_token
-      File.read(".api_token.secret")
+      @config["workspace"]["api_token"]
     end
 
     def workspace_id
-      File.read(".workspace_id.secret")
+      @config["workspace"]["id"]
     end
 
     def basic_auth_token
@@ -79,7 +85,7 @@ module Toggl
     end
 
     def external_token
-      "Basic " + File.read(".basic_auth_token.secret")
+      "Basic " + @config["workspace"]["basic_auth_token"]
     end
 
     def base64_calculated_basic_auth_token
