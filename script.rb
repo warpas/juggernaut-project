@@ -1,6 +1,6 @@
-require_relative "Toggl"
+require_relative "toggl/toggl"
 require_relative "date_time_helper"
-require_relative "Google/Calendar"
+require_relative "google/calendar"
 
 # TODO: Add unit tests.
 

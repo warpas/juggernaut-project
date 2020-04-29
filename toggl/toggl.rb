@@ -1,5 +1,5 @@
 module Toggl
-  require_relative "Requests"
+  require_relative "../requests"
   require "base64"
   require "json"
 
@@ -8,7 +8,7 @@ module Toggl
 
     def initialize(first_date, second_date = "")
       puts "inside Toggl.Timer.initialize"
-      @config = get_json_from_file("toggl_config.secret.json")
+      @config = get_json_from_file("toggl/config.secret.json")
       @api_token = api_token
       @workspace_id = workspace_id
       @start_date = first_date
