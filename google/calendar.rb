@@ -93,7 +93,7 @@ module Google
           if @config["calendars"].has_key?(calendar_name)
             @config["calendars"][calendar_name]
           else
-            "primary"
+            @calendar_id
           end
         result = @service.insert_event(calendar_id, event)
         puts "Event created: #{result.html_link}"
