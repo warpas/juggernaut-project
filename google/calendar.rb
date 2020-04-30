@@ -25,11 +25,11 @@ module Google
     def initialize(config_file:, token_file:, calendar_name:)
       @config_file = config_file || "credentials"
       @CREDENTIALS_PATH = "google/#{@config_file}.secret.json".freeze
-      config = get_json_from_file(@CREDENTIALS_PATH)
+      @config = get_json_from_file(@CREDENTIALS_PATH)
       @TOKEN_PATH = "google/#{token_file}.secret.yaml".freeze
-      @APPLICATION_NAME = config["application"]["name"]
+      @APPLICATION_NAME = @config["application"]["name"]
       # TODO: .empty? doesn't cut it anymore. Replace it for this condition to work
-      @calendar_id = config["calendars"][calendar_name].empty? ? "primary" : config["calendars"][calendar_name]
+      @calendar_id = @config["calendars"][calendar_name].empty? ? "primary" : @config["calendars"][calendar_name]
       @service = Google::Apis::CalendarV3::CalendarService.new
       @service.client_options.application_name = @APPLICATION_NAME
       @service.authorization = authorize
@@ -77,6 +77,9 @@ module Google
       puts "Argument received: #{entry_details}"
       # TODO: maybe send POST through requests.rb to https://www.googleapis.com/calendar/v3/calendars/calendarId/events
 
+      puts "entry_details['tags'] = #{entry_details[:calendars_list]}"
+      puts "@config['calendars'] = #{@config["calendars"]}"
+      puts "@config['calendars'].has_key? = #{@config["calendars"].has_key?(entry_details[:calendars_list].first)}"
       event = Google::Apis::CalendarV3::Event.new(
         start: Google::Apis::CalendarV3::EventDateTime.new(
           date_time: entry_details[:start]
@@ -88,8 +91,25 @@ module Google
         summary: entry_details[:title]
         # color_id: entry_details[:colorId],
       )
-      result = @service.insert_event(@calendar_id, event)
-      puts "Event created: #{result.html_link}"
+      entry_details[:calendars_list].each do |calendar_name|
+        calendar_id =
+          if @config["calendars"].has_key?(calendar_name)
+            puts "calendar #{calendar_name} is onboard"
+            puts "calendar_id for #{calendar_name} is #{@config["calendars"][calendar_name]}"
+            @config["calendars"][calendar_name]
+          else
+            "primary"
+          end
+        puts "calendar_id = #{calendar_id}"
+        result = @service.insert_event(calendar_id, event)
+        puts "Event created: #{result.html_link}"
+      end
+
+      if entry_details[:calendars_list].empty?
+        puts "Calendar list is empty"
+        result = @service.insert_event(calendar_id, event)
+        puts "Event created: #{result.html_link}"
+      end
     end
 
     def get_colours

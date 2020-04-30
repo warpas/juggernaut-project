@@ -65,7 +65,8 @@ def process_timer(date_time)
       end: entry["end"],
       title: entry["description"],
       duration: entry["dur"],
-      description: "Duration: #{DateTimeHelper.readable_duration(entry["dur"])}\nClient: #{entry["client"]}\nProject: #{entry["project"]}\nTotal time logged today: #{DateTimeHelper.readable_duration(total_time_logged)}"
+      calendars_list: entry["tags"],
+      description: "Duration: #{DateTimeHelper.readable_duration(entry["dur"])}\nClient: #{entry["client"]}\nProject: #{entry["project"]}\nTotal time logged today: #{DateTimeHelper.readable_duration(total_time_logged)}\n\nDestination calendar: #{entry["tags"]}"
     }
   end
 end
