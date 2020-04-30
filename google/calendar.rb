@@ -77,9 +77,6 @@ module Google
       puts "Argument received: #{entry_details}"
       # TODO: maybe send POST through requests.rb to https://www.googleapis.com/calendar/v3/calendars/calendarId/events
 
-      puts "entry_details['tags'] = #{entry_details[:calendars_list]}"
-      puts "@config['calendars'] = #{@config["calendars"]}"
-      puts "@config['calendars'].has_key? = #{@config["calendars"].has_key?(entry_details[:calendars_list].first)}"
       event = Google::Apis::CalendarV3::Event.new(
         start: Google::Apis::CalendarV3::EventDateTime.new(
           date_time: entry_details[:start]
@@ -94,13 +91,10 @@ module Google
       entry_details[:calendars_list].each do |calendar_name|
         calendar_id =
           if @config["calendars"].has_key?(calendar_name)
-            puts "calendar #{calendar_name} is onboard"
-            puts "calendar_id for #{calendar_name} is #{@config["calendars"][calendar_name]}"
             @config["calendars"][calendar_name]
           else
             "primary"
           end
-        puts "calendar_id = #{calendar_id}"
         result = @service.insert_event(calendar_id, event)
         puts "Event created: #{result.html_link}"
       end
