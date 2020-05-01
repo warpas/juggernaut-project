@@ -3,8 +3,9 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
 
 ## Getting started
 
-- Generate Google Calendar credentials in the first step of [their Ruby tutorial](https://developers.google.com/calendar/quickstart/ruby). Move and rename that file as `google/credentials.secret.json`.
-- Add Toggl config file. *Detailed description and/or template to be added here.*
+1. Generate Google Calendar credentials in the first step of [their Ruby tutorial](https://developers.google.com/calendar/quickstart/ruby). Move and rename that file as `google/credentials.secret.json`. Alternatively paste those values inside of `google/credentials.secret.json.example` and remove the `.example` extension.
+
+2. Add Toggl config file. Rename `toggl/config.secret.json.example` to `toggl/config.secret.json` and fill the required values. You can get your API token from [Toggl's user profile page](https://toggl.com/app/profile).
 
 ---
 
@@ -35,12 +36,18 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
 3. Next step - Streamlining configuration and release
 
     ✅ minimize required configuration (too many `*.secret` files now)
+
+    ✅ choose the output calendar according to Toggl time entry tag
+        ✅ initialized calendar as a fallback
+
+    ✅ add 'Getting started' section
+
     - add the ability to specify the calendar receiving input without messing with config files
         - add a query for a list of all calendars from Google Calendar if possible
+        - check that query. Is it possible?
     - streamline public interfaces
     - add tests
     - specify the shape of v1.0
-    - add 'Getting started' section
 
 4. After v1.0
 
@@ -48,11 +55,13 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
 
 5. Nice to have, but not necessary
 
-    - choose the output calendar according to Toggl time entry tag
-        - primary calendar as a fallback
     - add the function for copying all events from one calendar to another calendar
         - reson: I've got some legacy calendars that I want to get rid of
     - add the ability to change calendar entry color
     - add the ability to specify Toggl workspaces
     - RescueTime API before or after v1.0
     - probably have separate gems for outside services
+    - Write clear config steps
+        - Test app config with a few people
+        - Streamline Toggl API to require as little config as possible. Probably the API key should be enough.
+        - Record a short screencast on Google Calendar config steps and paste it here if necessary.

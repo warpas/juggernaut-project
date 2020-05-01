@@ -67,13 +67,16 @@ module Google
 
     def add_list_of_entries(entry_list)
       entry_list.each do |entry|
-        add_work_entry(entry)
+        add_entry(entry)
       end
     end
 
-    def add_work_entry(entry_details)
+    def add_entry_without_duplicates(entry_details)
+    end
+
+    def add_entry(entry_details)
       # TODO: add entry if it wasn't added already. Handle duplicates.
-      puts "\ninside Google::Calendar.add_work_entry/1"
+      puts "\ninside Google::Calendar.add_entry/1"
       puts "Argument received: #{entry_details}"
       # TODO: maybe send POST through requests.rb to https://www.googleapis.com/calendar/v3/calendars/calendarId/events
 
