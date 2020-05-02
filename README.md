@@ -42,9 +42,10 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
 
     ✅ add 'Getting started' section
 
-    - add the ability to specify the calendar receiving input without messing with config files
-        - add a query for a list of all calendars from Google Calendar if possible
-        - check that query. Is it possible?
+    ✅ add Google Sheets API auth & basic get call
+
+    - isolate Google APIs auth code from Calendar and Sheets specific code
+        - reason: Google Sheets API has most of the same code for auth as Google Calendar API
     - streamline public interfaces
     - add tests
     - specify the shape of v1.0
@@ -53,10 +54,13 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
 
     - move to Github issues after this point
 
-5. Nice to have, but not necessary
+5. Nice to have, but not necessary. Idea bag:
 
     - add the function for copying all events from one calendar to another calendar
         - reson: I've got some legacy calendars that I want to get rid of
+    - add the ability to specify the calendar receiving input without messing with config files
+        - add a query for a list of all calendars from Google Calendar if possible
+        - check that query. Is it possible?
     - add the ability to change calendar entry color
     - add the ability to specify Toggl workspaces
     - RescueTime API before or after v1.0

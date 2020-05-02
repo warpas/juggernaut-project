@@ -77,6 +77,6 @@ prepared_entry_list = build_calendar_entry_from_x_days_ago(1)
 # prepared_entry_list = build_calendar_entry_from_date('2020-03-30')
 
 puts "\ninitiating Google Calendar integration"
-calendar = Google::Calendar.new(config_file: "credentials", token_file: "token", calendar_name: "primary")
+calendar = Google::Calendar.new(config_file: "dw_credentials", token_file: "dwc_token", calendar_name: "primary")
 calendar.fetch_next_events(5)
 calendar.add_list_of_entries(prepared_entry_list)
