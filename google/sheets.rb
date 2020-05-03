@@ -37,6 +37,13 @@ module Google
       end
     end
 
+    def send_to_sheets(message)
+      range = 'May_2020!B4'
+      request_body = Google::Apis::SheetsV4::ValueRange.new
+      response = @service.update_spreadsheet_value(@spreadsheet_id, range, request_body)
+      puts response.to_json
+    end
+
     private
 
     def authorize
