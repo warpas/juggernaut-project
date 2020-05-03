@@ -91,17 +91,15 @@ module Google
         summary: entry_details[:title]
         # color_id: entry_details[:colorId],
       )
-      unless entry_details[:calendars_list].nil?
-        entry_details[:calendars_list].each do |calendar_name|
-          calendar_id =
-            if @config["calendars"].has_key?(calendar_name)
-              @config["calendars"][calendar_name]
-            else
-              @calendar_id
-            end
-          result = @service.insert_event(calendar_id, event)
-          puts "Event created: #{result.html_link}"
-        end
+      entry_details[:calendars_list]&.each do |calendar_name|
+        calendar_id =
+          if @config["calendars"].has_key?(calendar_name)
+            @config["calendars"][calendar_name]
+          else
+            @calendar_id
+          end
+        result = @service.insert_event(calendar_id, event)
+        puts "Event created: #{result.html_link}"
       end
 
       if entry_details[:calendars_list].nil? || entry_details[:calendars_list].empty?
