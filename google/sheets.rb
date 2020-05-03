@@ -31,7 +31,7 @@ module Google
       puts "No data found." if response.values.empty?
       response.values.each do |row|
         row.each do |cell|
-          print cell + ', '
+          print cell + ' | '
         end
         puts "\n"
       end
