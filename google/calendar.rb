@@ -114,6 +114,21 @@ module Google
       @service.get_color
     end
 
+    def copy_to_calendar(date:, destination:, color_coding:)
+      fetch_events(date).each do |event|
+        entry = {
+          start: event.start.date_time,
+          end: event.end.date_time,
+          title: event.summary
+        }
+        if color_coding != "" && event.color_id == color_coding
+          destination.add_entry(entry)
+        elsif color_coding == ""
+          destination.add_entry(entry)
+        end
+      end
+    end
+
     private
 
     attr_reader :calendar_id, :config_file

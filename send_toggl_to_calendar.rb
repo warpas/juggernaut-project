@@ -46,6 +46,7 @@ def build_weekly_summary(week_start_string, week_end_string)
       end: "#{next_week_start.year}-#{next_week_start.month}-#{next_week_start.day}T06:09:59+02:00",
       title: "Last week summary",
       duration: 300000,
+      calendars_list: ["work"],
       description: description
     }
   ]
@@ -72,7 +73,7 @@ def process_timer(date_time)
 end
 
 # TODO: change the way date is given. Ideally a GUI with a date picker. For now it could just be date given as a command line argument.
-# prepared_entry_list = build_weekly_summary("2020-04-20", "2020-04-26")
+# prepared_entry_list = build_weekly_summary("2020-04-27", "2020-05-3")
 prepared_entry_list = build_calendar_entry_from_x_days_ago(1)
 # prepared_entry_list = build_calendar_entry_from_date('2020-03-30')
 

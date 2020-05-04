@@ -9,22 +9,9 @@ def copy_evens(date:, source_cal:, destination_cal:, color_coding:)
   destination_calendar = Google::Calendar.new(config_file: "ds_credentials",
                                               token_file: "dsc_token",
                                               calendar_name: destination_cal)
-  events = source_calendar.fetch_events(date)
-
-  events.each do |event|
-    entry = {
-      start: event.start.date_time,
-      end: event.end.date_time,
-      title: event.summary
-    }
-    if color_coding != "" && event.color_id == color_coding
-      destination_calendar.add_entry(entry)
-    elsif color_coding == ""
-      destination_calendar.add_entry(entry)
-    end
-  end
+  source_calendar.copy_to_calendar(date: date, destination: destination_calendar, color_coding: color_coding)
 end
 
-date = "2020-05-4"
+date = "2020-05-12"
 copy_evens(date: date, source_cal: "primary", destination_cal: "surykartka", color_coding: "")
 copy_evens(date: date, source_cal: "color_coded", destination_cal: "surykartka", color_coding: "7")
