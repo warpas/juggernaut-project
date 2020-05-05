@@ -1,4 +1,5 @@
 module Google
+  require_relative "auth_wrapper"
   require "google/apis/calendar_v3"
   require "googleauth"
   require "googleauth/stores/file_token_store"
@@ -10,29 +11,24 @@ module Google
     # TODO: Design a clear and minimal interface.
     # TODO: Add unit tests.
 
-    OOB_URI = "urn:ietf:wg:oauth:2.0:oob".freeze
-
-    # The file token.secret.yaml stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
-
     def get_json_from_file(file_path)
       file = File.read(file_path)
       JSON.parse(file)
     end
 
     def initialize(config_file:, token_file:, calendar_name:)
+      # TODO: replace the following line by first argument default value
       @config_file = config_file || "credentials"
-      @CREDENTIALS_PATH = "google/#{@config_file}.secret.json".freeze
-      @config = get_json_from_file(@CREDENTIALS_PATH)
-      @TOKEN_PATH = "google/#{token_file}.secret.yaml".freeze
-      @APPLICATION_NAME = @config["application"]["name"]
+      credentials_path = "google/#{@config_file}.secret.json".freeze
+      @config = get_json_from_file(credentials_path)
       # TODO: .empty? doesn't cut it anymore. Replace it for this condition to work
       @calendar_id = @config["calendars"][calendar_name].empty? ? "primary" : @config["calendars"][calendar_name]
+
       @service = Google::Apis::CalendarV3::CalendarService.new
-      @service.client_options.application_name = @APPLICATION_NAME
-      @service.authorization = authorize
+      app_name = @config["application"]["name"]
+      @service.client_options.application_name = app_name
+      token_path = "google/#{token_file}.secret.yaml".freeze
+      @service.authorization = authorize(credentials_path: credentials_path, token_path: token_path)
     end
 
     def fetch_next_events(count)
@@ -129,37 +125,18 @@ module Google
       end
     end
 
+    # def fetch_single_event()
+    # def remove_event()
+
     private
 
     attr_reader :calendar_id, :config_file
 
-    ##
-    # Ensure valid credentials, either by restoring from the saved credentials
-    # files or intitiating an OAuth2 authorization. If authorization is required,
-    # the user's default browser will be launched to approve the request.
-    #
-    # @return [Google::Auth::UserRefreshCredentials] OAuth2 credentials
-    def authorize
-      client_id = Google::Auth::ClientId.from_file @CREDENTIALS_PATH
-      token_store = Google::Auth::Stores::FileTokenStore.new file: @TOKEN_PATH
-      authorizer = Google::Auth::UserAuthorizer.new client_id, SCOPE, token_store
-      user_id = "default"
-      credentials = authorizer.get_credentials user_id
-      if credentials.nil?
-        url = authorizer.get_authorization_url base_url: OOB_URI
-        puts "Open the following URL in the browser and enter the " \
-             "resulting code after authorization:\n" + url
-        code = gets
-        credentials = authorizer.get_and_store_credentials_from_code(
-          user_id: user_id, code: code, base_url: OOB_URI
-        )
-      end
-      credentials
-    end
-
-    def query_successful?
-      puts "Not implemented yet."
-      false
+    OOB_URI = "urn:ietf:wg:oauth:2.0:oob".freeze
+    SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
+    def authorize(credentials_path:, token_path:)
+      scope = Google::Apis::CalendarV3::AUTH_CALENDAR
+      Google::AuthWrapper.authorize(credentials_path: credentials_path, token_path: token_path, scope: scope)
     end
   end
 end
