@@ -16,18 +16,14 @@ module Google
       JSON.parse(file)
     end
 
-    def initialize(config_file:, token_file:, calendar_name:)
-      # TODO: replace the following line by first argument default value
-      @config_file = config_file || "credentials"
-      credentials_path = "google/#{@config_file}.secret.json".freeze
+    def initialize(config_file: "credentials", token_file: "token", calendar_name:)
+      credentials_path = "google/#{config_file}.secret.json".freeze
+      token_path = "google/#{token_file}.secret.yaml".freeze
       @config = get_json_from_file(credentials_path)
-      # TODO: .empty? doesn't cut it anymore. Replace it for this condition to work
-      @calendar_id = @config["calendars"][calendar_name].empty? ? "primary" : @config["calendars"][calendar_name]
+      @calendar_id = assign_calendar_id(calendar_name)
 
       @service = Google::Apis::CalendarV3::CalendarService.new
-      app_name = @config["application"]["name"]
-      @service.client_options.application_name = app_name
-      token_path = "google/#{token_file}.secret.yaml".freeze
+      @service.client_options.application_name = application_name
       @service.authorization = authorize(credentials_path: credentials_path, token_path: token_path)
     end
 
@@ -130,13 +126,20 @@ module Google
 
     private
 
-    attr_reader :calendar_id, :config_file
+    attr_reader :calendar_id
 
-    OOB_URI = "urn:ietf:wg:oauth:2.0:oob".freeze
-    SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR
     def authorize(credentials_path:, token_path:)
       scope = Google::Apis::CalendarV3::AUTH_CALENDAR
       Google::AuthWrapper.authorize(credentials_path: credentials_path, token_path: token_path, scope: scope)
+    end
+
+    def application_name
+      @config["application"]["name"]
+    end
+
+    def assign_calendar_id(calendar_name)
+      # TODO: handle non-existent calendar_names gracefully
+      @config["calendars"][calendar_name]
     end
   end
 end
