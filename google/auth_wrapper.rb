@@ -1,6 +1,5 @@
 module Google
   class AuthWrapper
-
     ##
     # Ensure valid credentials, either by restoring from the saved credentials
     # files or intitiating an OAuth2 authorization. If authorization is required,

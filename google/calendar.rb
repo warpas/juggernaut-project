@@ -20,7 +20,7 @@ module Google
       credentials_path = "google/#{config_file}.secret.json".freeze
       token_path = "google/#{token_file}.secret.yaml".freeze
       @config = get_json_from_file(credentials_path)
-      @calendar_id = assign_calendar_id(calendar_name)
+      @calendar_id = get_calendar_id_for(calendar_name)
 
       @service = Google::Apis::CalendarV3::CalendarService.new
       @service.client_options.application_name = application_name
@@ -67,36 +67,12 @@ module Google
     end
 
     def add_entry(entry_details)
-      # TODO: add entry if it wasn't added already. Handle duplicates.
       puts "\ninside Google::Calendar.add_entry/1"
       puts "Argument received: #{entry_details}"
-      # TODO: maybe send POST through requests.rb to https://www.googleapis.com/calendar/v3/calendars/calendarId/events
-
-      event = Google::Apis::CalendarV3::Event.new(
-        start: Google::Apis::CalendarV3::EventDateTime.new(
-          date_time: entry_details[:start]
-        ),
-        end: Google::Apis::CalendarV3::EventDateTime.new(
-          date_time: entry_details[:end]
-        ),
-        description: entry_details[:description],
-        summary: entry_details[:title]
-        # color_id: entry_details[:colorId],
-      )
-      entry_details[:calendars_list]&.each do |calendar_name|
-        calendar_id =
-          if @config["calendars"].has_key?(calendar_name)
-            @config["calendars"][calendar_name]
-          else
-            @calendar_id
-          end
-        result = @service.insert_event(calendar_id, event)
-        puts "Event created: #{result.html_link}"
-      end
-
-      if entry_details[:calendars_list].nil? || entry_details[:calendars_list].empty?
-        puts "Calendar list is empty"
-        result = @service.insert_event(calendar_id, event)
+      event = build_calendar_event(entry_details)
+      output_calendar_list = sanitize_calendar_list(entry_details[:calendars_list])
+      output_calendar_list.each do |calendar|
+        result = @service.insert_event(calendar, event)
         puts "Event created: #{result.html_link}"
       end
     end
@@ -137,9 +113,29 @@ module Google
       @config["application"]["name"]
     end
 
-    def assign_calendar_id(calendar_name)
-      # TODO: handle non-existent calendar_names gracefully
+    def get_calendar_id_for(calendar_name)
       @config["calendars"][calendar_name]
+    end
+
+    def build_calendar_event(details)
+      Google::Apis::CalendarV3::Event.new(
+        start: Google::Apis::CalendarV3::EventDateTime.new(
+          date_time: details[:start]
+        ),
+        end: Google::Apis::CalendarV3::EventDateTime.new(
+          date_time: details[:end]
+        ),
+        description: details[:description],
+        summary: details[:title]
+        # color_id: details[:colorId],
+      )
+    end
+
+    def sanitize_calendar_list(calendar_list)
+      return [calendar_id] if calendar_list.nil?
+      evaluated_list = calendar_list.map { |name| @config["calendars"][name] }
+      sanitized_list = evaluated_list.reject { |x| x.nil? }
+      sanitized_list.empty? ? [calendar_id] : sanitized_list
     end
   end
 end
