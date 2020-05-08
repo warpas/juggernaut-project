@@ -34,10 +34,9 @@ module Google
       end
     end
 
-    def send_to_sheets(message)
-      range = "May_2020!B4"
-      request_body = Google::Apis::SheetsV4::ValueRange.new
-      response = @service.update_spreadsheet_value(spreadsheet_id, range, request_body)
+    def send_to_sheets(values:, range: "May_2020!B4")
+      request_body = Google::Apis::SheetsV4::ValueRange.new(range: range, values: values)
+      response = @service.update_spreadsheet_value(spreadsheet_id, range, request_body, value_input_option: "RAW")
       puts response.to_json
     end
 
