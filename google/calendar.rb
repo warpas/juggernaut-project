@@ -11,12 +11,7 @@ module Google
     # TODO: Design a clear and minimal interface.
     # TODO: Add unit tests.
 
-    def get_json_from_file(file_path)
-      file = File.read(file_path)
-      JSON.parse(file)
-    end
-
-    def initialize(config_file: "credentials", token_file: "token", calendar_name:)
+    def initialize(config_file: "credentials", token_file: "token", calendar_name: "primary")
       credentials_path = "google/#{config_file}.secret.json".freeze
       token_path = "google/#{token_file}.secret.yaml".freeze
       @config = get_json_from_file(credentials_path)
@@ -43,6 +38,7 @@ module Google
         start = event.start.date || event.start.date_time
         puts "- #{event.summary} (#{start})"
       end
+      response.items
     end
 
     def fetch_events(date)
@@ -57,13 +53,45 @@ module Google
       response.items
     end
 
+    def fetch_events_from(date, cal_id)
+      puts "date = #{date}"
+      optional_params =
+        {
+          single_events: true,
+          # order_by: "startTime",
+          time_min: "#{date}T00:00:01+02:00",
+          time_max: "#{date}T23:59:59+02:00"
+        }
+      response = @service.list_events(cal_id, optional_params)
+      puts "response = #{response}"
+      response.items
+    end
+
     def add_list_of_entries(entry_list)
       entry_list.each do |entry|
         add_entry(entry)
       end
     end
 
+    def add_list_of_entries_no_duplicates(entry_list)
+      entry_list.each do |entry|
+        add_entry_without_duplicates(entry)
+      end
+    end
+
     def add_entry_without_duplicates(entry_details)
+      puts "entry_details: #{entry_details.to_json}"
+      puts "entry_details.start: #{entry_details[:"start"]}"
+      date = entry_details[:"start"].split("T").first
+      puts "entry_details.start formatted: #{date}"
+
+      first_calendar = entry_details[:"calendars_list"].first
+      puts "first_calendar: #{first_calendar}"
+      cal_id = get_calendar_id_for(first_calendar)
+      puts "cal_id: #{cal_id}"
+      day_events = fetch_events_from(date, cal_id)
+      puts "day_events.count #{day_events.count}"
+      # puts "day_events #{day_events}"
     end
 
     def add_entry(entry_details)
@@ -103,6 +131,11 @@ module Google
     private
 
     attr_reader :calendar_id
+
+    def get_json_from_file(file_path)
+      file = File.read(file_path)
+      JSON.parse(file)
+    end
 
     def authorize(credentials_path:, token_path:)
       scope = Google::Apis::CalendarV3::AUTH_CALENDAR
