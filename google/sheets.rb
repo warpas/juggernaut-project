@@ -7,11 +7,6 @@ module Google
   require "json"
 
   class Sheets
-    def get_json_from_file(file_path)
-      file = File.read(file_path)
-      JSON.parse(file)
-    end
-
     def initialize(config_file: "credentials", token_file: "token", file_id:)
       credentials_path = "google/#{config_file}.secret.json".freeze
       token_path = "google/#{token_file}.secret.yaml".freeze
@@ -32,17 +27,24 @@ module Google
         end
         puts "\n"
       end
+      response
     end
 
-    def send_to_sheets(values:, range: "May_2020!B4")
+    def send_to_sheets(values: [["test"]], range: "Sheet1!B4")
       request_body = Google::Apis::SheetsV4::ValueRange.new(range: range, values: values)
       response = @service.update_spreadsheet_value(spreadsheet_id, range, request_body, value_input_option: "RAW")
       puts response.to_json
+      response
     end
 
     private
 
     attr_reader :spreadsheet_id
+
+    def get_json_from_file(file_path)
+      file = File.read(file_path)
+      JSON.parse(file)
+    end
 
     def authorize(credentials_path:, token_path:)
       scope = Google::Apis::SheetsV4::AUTH_SPREADSHEETS
