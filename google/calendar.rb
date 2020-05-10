@@ -80,7 +80,7 @@ module Google
     end
 
     def add_entry_without_duplicates(entry_details)
-      puts "entry_details: #{entry_details.to_json}"
+      puts "\nentry_details: #{entry_details.to_json}"
       puts "entry_details.start: #{entry_details[:"start"]}"
       date = entry_details[:"start"].split("T").first
       puts "entry_details.start formatted: #{date}"
@@ -91,7 +91,20 @@ module Google
       puts "cal_id: #{cal_id}"
       day_events = fetch_events_from(date, cal_id)
       puts "day_events.count #{day_events.count}"
-      # puts "day_events #{day_events}"
+      puts "day_events #{day_events.to_json}"
+      if day_events.count == 0
+        add_entry(entry_details)
+      else
+        day_events.each do |event|
+          if entry_details[:"description"] == event.description
+            puts "it's there"
+          else
+            puts "nope"
+            # TODO: if I enabled the line below it recursively adds a lot of duplicates ;)
+            # add_entry(entry_details)
+          end
+        end
+      end
     end
 
     def add_entry(entry_details)
@@ -147,7 +160,8 @@ module Google
     end
 
     def get_calendar_id_for(calendar_name)
-      @config["calendars"][calendar_name]
+      from_config = @config["calendars"][calendar_name]
+      from_config.nil? ? "primary" : from_config
     end
 
     def build_calendar_event(details)
