@@ -80,30 +80,21 @@ module Google
     end
 
     def add_entry_without_duplicates(entry_details)
-      puts "\nentry_details: #{entry_details.to_json}"
-      puts "entry_details.start: #{entry_details[:"start"]}"
       date = entry_details[:"start"].split("T").first
-      puts "entry_details.start formatted: #{date}"
-
       first_calendar = entry_details[:"calendars_list"].first
-      puts "first_calendar: #{first_calendar}"
       cal_id = get_calendar_id_for(first_calendar)
-      puts "cal_id: #{cal_id}"
       day_events = fetch_events_from(date, cal_id)
-      puts "day_events.count #{day_events.count}"
-      puts "day_events #{day_events.to_json}"
       if day_events.count == 0
         add_entry(entry_details)
       else
+        found = false
+        # TODO: use include? instead
         day_events.each do |event|
-          if entry_details[:"description"] == event.description
-            puts "it's there"
-          else
-            puts "nope"
-            # TODO: if I enabled the line below it recursively adds a lot of duplicates ;)
-            # add_entry(entry_details)
+          if (event.start.date_time.to_s == entry_details[:"start"]) && (event.summary == entry_details[:"title"]) && (event.description == entry_details[:"description"])
+            found = true
           end
         end
+        add_entry(entry_details) unless found
       end
     end
 

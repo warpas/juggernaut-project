@@ -72,12 +72,15 @@ def process_timer(date_time)
   end
 end
 
+# def compare_goals_to_reality
+
 # TODO: change the way date is given. Ideally a GUI with a date picker. For now it could just be date given as a command line argument.
 # prepared_entry_list = build_weekly_summary("2020-04-27", "2020-05-3")
 prepared_entry_list = build_calendar_entry_from_x_days_ago(1)
-# prepared_entry_list = build_calendar_entry_from_date('2020-03-30')
+# prepared_entry_list = build_calendar_entry_from_date('2020-05-07')
 
 puts "\ninitiating Google Calendar integration"
-calendar = Google::Calendar.new(config_file: "dw_credentials", token_file: "dwc_token", calendar_name: "primary")
+calendar = Google::Calendar.new(config_file: "dw_credentials", token_file: "dwc_token")
 calendar.fetch_next_events(5)
-calendar.add_list_of_entries(prepared_entry_list)
+# calendar.add_list_of_entries(prepared_entry_list)
+calendar.add_list_of_entries_no_duplicates(prepared_entry_list)
