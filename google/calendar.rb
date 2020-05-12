@@ -78,8 +78,8 @@ module Google
     end
 
     def add_entry_without_duplicates(entry_details)
-      date = entry_details[:"start"].split("T").first
-      first_calendar = entry_details[:"calendars_list"].first
+      date = entry_details[:start].split("T").first
+      first_calendar = entry_details[:calendars_list].first
       cal_id = get_calendar_id_for(first_calendar)
       day_events = fetch_events_from(date, cal_id)
       if day_events.count == 0
@@ -88,7 +88,7 @@ module Google
         found = false
         # TODO: use include? instead
         day_events.each do |event|
-          if (event.start.date_time.to_s == entry_details[:"start"]) && (event.summary == entry_details[:"title"]) && (event.description == entry_details[:"description"])
+          if (event.start.date_time.to_s == entry_details[:start]) && (event.summary == entry_details[:title]) && (event.description == entry_details[:description])
             found = true
           end
         end
