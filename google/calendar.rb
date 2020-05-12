@@ -54,7 +54,6 @@ module Google
     end
 
     def fetch_events_from(date, cal_id)
-      puts "date = #{date}"
       optional_params =
         {
           single_events: true,
@@ -63,7 +62,6 @@ module Google
           time_max: "#{date}T23:59:59+02:00"
         }
       response = @service.list_events(cal_id, optional_params)
-      puts "response = #{response}"
       response.items
     end
 
@@ -96,6 +94,7 @@ module Google
         end
         add_entry(entry_details) unless found
       end
+      puts "Naught but duplicates and tumbleweeds found." if found
     end
 
     def add_entry(entry_details)
