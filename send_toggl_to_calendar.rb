@@ -72,13 +72,29 @@ def process_timer(date_time)
   end
 end
 
+def get_date_from_command_line(cl_args)
+  date = ""
+  cl_args.each do |cl_argument|
+    split_params = cl_argument.split('=')
+    if split_params.first == "--date" && split_params.length == 2
+      date = split_params.last
+    end
+  end
+  date
+end
+
 # def compare_goals_to_reality
 
-# TODO: change the way date is given. Ideally a GUI with a date picker. For now it could just be date given as a command line argument.
-# prepared_entry_list = build_weekly_summary("2020-04-27", "2020-05-3")
-prepared_entry_list = build_calendar_entry_from_x_days_ago(1)
-# prepared_entry_list = build_calendar_entry_from_date('2020-05-07')
+# TODO: change the way date is given. Ideally a GUI with a date picker.
+date = get_date_from_command_line(ARGV)
 
+prepared_entry_list = if date.empty?
+  # build_weekly_summary("2020-05-11", "2020-05-17")
+  build_calendar_entry_from_x_days_ago(1)
+  # build_calendar_entry_from_date('2020-05-05')
+else
+  build_calendar_entry_from_date(date)
+end
 puts "\ninitiating Google Calendar integration"
 calendar = Google::Calendar.new(config_file: "dw_credentials", token_file: "dwc_token")
 calendar.fetch_next_events(5)
