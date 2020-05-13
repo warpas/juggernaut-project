@@ -1,3 +1,4 @@
+require_relative "command_line"
 require_relative "toggl/toggl"
 require_relative "date_time_helper"
 require_relative "google/calendar"
@@ -72,21 +73,10 @@ def process_timer(date_time)
   end
 end
 
-def get_date_from_command_line(cl_args)
-  date = ""
-  cl_args.each do |cl_argument|
-    split_params = cl_argument.split("=")
-    if split_params.first == "--date" && split_params.length == 2
-      date = split_params.last
-    end
-  end
-  date
-end
-
 # def compare_goals_to_reality
 
 # TODO: change the way date is given. Ideally a GUI with a date picker.
-date = get_date_from_command_line(ARGV)
+date = CommandLine.get_date_from_command_line(ARGV)
 
 prepared_entry_list = if date.empty?
   # build_weekly_summary("2020-05-11", "2020-05-17")
