@@ -77,25 +77,32 @@ module Google
       end
     end
 
+    # TODO: make sure entry_details.start and entry_details.end are DateTime
     def add_entry_without_duplicates(entry_details)
-      date = entry_details[:start].split("T").first
-      first_calendar = entry_details[:calendars_list].first
-      cal_id = get_calendar_id_for(first_calendar)
-      day_events = fetch_events_from(date, cal_id)
-      if day_events.count == 0
-        add_entry(entry_details)
-      else
-        found = false
-        # TODO: use include? instead
-        day_events.each do |event|
-          if (event.start.date_time.to_s == entry_details[:start]) && (event.summary == entry_details[:title]) && (event.description == entry_details[:description])
-            found = true
+      start_date = entry_details[:start].strftime
+      date = start_date.split("T").first
+      output_calendar_list = sanitize_calendar_list(entry_details[:calendars_list])
+      output_calendar_list.each do |calendar|
+          day_events = fetch_events_from(date, calendar)
+          if day_events.count == 0
+            add_entry(entry_details)
+          else
+            found = false
+            # TODO: use include? instead
+            day_events.each do |event|
+              if (event.start.date_time.to_s == entry_details[:start].strftime) &&
+                (event.summary == entry_details[:title]) &&
+                (event.description == entry_details[:description])
+                found = true
+              end
+            end
+            add_entry(entry_details) unless found
           end
-        end
-        add_entry(entry_details) unless found
+          puts "Naught but duplicates and tumbleweeds found." if found
       end
-      puts "Naught but duplicates and tumbleweeds found." if found
     end
+
+    # def add_or_update_entry(entry_details)
 
     def add_entry(entry_details)
       puts "\ninside Google::Calendar.add_entry/1"
@@ -121,9 +128,9 @@ module Google
           title: event.summary
         }
         if color_coding != "" && event.color_id == color_coding
-          destination.add_entry(entry)
+          destination.add_entry_without_duplicates(entry)
         elsif color_coding == ""
-          destination.add_entry(entry)
+          destination.add_entry_without_duplicates(entry)
         end
       end
     end

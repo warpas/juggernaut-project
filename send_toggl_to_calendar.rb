@@ -63,8 +63,8 @@ def process_timer(date_time)
   # TODO: handle report without entries
   detailed_report["data"].map do |entry|
     {
-      start: entry["start"],
-      end: entry["end"],
+      start: DateTime.parse(entry["start"]),
+      end: DateTime.parse(entry["end"]),
       title: entry["description"],
       duration: entry["dur"],
       calendars_list: entry["tags"],
