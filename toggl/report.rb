@@ -6,13 +6,13 @@ module Toggl
   class Report
     # TODO: Add unit tests.
 
-    def initialize(first_date, second_date = "")
-      puts "inside Toggl.Timer.initialize"
+    def initialize(start_date, end_date = "")
+      puts "inside Toggl.Report.initialize"
       @config = get_json_from_file("toggl/config.secret.json")
       @api_token = api_token
       @workspace_id = workspace_id
-      @start_date = first_date
-      @end_date = second_date.empty? ? first_date : second_date
+      @start_date = start_date
+      @end_date = end_date.empty? ? start_date : end_date
       @request_adapter = Requests::Adapter.new
       @user_agent = get_user_email
     end
