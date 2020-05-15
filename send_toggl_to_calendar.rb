@@ -1,5 +1,5 @@
 require_relative "command_line"
-require_relative "toggl/toggl"
+require_relative "toggl/report"
 require_relative "date_time_helper"
 require_relative "google/calendar"
 
@@ -31,7 +31,7 @@ def build_weekly_summary(week_start_string, week_end_string)
   one_day = 86400
   next_week_start = week_end + one_day
 
-  toggl = Toggl::Timer.new(week_start.strftime("%Y-%m-%d"), week_end.strftime("%Y-%m-%d"))
+  toggl = Toggl::Report.new(week_start.strftime("%Y-%m-%d"), week_end.strftime("%Y-%m-%d"))
   toggl.print_config
   report = toggl.report_summary
   puts "\nBuilding the list of events"
@@ -54,7 +54,7 @@ def build_weekly_summary(week_start_string, week_end_string)
 end
 
 def process_timer(date_time)
-  toggl = Toggl::Timer.new(date_time.strftime("%Y-%m-%d"))
+  toggl = Toggl::Report.new(date_time.strftime("%Y-%m-%d"))
   toggl.print_config
   detailed_report = toggl.report_details
 

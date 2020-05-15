@@ -3,7 +3,7 @@ module Toggl
   require "base64"
   require "json"
 
-  class Timer
+  class Report
     # TODO: Add unit tests.
 
     def initialize(first_date, second_date = "")

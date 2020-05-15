@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Toggl::Timer do
+describe Toggl::Report do
   # RSpec.describe Toggl::Connection do
   subject { described_class.new(date) }
   let(:date) { "2020-04-18" }
