@@ -12,7 +12,7 @@ module Toggl
       @api_token = api_token
       @workspace_id = workspace_id
       @start_date = start_date
-      @end_date = end_date.empty? ? start_date : end_date
+      @end_date = end_date.to_s.empty? ? start_date : end_date
       @request_adapter = Requests::Adapter.new
       @user_agent = get_user_email
     end
