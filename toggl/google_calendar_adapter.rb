@@ -5,13 +5,6 @@ module Toggl
 
     def initialize
       puts "inside Toggl.GoogleCalendarAdapter.initialize"
-      # @config = get_json_from_file("toggl/config.secret.json")
-      # @api_token = api_token
-      # @workspace_id = workspace_id
-      # @start_date = start_date
-      # @end_date = end_date.empty? ? start_date : end_date
-      # @request_adapter = Requests::Adapter.new
-      # @user_agent = get_user_email
     end
 
     def build_entry_list_from(detailed_report:)
