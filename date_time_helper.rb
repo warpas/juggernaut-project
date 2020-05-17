@@ -8,4 +8,12 @@ module DateTimeHelper
     seconds = minutes_in_seconds % 60
     "#{hours} hours, #{minutes} minutes and #{seconds} seconds"
   end
+
+  def self.get_next_closest_sunday(date)
+    date - date.cwday + 7
+  end
+
+  def self.get_week_start(date)
+    date - date.cwday + 1
+  end
 end
