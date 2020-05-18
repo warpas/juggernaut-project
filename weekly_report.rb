@@ -17,7 +17,8 @@ end
 date = CommandLine.get_date_from_command_line(ARGV)
 
 prepared_entry_list = if date.empty?
-  build_weekly_summary("2020-05-11")
+  last_week = Date.today - 7
+  build_weekly_summary(last_week.to_s)
 else
   build_weekly_summary(date)
 end
