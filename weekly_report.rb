@@ -3,7 +3,7 @@ require_relative "toggl/report"
 require_relative "toggl/google_calendar_adapter"
 require_relative "google/calendar"
 require_relative "date_time_helper"
-require 'date'
+require "date"
 
 def build_weekly_summary(date_string)
   date = Date.parse(date_string)

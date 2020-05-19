@@ -83,22 +83,22 @@ module Google
       date = start_date.split("T").first
       output_calendar_list = sanitize_calendar_list(entry_details[:calendars_list])
       output_calendar_list.each do |calendar|
-          day_events = fetch_events_from(date, calendar)
-          if day_events.count == 0
-            add_entry(entry_details)
-          else
-            found = false
-            # TODO: use include? instead
-            day_events.each do |event|
-              if (event.start.date_time.to_s == entry_details[:start].strftime) &&
+        day_events = fetch_events_from(date, calendar)
+        if day_events.count == 0
+          add_entry(entry_details)
+        else
+          found = false
+          # TODO: use include? instead
+          day_events.each do |event|
+            if (event.start.date_time.to_s == entry_details[:start].strftime) &&
                 (event.summary == entry_details[:title]) &&
                 (event.description == entry_details[:description])
-                found = true
-              end
+              found = true
             end
-            add_entry(entry_details) unless found
           end
-          puts "Naught but duplicates and tumbleweeds found." if found
+          add_entry(entry_details) unless found
+        end
+        puts "Naught but duplicates and tumbleweeds found." if found
       end
     end
 

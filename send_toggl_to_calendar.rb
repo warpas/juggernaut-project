@@ -2,7 +2,7 @@ require_relative "command_line"
 require_relative "toggl/report"
 require_relative "toggl/google_calendar_adapter"
 require_relative "google/calendar"
-require 'date'
+require "date"
 
 # TODO: Add unit tests.
 
