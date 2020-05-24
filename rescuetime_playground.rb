@@ -34,7 +34,21 @@ puts daily_summary_feed_request_path
 request_adapter = Requests::Adapter.new
 result = request_adapter.get_request(daily_summary_feed_request_path, [{}])
 result_data = request_adapter.get_request(data_request_path, [{}])
-puts "result_data = #{JSON.parse(result_data[:body])}"
+parsed_data = JSON.parse(result_data[:body])
+# puts "result_data = #{parsed_data}"
+row_headers = parsed_data["row_headers"]
+# puts "result_data_rows = #{parsed_data["rows"]}"
+parsed_data["rows"].each do |row|
+  # puts "data row = #{row}"
+  row_hash = {}
+  row.each_with_index.map do |element, index|
+    key = row_headers[index]
+    row_hash[key] = element
+  end
+  puts row_hash
+  # TODO: group these entries by categories and add bigger categories to Google Calendar
+end
+
 
 parsed_response = JSON.parse(result[:body])
 prepared_entry_list = parsed_response.map do |daily_summary|
