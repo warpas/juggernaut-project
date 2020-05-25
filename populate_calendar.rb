@@ -14,7 +14,7 @@ def copy_evens(date:, source_cal:, destination_cal:, color_coding:)
 end
 
 cl_date = CommandLine.get_date_from_command_line(ARGV)
-date = cl_date.empty? ? "2020-05-15" : cl_date
+date = cl_date.empty? ? Date.today.to_s : cl_date
 
 copy_evens(date: date, source_cal: "primary", destination_cal: "surykartka", color_coding: "")
 copy_evens(date: date, source_cal: "color_coded", destination_cal: "surykartka", color_coding: "7")
