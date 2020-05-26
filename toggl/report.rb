@@ -10,11 +10,12 @@ module Toggl
       puts "inside Toggl.Report.initialize"
       @config = get_json_from_file("toggl/config.secret.json")
       @api_token = api_token
-      @workspace_id = workspace_id
       @start_date = start_date
       @end_date = end_date.to_s.empty? ? start_date : end_date
       @request_adapter = Requests::Adapter.new
-      @user_agent = get_user_email
+      auth_object = authenticate_user
+      @user_agent = auth_object[:email]
+      @workspace_id = auth_object[:workspace_id]
     end
 
     attr_reader :start_date
@@ -26,10 +27,14 @@ module Toggl
       puts "@user_agent = #{@user_agent}"
     end
 
-    def get_user_email
+    def authenticate_user
       response = @request_adapter.get_request(auth_address, auth_headers)
       body = JSON.parse(response[:body])
-      body["data"]["email"]
+      email = body["data"]["email"]
+
+      # TODO: what if the user has more workspaces?
+      workspace = body["data"]["workspaces"].first
+      {email: email, workspace_id: workspace["id"]}
     end
 
     def report_summary
@@ -63,17 +68,15 @@ module Toggl
 
     private
 
+    attr_reader :workspace_id
+
     def get_json_from_file(file_path)
       file = File.read(file_path)
       JSON.parse(file)
     end
 
     def api_token
-      @config["workspace"]["api_token"]
-    end
-
-    def workspace_id
-      @config["workspace"]["id"]
+      @config["tokens"]["api"]
     end
 
     def basic_auth_token
@@ -85,7 +88,7 @@ module Toggl
     end
 
     def external_token
-      "Basic " + @config["workspace"]["basic_auth_token"]
+      "Basic " + @config["tokens"]["base64"]
     end
 
     def base64_calculated_basic_auth_token
@@ -108,6 +111,7 @@ module Toggl
       "https://www.toggl.com/api/v8/me"
     end
 
+    # TODO: merge the two functions below
     def report_summary_address
       "#{reports_api_base_url}/summary?#{reports_api_params}"
     end
