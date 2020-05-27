@@ -3,7 +3,7 @@ require_relative "google/calendar"
 require_relative "google/sheets"
 require "json"
 
-def copy_evens(date:, source_cal:, destination_cal:, color_coding:)
+def copy_events(date:, source_cal:, destination_cal:, color_coding:)
   source_calendar = Google::Calendar.new(config_file: "ds_credentials",
                                          token_file: "dsc_token",
                                          calendar_name: source_cal)
@@ -16,5 +16,5 @@ end
 cl_date = CommandLine.get_date_from_command_line(ARGV)
 date = cl_date.empty? ? Date.today.to_s : cl_date
 
-copy_evens(date: date, source_cal: "primary", destination_cal: "surykartka", color_coding: "")
-copy_evens(date: date, source_cal: "color_coded", destination_cal: "surykartka", color_coding: "7")
+copy_events(date: date, source_cal: "primary", destination_cal: "surykartka", color_coding: "")
+copy_events(date: date, source_cal: "color_coded", destination_cal: "surykartka", color_coding: "7")
