@@ -65,6 +65,15 @@ module Google
       response.items
     end
 
+    def fetch_all_events(cal_id)
+      puts "cal_id = #{cal_id}"
+      response = @service.list_events(cal_id)
+      puts "response = #{response}"
+      puts "response = #{response.to_json}"
+
+      response.items
+    end
+
     def add_list_of_entries(entry_list)
       entry_list.each do |entry|
         add_entry(entry)
