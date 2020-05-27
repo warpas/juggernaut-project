@@ -120,6 +120,17 @@ module Google
       @service.get_color
     end
 
+    def list_calendars
+      response = @service.list_calendar_lists.to_json
+      json_list = JSON.parse(response)["items"]
+      json_list.map do |calendar_item|
+        {
+          name: calendar_item["summary"],
+          id: calendar_item["id"],
+        }
+      end
+    end
+
     def copy_to_calendar(date:, destination:, color_coding:)
       fetch_events(date).each do |event|
         entry = {
