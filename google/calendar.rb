@@ -66,12 +66,16 @@ module Google
     end
 
     def fetch_all_events(cal_id)
-      puts "cal_id = #{cal_id}"
-      response = @service.list_events(cal_id)
-      puts "response = #{response}"
-      puts "response = #{response.to_json}"
+      @service.list_events(cal_id)
+    end
 
-      response.items
+    def insert_calendar_event(event, cal_id = @calendar_id)
+      begin
+        result = @service.insert_event(cal_id, event)
+        puts "Event created: #{result.html_link}"
+      rescue => error
+        puts "Duplicate event found"
+      end
     end
 
     def add_list_of_entries(entry_list)
