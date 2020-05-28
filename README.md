@@ -65,9 +65,12 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
 
         ✅ reson: I've got some legacy calendars that I want to get rid of
 
-    - add the option to specify the calendar receiving input without messing with config files
-        - add a query for a list of all calendars from Google Calendar if possible
-        - check that query. Is it possible?
+    ✅ add the option to specify the calendar receiving input without messing with config files
+
+        ✅ add a query for a list of all calendars from Google Calendar if possible
+
+        ✅ check that query. Is it possible?
+
     - add the option to change calendar entry color
     - add the option to specify Toggl workspaces
 
