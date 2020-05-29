@@ -59,7 +59,7 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
 
 5. Nice to have, but not necessary. Idea bag:
 
-    - add the function for copying all events from one calendar to another calendar
+    ✅ add the function for copying all events from one calendar to another calendar
 
         ✅ add functionality for copying all events for one day between calendars
 
@@ -72,7 +72,10 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
         ✅ check that query. Is it possible?
 
     - add the option to change calendar entry color
+
     - add the option to specify Toggl workspaces
+
+        ✅ fetch workspaces from Toggl
 
     ✅ RescueTime API before or after v1.0
 
