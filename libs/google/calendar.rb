@@ -70,12 +70,10 @@ module Google
     end
 
     def insert_calendar_event(event, cal_id = @calendar_id)
-      begin
-        result = @service.insert_event(cal_id, event)
-        puts "Event created: #{result.html_link}"
-      rescue => error
-        puts "Duplicate event found"
-      end
+      result = @service.insert_event(cal_id, event)
+      puts "Event created: #{result.html_link}"
+    rescue => _e
+      puts "Duplicate event found"
     end
 
     def add_list_of_entries(entry_list)
@@ -139,7 +137,7 @@ module Google
       json_list.map do |calendar_item|
         {
           name: calendar_item["summary"],
-          id: calendar_item["id"],
+          id: calendar_item["id"]
         }
       end
     end

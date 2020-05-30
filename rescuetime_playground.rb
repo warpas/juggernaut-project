@@ -49,11 +49,10 @@ parsed_data["rows"].each do |row|
   # TODO: group these entries by categories and add bigger categories to Google Calendar
 end
 
-
 parsed_response = JSON.parse(result[:body])
-prepared_entry_list = parsed_response.map do |daily_summary|
+prepared_entry_list = parsed_response.map { |daily_summary|
   build_calendar_event(daily_summary: daily_summary)
-end
+}
 
 puts "\ninitiating Google Calendar integration"
 calendar = Google::Calendar.new(config_file: "dw_credentials", token_file: "dwc_token")
