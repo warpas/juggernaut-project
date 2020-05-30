@@ -31,4 +31,4 @@ end
 puts "\ninitiating Google Calendar integration"
 calendar = Google::Calendar.new(config_file: "dw_credentials", token_file: "dwc_token")
 calendar.fetch_next_events(5)
-calendar.add_list_of_entries_no_duplicates(prepared_entry_list)
+# calendar.add_list_of_entries_no_duplicates(prepared_entry_list)
