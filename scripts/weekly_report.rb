@@ -1,8 +1,8 @@
-require_relative "command_line"
-require_relative "toggl/report"
-require_relative "toggl/google_calendar_adapter"
-require_relative "google/calendar"
-require_relative "date_time_helper"
+require_relative "../libs/command_line"
+require_relative "../libs/toggl/report"
+require_relative "../libs/toggl/google_calendar_adapter"
+require_relative "../libs/google/calendar"
+require_relative "../date_time_helper"
 require "date"
 
 def build_weekly_summary(date_string)

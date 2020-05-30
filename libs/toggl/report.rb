@@ -8,7 +8,7 @@ module Toggl
 
     def initialize(start_date, end_date = "")
       puts "inside Toggl.Report.initialize"
-      @config = get_json_from_file("toggl/config.secret.json")
+      @config = get_json_from_file("libs/toggl/config.secret.json")
       @api_token = api_token
       @start_date = start_date
       @end_date = end_date.to_s.empty? ? start_date : end_date

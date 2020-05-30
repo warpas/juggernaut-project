@@ -12,8 +12,8 @@ module Google
     # TODO: Add unit tests.
 
     def initialize(config_file: "credentials", token_file: "token", calendar_name: "primary")
-      credentials_path = "google/#{config_file}.secret.json".freeze
-      token_path = "google/#{token_file}.secret.yaml".freeze
+      credentials_path = "libs/google/#{config_file}.secret.json".freeze
+      token_path = "libs/google/#{token_file}.secret.yaml".freeze
       @config = get_json_from_file(credentials_path)
       @calendar_id = get_calendar_id_for(calendar_name)
 

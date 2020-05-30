@@ -1,5 +1,5 @@
 module Toggl
-  require_relative "../date_time_helper"
+  require_relative "../../date_time_helper"
   class GoogleCalendarAdapter
     # TODO: Add unit tests.
 
