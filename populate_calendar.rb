@@ -1,6 +1,6 @@
-require_relative "command_line"
-require_relative "google/calendar"
-require_relative "google/sheets"
+require_relative "libs/command_line"
+require_relative "libs/google/calendar"
+require_relative "libs/google/sheets"
 require "json"
 
 def copy_events(date:, source_cal:, destination_cal:, color_coding:)
