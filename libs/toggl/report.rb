@@ -38,17 +38,11 @@ module Toggl
     end
 
     def report_summary
-      response = @request_adapter.get_request(report_summary_address, auth_headers)
-      body = JSON.parse(response[:body])
-      @total_time = body["total_grand"]
-      body
+      report('summary')
     end
 
     def report_details
-      response = @request_adapter.get_request(report_details_address, auth_headers)
-      body = JSON.parse(response[:body])
-      @total_time = body["total_grand"]
-      body
+      report('details')
     end
 
     def get_work_start_time(the_day_in_question)
@@ -87,6 +81,14 @@ module Toggl
       external_token
     end
 
+    def report(detail_level)
+      report_path = report_path(detail_level)
+      response = @request_adapter.get_request(report_path, auth_headers)
+      body = JSON.parse(response[:body])
+      @total_time = body["total_grand"]
+      body
+    end
+
     def external_token
       "Basic " + @config["tokens"]["base64"]
     end
@@ -111,13 +113,8 @@ module Toggl
       "https://www.toggl.com/api/v8/me"
     end
 
-    # TODO: merge the two functions below
-    def report_summary_address
-      "#{reports_api_base_url}/summary?#{reports_api_params}"
-    end
-
-    def report_details_address
-      "#{reports_api_base_url}/details?#{reports_api_params}"
+    def report_path(detail_level)
+      "#{reports_api_base_url}/#{detail_level}?#{reports_api_params}"
     end
 
     def reports_api_base_url
