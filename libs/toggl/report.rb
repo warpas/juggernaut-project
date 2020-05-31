@@ -20,13 +20,6 @@ module Toggl
 
     attr_reader :start_date
 
-    def print_config
-      puts "Toggl API config"
-      puts "@api_token = #{@api_token}"
-      puts "@workspace_id = #{@workspace_id}"
-      puts "@user_agent = #{@user_agent}"
-    end
-
     def authenticate_user
       response = @request_adapter.get_request(auth_address, auth_headers)
       body = JSON.parse(response[:body])
