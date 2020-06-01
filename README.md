@@ -84,3 +84,5 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
         - Test app config with a few people
         - Streamline Toggl API to require as little config as possible. Probably the API key should be enough.
         - Record a short screencast on Google Calendar config steps and paste it here if necessary.
+
+    - Work weekly report separate from other weekly reports
