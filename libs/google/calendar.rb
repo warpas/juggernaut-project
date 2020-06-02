@@ -11,15 +11,17 @@ module Google
     # TODO: Design a clear and minimal interface.
     # TODO: Add unit tests.
 
-    def initialize(config_file: "credentials", token_file: "token", calendar_name: "primary")
-      credentials_path = "libs/google/#{config_file}.secret.json".freeze
-      token_path = "libs/google/#{token_file}.secret.yaml".freeze
-      @config = get_json_from_file(credentials_path)
+    def initialize(
+      config_file: "libs/google/credentials.secret.json",
+      token_file: "libs/google/token.secret.yaml",
+      calendar_name: "primary"
+    )
+      @config = get_json_from_file(config_file)
       @calendar_id = get_calendar_id_for(calendar_name)
 
       @service = Google::Apis::CalendarV3::CalendarService.new
       @service.client_options.application_name = application_name
-      @service.authorization = authorize(credentials_path: credentials_path, token_path: token_path)
+      @service.authorization = authorize(credentials_path: config_file, token_path: token_file)
     end
 
     def fetch_next_events(count)
