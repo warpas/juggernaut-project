@@ -31,11 +31,11 @@ module Toggl
     end
 
     def report_summary
-      report('summary')
+      report("summary")
     end
 
     def report_details
-      report('details')
+      report("details")
     end
 
     def get_work_start_time(the_day_in_question)
