@@ -8,8 +8,8 @@ module Google
 
   class Sheets
     def initialize(config_file: "credentials", token_file: "token", file_id:)
-      credentials_path = "google/#{config_file}.secret.json".freeze
-      token_path = "google/#{token_file}.secret.yaml".freeze
+      credentials_path = "libs/google/#{config_file}.secret.json".freeze
+      token_path = "libs/google/#{token_file}.secret.yaml".freeze
       @config = get_json_from_file(credentials_path)
       @spreadsheet_id = assign_spreadsheet_id(file_id)
 
