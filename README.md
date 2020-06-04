@@ -93,3 +93,5 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
     - add the option to change calendar entry color
 
     - move to Github issues after this point (unlikely, but I'll give it a try)
+
+    - integrate Todoist - adding tasks, reading a tasks list at minimum
