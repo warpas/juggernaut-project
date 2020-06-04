@@ -38,5 +38,15 @@ module Toggl
         }
       ]
     end
+
+    def build_daily_summary_from(summary_report:, report_day:)
+      puts "\nBuilding the daily summary event"
+      total_time_logged = DateTimeHelper.readable_duration(summary_report["total_grand"])
+      filtered_list = summary_report["data"].filter { |entry| entry["tags"].include?("work") }
+      report_string = filtered_list.map { |entry|
+        puts "entry.tags = #{entry["tags"]}"
+        puts "entry = #{entry}"
+      }
+    end
   end
 end
