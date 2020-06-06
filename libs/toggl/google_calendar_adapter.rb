@@ -23,7 +23,6 @@ module Toggl
 
     # TODO: rebuild it to use daily summary, at least partially
     def build_weekly_summary_from(report:, report_day:)
-      puts "\nBuilding the weekly summary event"
       total_time_logged = DateTimeHelper.readable_duration(report["total_grand"])
       report_string = report["data"].map { |entry|
         "\nProject: #{entry["title"]["project"]}, client: #{entry["title"]["client"]}\n#{DateTimeHelper.readable_duration(entry["time"])}\n"
@@ -36,6 +35,28 @@ module Toggl
           duration: 300000,
           calendars_list: ["work"],
           description: "Total time logged last week:\n#{total_time_logged}\n" + report_string.join("\n")
+        }
+      ]
+    end
+
+    def build_weekly_summary_from(report:, report_day:, category:)
+      total_time_logged = DateTimeHelper.readable_duration(report["total_grand"])
+      filtered_list = report["data"].filter { |entry| entry["tags"].include?("work") }
+      time_on_work = 0
+      report_string = filtered_list.map { |entry|
+        time_on_work += entry["dur"]
+        "\nProject: #{entry["project"]}, client: #{entry["client"]}\n#{DateTimeHelper.readable_duration(entry["dur"])}\n"
+      }
+      [
+        {
+          start: DateTime.parse("#{report_day.year}-#{report_day.month}-#{report_day.day}T06:04:59+02:00"),
+          end: DateTime.parse("#{report_day.year}-#{report_day.month}-#{report_day.day}T06:09:59+02:00"),
+          title: "Last week summary",
+          duration: 300000,
+          calendars_list: ["work"],
+          description:
+          "Work time 🕤 logged last week:\n➡️#{DateTimeHelper.readable_duration(time_on_work)}\n" \
+          "\nTotal time logged last week:\n#{total_time_logged}\n" + report_string.join("\n")
         }
       ]
     end
