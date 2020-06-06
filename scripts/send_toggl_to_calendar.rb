@@ -23,11 +23,13 @@ end
 # TODO: change the way date is given. Ideally a GUI with a date picker.
 date = CommandLine.get_date_from_command_line(ARGV)
 
-prepared_entry_list = if date.empty?
-  build_calendar_entry_from(days_ago: 1)
-else
-  get_entry_list_for(Date.parse(date))
-end
+prepared_entry_list =
+  if date.empty?
+    build_calendar_entry_from(days_ago: 1)
+  else
+    get_entry_list_for(Date.parse(date))
+  end
+
 puts "\ninitiating Google Calendar integration"
 calendar = Google::Calendar.new(
   config_file: "libs/google/dw_credentials.secret.json",

@@ -16,12 +16,14 @@ end
 
 date = CommandLine.get_date_from_command_line(ARGV)
 
-prepared_entry_list = if date.empty?
-  last_week = Date.today - 7
-  build_weekly_summary(last_week.to_s)
-else
-  build_weekly_summary(date)
-end
+prepared_entry_list =
+  if date.empty?
+    last_week = Date.today - 7
+    build_weekly_summary(last_week.to_s)
+  else
+    build_weekly_summary(date)
+  end
+
 puts "\ninitiating Google Calendar integration"
 calendar = Google::Calendar.new(
   config_file: "libs/google/dw_credentials.secret.json",

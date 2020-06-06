@@ -8,17 +8,18 @@ def build_daily_summary(date_string)
   date = Date.parse(date_string)
   toggl = Toggl::Report.new(date)
   adapter = Toggl::GoogleCalendarAdapter.new
-  adapter.build_daily_summary_from(summary_report: toggl.report_details, report_day: date)
+  adapter.build_daily_summary_from(summary_report: toggl.report_details, report_day: date, category: "work")
 end
 
 date = CommandLine.get_date_from_command_line(ARGV)
 
-date_string = if date.empty?
-  yesterday = Date.today - 1
-  yesterday.to_s
-else
-  date.to_s
-end
+date_string =
+  if date.empty?
+    yesterday = Date.today - 1
+    yesterday.to_s
+  else
+    date.to_s
+  end
 prepared_entry_list = build_daily_summary(date_string)
 puts "prepared_entry_list = #{prepared_entry_list}"
 
