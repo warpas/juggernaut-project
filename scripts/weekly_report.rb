@@ -23,5 +23,8 @@ else
   build_weekly_summary(date)
 end
 puts "\ninitiating Google Calendar integration"
-calendar = Google::Calendar.new(config_file: "dw_credentials", token_file: "dwc_token")
+calendar = Google::Calendar.new(
+  config_file: "libs/google/dw_credentials.secret.json",
+  token_file: "libs/google/dwc_token.secret.yaml"
+)
 calendar.add_list_of_entries_no_duplicates(prepared_entry_list)
