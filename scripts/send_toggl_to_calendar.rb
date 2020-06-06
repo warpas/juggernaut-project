@@ -15,7 +15,7 @@ end
 def get_entry_list_for(date)
   toggl = Toggl::Report.new(date)
   adapter = Toggl::GoogleCalendarAdapter.new
-  adapter.build_entry_list_from(detailed_report: toggl.report_details)
+  adapter.build_entry_list_from(report: toggl.report_details)
 end
 
 # def compare_goals_to_reality

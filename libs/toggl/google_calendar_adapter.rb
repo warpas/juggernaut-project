@@ -7,25 +7,25 @@ module Toggl
       puts "inside Toggl.GoogleCalendarAdapter.initialize"
     end
 
-    def build_entry_list_from(detailed_report:)
+    def build_entry_list_from(report:)
       puts "\nBuilding the list of events"
-      detailed_report["data"].map do |entry|
+      report["data"].map do |entry|
         {
           start: DateTime.parse(entry["start"]),
           end: DateTime.parse(entry["end"]),
           title: entry["description"],
           duration: entry["dur"],
           calendars_list: entry["tags"],
-          description: "Duration: #{DateTimeHelper.readable_duration(entry["dur"])}\nClient: #{entry["client"]}\nProject: #{entry["project"]}\nTotal time logged today: #{DateTimeHelper.readable_duration(detailed_report["total_grand"])}\n\nDestination calendar: #{entry["tags"]}"
+          description: "Duration: #{DateTimeHelper.readable_duration(entry["dur"])}\nClient: #{entry["client"]}\nProject: #{entry["project"]}\nTotal time logged today: #{DateTimeHelper.readable_duration(report["total_grand"])}\n\nDestination calendar: #{entry["tags"]}"
         }
       end
     end
 
     # TODO: rebuild it to use daily summary, at least partially
-    def build_weekly_summary_from(summary_report:, report_day:)
+    def build_weekly_summary_from(report:, report_day:)
       puts "\nBuilding the weekly summary event"
-      total_time_logged = DateTimeHelper.readable_duration(summary_report["total_grand"])
-      report_string = summary_report["data"].map { |entry|
+      total_time_logged = DateTimeHelper.readable_duration(report["total_grand"])
+      report_string = report["data"].map { |entry|
         "\nProject: #{entry["title"]["project"]}, client: #{entry["title"]["client"]}\n#{DateTimeHelper.readable_duration(entry["time"])}\n"
       }
       [
@@ -40,10 +40,10 @@ module Toggl
       ]
     end
 
-    def build_daily_summary_from(summary_report:, report_day:, category:)
+    def build_daily_summary_from(report:, report_day:, category:)
       puts "\nBuilding the daily summary event"
-      total_time_logged = DateTimeHelper.readable_duration(summary_report["total_grand"])
-      filtered_list = summary_report["data"].filter { |entry| entry["tags"].include?("work") }
+      total_time_logged = DateTimeHelper.readable_duration(report["total_grand"])
+      filtered_list = report["data"].filter { |entry| entry["tags"].include?("work") }
       time_on_work = 0
       report_string = filtered_list.map { |entry|
         time_on_work += entry["dur"]

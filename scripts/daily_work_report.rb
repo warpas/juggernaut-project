@@ -8,7 +8,7 @@ def build_daily_summary(date_string)
   date = Date.parse(date_string)
   toggl = Toggl::Report.new(date)
   adapter = Toggl::GoogleCalendarAdapter.new
-  adapter.build_daily_summary_from(summary_report: toggl.report_details, report_day: date, category: "work")
+  adapter.build_daily_summary_from(report: toggl.report_details, report_day: date, category: "work")
 end
 
 date = CommandLine.get_date_from_command_line(ARGV)
