@@ -40,7 +40,7 @@ module Toggl
       ]
     end
 
-    def build_daily_summary_from(summary_report:, report_day:)
+    def build_daily_summary_from(summary_report:, report_day:, category:)
       puts "\nBuilding the daily summary event"
       total_time_logged = DateTimeHelper.readable_duration(summary_report["total_grand"])
       filtered_list = summary_report["data"].filter { |entry| entry["tags"].include?("work") }
@@ -57,8 +57,8 @@ module Toggl
           duration: 300000,
           calendars_list: ["work"],
           description:
-            "Total work time 🕤 logged today:\n➡️#{DateTimeHelper.readable_duration(time_on_work)}\n" \
-            "\nTotal time logged last week:\n#{total_time_logged}\n" + report_string.join("\n")
+            "Work time 🕤 logged today:\n➡️#{DateTimeHelper.readable_duration(time_on_work)}\n" \
+            "\nTotal time logged today:\n#{total_time_logged}\n" + report_string.join("\n")
         }
       ]
     end
