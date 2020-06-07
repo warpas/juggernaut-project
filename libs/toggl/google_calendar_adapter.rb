@@ -22,19 +22,20 @@ module Toggl
     end
 
     # TODO: rebuild it to use daily summary, at least partially
-    def build_weekly_summary_from(report:, report_day:)
-      total_time_logged = DateTimeHelper.readable_duration(report["total_grand"])
+    def build_weekly_summary(report:, report_day:)
+      total_time_report = format_total_time_last_week(report["total_grand"])
       report_string = report["data"].map { |entry|
         "\nProject: #{entry["title"]["project"]}, client: #{entry["title"]["client"]}\n#{DateTimeHelper.readable_duration(entry["time"])}\n"
       }
       [
         {
-          start: DateTime.parse("#{report_day.year}-#{report_day.month}-#{report_day.day}T06:04:59+02:00"),
-          end: DateTime.parse("#{report_day.year}-#{report_day.month}-#{report_day.day}T06:09:59+02:00"),
+          # TODO: calculate end based on start + duration
+          start: format_date(report_day, "06:04:59", "+02:00"),
+          end: format_date(report_day, "06:09:59", "+02:00"),
           title: "Last week summary",
           duration: 300000,
           calendars_list: ["work"],
-          description: "Total time logged last week:\n#{total_time_logged}\n" + report_string.join("\n")
+          description: total_time_report + report_string.join("\n")
         }
       ]
     end
@@ -49,13 +50,13 @@ module Toggl
       }
       [
         {
-          start: DateTime.parse("#{report_day.year}-#{report_day.month}-#{report_day.day}T06:04:59+02:00"),
-          end: DateTime.parse("#{report_day.year}-#{report_day.month}-#{report_day.day}T06:09:59+02:00"),
+          start: format_date(report_day, "06:04:59", "+02:00"),
+          end: format_date(report_day, "06:09:59", "+02:00"),
           title: "Last week summary",
           duration: 300000,
           calendars_list: ["work"],
           description:
-          "Work time 🕤 logged last week:\n➡️#{DateTimeHelper.readable_duration(time_on_work)}\n" \
+          "🕤Work time logged last week:\n➡️#{DateTimeHelper.readable_duration(time_on_work)}\n" \
           "\nTotal time logged last week:\n#{total_time_logged}\n" + report_string.join("\n")
         }
       ]
@@ -72,16 +73,32 @@ module Toggl
       }
       [
         {
-          start: DateTime.parse("#{report_day.year}-#{report_day.month}-#{report_day.day}T05:04:59+02:00"),
-          end: DateTime.parse("#{report_day.year}-#{report_day.month}-#{report_day.day}T05:09:59+02:00"),
+          start: format_date(report_day, "05:04:59", "+02:00"),
+          end: format_date(report_day, "05:09:59", "+02:00"),
           title: "Work summary for today",
           duration: 300000,
           calendars_list: ["work"],
           description:
-            "Work time 🕤 logged today:\n➡️#{DateTimeHelper.readable_duration(time_on_work)}\n" \
+            "🕤Work time logged today:\n➡️#{DateTimeHelper.readable_duration(time_on_work)}\n" \
             "\nTotal time logged today:\n#{total_time_logged}\n" + report_string.join("\n")
         }
       ]
+    end
+
+    private
+
+    def format_date(date, time, timezone)
+      DateTime.parse("#{date.year}-#{date.month}-#{date.day}T#{time}#{timezone}")
+    end
+
+    def format_total_time_today(time_in_milliseconds)
+      readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
+      "⏱Total time logged today:\n#{readable_time}\n"
+    end
+
+    def format_total_time_last_week(time_in_milliseconds)
+      readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
+      "⏱Total time logged last week:\n#{readable_time}\n"
     end
   end
 end

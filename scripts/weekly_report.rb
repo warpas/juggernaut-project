@@ -11,7 +11,7 @@ def build_weekly_summary(date_string)
   week_end = DateTimeHelper.get_next_closest_sunday(date)
   toggl = Toggl::Report.new(week_start, week_end)
   adapter = Toggl::GoogleCalendarAdapter.new
-  adapter.build_weekly_summary_from(report: toggl.report_summary, report_day: week_end + 1)
+  adapter.build_weekly_summary(report: toggl.report_summary, report_day: week_end + 1)
 end
 
 date = CommandLine.get_date_from_command_line(ARGV)
