@@ -67,13 +67,9 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
 
         ✅ check that query. Is it possible?
 
-    - add the option to specify Toggl workspaces
-
-        ✅ fetch workspaces from Toggl
-
     ✅ RescueTime API before or after v1.0
 
-    - work weekly report separate from other weekly reports
+    ✅ work weekly report separate from other weekly reports
 
 4. v1.0 release
 
@@ -95,3 +91,9 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
     - move to Github issues after this point (unlikely, but I'll give it a try)
 
     - integrate Todoist - adding tasks, reading a tasks list at minimum
+
+    - add the option to specify Toggl workspaces
+
+        ✅ fetch workspaces from Toggl
+
+        - do it after UI
