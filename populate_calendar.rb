@@ -4,12 +4,16 @@ require_relative "libs/google/sheets"
 require "json"
 
 def copy_events(date:, source_cal:, destination_cal:, color_coding:)
-  source_calendar = Google::Calendar.new(config_file: "ds_credentials",
-                                         token_file: "dsc_token",
-                                         calendar_name: source_cal)
-  destination_calendar = Google::Calendar.new(config_file: "ds_credentials",
-                                              token_file: "dsc_token",
-                                              calendar_name: destination_cal)
+  source_calendar = Google::Calendar.new(
+    config_file: "libs/google/ds_credentials.secret.json",
+    token_file: "libs/google/dsc_token.secret.yaml",
+    calendar_name: source_cal
+  )
+  destination_calendar = Google::Calendar.new(
+    config_file: "libs/google/ds_credentials.secret.json",
+    token_file: "libs/google/dsc_token.secret.yaml",
+    calendar_name: destination_cal
+  )
   source_calendar.copy_to_calendar(date: date, destination: destination_calendar, color_coding: color_coding)
 end
 
