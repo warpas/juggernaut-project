@@ -41,7 +41,7 @@ module Toggl
     end
 
     def build_weekly_summary_from(report:, report_day:, category:)
-      total_time_logged = DateTimeHelper.readable_duration(report["total_grand"])
+      # TODO: Add average work start time
       filtered_list = report["data"].filter { |entry| entry["tags"].include?("work") }
       time_on_work = 0
       report_string = filtered_list.map { |entry|
@@ -57,12 +57,14 @@ module Toggl
           calendars_list: ["work"],
           description:
           "🕤Work time logged last week:\n➡️#{DateTimeHelper.readable_duration(time_on_work)}\n" \
-          "\nTotal time logged last week:\n#{total_time_logged}\n" + report_string.join("\n")
+          "\n#{format_total_time_last_week(report["total_grand"])}" \
+          "\n#{separator}\n#{report_string.join("\n")}"
         }
       ]
     end
 
     def build_daily_summary_from(report:, report_day:, category:)
+      # TODO: Add work start time
       puts "\nBuilding the daily summary event"
       total_time_logged = DateTimeHelper.readable_duration(report["total_grand"])
       filtered_list = report["data"].filter { |entry| entry["tags"].include?("work") }
@@ -75,7 +77,7 @@ module Toggl
         {
           start: format_date(report_day, "05:04:59", "+02:00"),
           end: format_date(report_day, "05:09:59", "+02:00"),
-          title: "Work summary for today",
+          title: "Daily work summary",
           duration: 300000,
           calendars_list: ["work"],
           description:
@@ -99,6 +101,10 @@ module Toggl
     def format_total_time_last_week(time_in_milliseconds)
       readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
       "⏱Total time logged last week:\n#{readable_time}\n"
+    end
+
+    def separator
+      "-----------------------------"
     end
   end
 end
