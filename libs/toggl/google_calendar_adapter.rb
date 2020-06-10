@@ -16,7 +16,10 @@ module Toggl
           title: entry["description"],
           duration: entry["dur"],
           calendars_list: entry["tags"],
-          description: "Duration: #{DateTimeHelper.readable_duration(entry["dur"])}\nClient: #{entry["client"]}\nProject: #{entry["project"]}\nTotal time logged today: #{DateTimeHelper.readable_duration(report["total_grand"])}\n\nDestination calendar: #{entry["tags"]}"
+          description: "Duration: #{DateTimeHelper.readable_duration(entry["dur"])}\n" \
+          "Client: #{entry["client"]}\nProject: #{entry["project"]}\n" \
+          "#{format_total_time_today(report["total_grand"])}\n\n" \
+          "Destination calendar: #{entry["tags"]}"
         }
       end
     end
@@ -56,7 +59,7 @@ module Toggl
           duration: 300000,
           calendars_list: ["work"],
           description:
-          "🕤Work time logged last week:\n➡️#{DateTimeHelper.readable_duration(time_on_work)}\n" \
+          "#{format_work_time_last_week(time_on_work)}" \
           "\n#{format_total_time_last_week(report["total_grand"])}" \
           "\n#{separator}\n#{report_string.join("\n")}"
         }
@@ -81,8 +84,8 @@ module Toggl
           duration: 300000,
           calendars_list: ["work"],
           description:
-            "🕤Work time logged today:\n➡️#{DateTimeHelper.readable_duration(time_on_work)}\n" \
-            "\nTotal time logged today:\n#{total_time_logged}\n" + report_string.join("\n")
+            "#{format_work_time_today(time_on_work)}" \
+            "\n#{format_total_time_today(report["total_grand"])}" + report_string.join("\n")
         }
       ]
     end
@@ -98,9 +101,19 @@ module Toggl
       "⏱Total time logged today:\n#{readable_time}\n"
     end
 
+    def format_work_time_today(time_in_milliseconds)
+      readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
+      "🕤Work time logged today:\n➡️#{readable_time}\n"
+    end
+
     def format_total_time_last_week(time_in_milliseconds)
       readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
       "⏱Total time logged last week:\n#{readable_time}\n"
+    end
+
+    def format_work_time_last_week(time_in_milliseconds)
+      readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
+      "🕤Work time logged last week:\n➡️#{readable_time}\n"
     end
 
     def separator
