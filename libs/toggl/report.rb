@@ -71,7 +71,8 @@ module Toggl
       # puts "external_token: \n#{external_token}"
       # puts "base64_calculated_basic_auth_token: \n#{base64_calculated_basic_auth_token}"
       # puts "request_adapter_basic_auth: \n#{request_adapter_basic_auth}"
-      external_token
+      # external_token
+      base64_calculated_basic_auth_token
     end
 
     def report(detail_level)
