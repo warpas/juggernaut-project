@@ -93,6 +93,10 @@ Don't advise people to copy the entire file, because newlines
         - test app config with a few people
         - streamline Toggl API to require as little config as possible. Probably the API key should be enough.
         - record a short screencast on Google Calendar config steps and paste it here if necessary.
+        - make sure Google Calendar and Google Sheets don't override each other's tokens
+        - separate credentials from the persistence layer
+            - Google Calendar list of calendars shouldn't be stored in credentials file, because it's too much upfront config
+            - Same for Google Sheets
 
 6. After v1.0
 
@@ -101,6 +105,8 @@ Don't advise people to copy the entire file, because newlines
     - move to Github issues after this point (unlikely, but I'll give it a try)
 
     - integrate Todoist - adding tasks, reading a tasks list at minimum
+
+    - integrate Trello - adding cards at minimum
 
     - add the option to specify Toggl workspaces
 
