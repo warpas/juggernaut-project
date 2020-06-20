@@ -24,8 +24,5 @@ prepared_entry_list = build_daily_summary(date_string)
 puts "prepared_entry_list = #{prepared_entry_list}"
 
 puts "\ninitiating Google Calendar integration"
-calendar = Google::Calendar.new(
-  config_file: "libs/google/dw_credentials.secret.json",
-  token_file: "libs/google/dwc_token.secret.yaml"
-)
+calendar = Google::Calendar.new
 calendar.add_list_of_entries_no_duplicates(prepared_entry_list)

@@ -1,5 +1,5 @@
-require_relative "requests"
-require_relative "google/calendar"
+require_relative "../libs/requests"
+require_relative "../libs/google/calendar"
 require "json"
 require "date"
 
@@ -55,6 +55,5 @@ prepared_entry_list = parsed_response.map { |daily_summary|
 }
 
 puts "\ninitiating Google Calendar integration"
-calendar = Google::Calendar.new(config_file: "dw_credentials", token_file: "dwc_token")
-calendar.fetch_next_events(5)
+calendar = Google::Calendar.new
 calendar.add_list_of_entries_no_duplicates(prepared_entry_list)

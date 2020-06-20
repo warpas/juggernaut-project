@@ -1,6 +1,6 @@
 require_relative "../libs/google/calendar"
 
-calendar_object = Google::Calendar.new(config_file: "dw_credentials", token_file: "dwc_token", calendar_name: "exercise")
+calendar_object = Google::Calendar.new(calendar_name: "exercise")
 list = calendar_object.list_calendars.select { |calendar|
   calendar[:name].start_with?("Exercise -")
 }

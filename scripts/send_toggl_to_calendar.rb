@@ -31,9 +31,5 @@ prepared_entry_list =
   end
 
 puts "\ninitiating Google Calendar integration"
-calendar = Google::Calendar.new(
-  config_file: "libs/google/credentials.secret.json",
-  token_file: "libs/google/token.secret.yaml"
-)
-calendar.fetch_next_events(5)
+calendar = Google::Calendar.new
 calendar.add_list_of_entries_no_duplicates(prepared_entry_list)
