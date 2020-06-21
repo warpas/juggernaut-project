@@ -14,16 +14,17 @@ def build_weekly_summary(date_string)
   adapter.build_weekly_summary_from(report: toggl.report_details, report_day: week_end + 1, category: "work")
 end
 
-date = CommandLine.get_date_from_command_line(ARGV)
+def last_week_date
+  Date.today - 7
+end
 
-date_string =
-  if date.empty?
-    last_week = Date.today - 7
-    last_week.to_s
-  else
-    date.to_s
-  end
-prepared_entry_list = build_weekly_summary(date_string)
+def date
+  cl_date = CommandLine.get_date_from_command_line(ARGV)
+  return last_week_date if cl_date.empty?
+  cl_date
+end
+
+prepared_entry_list = build_weekly_summary(date.to_s)
 
 puts "\ninitiating Google Calendar integration"
 calendar = Google::Calendar.new
