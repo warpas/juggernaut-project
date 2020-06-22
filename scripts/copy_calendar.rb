@@ -1,5 +1,6 @@
 require_relative "../libs/google/calendar"
 
+# Copy all calendars with names starting with "Exercise -" to the defined calendar
 calendar_object = Google::Calendar.new(calendar_name: "exercise")
 list = calendar_object.list_calendars.select { |calendar|
   calendar[:name].start_with?("Exercise -")

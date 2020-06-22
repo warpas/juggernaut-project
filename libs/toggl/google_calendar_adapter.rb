@@ -90,6 +90,30 @@ module Toggl
       ]
     end
 
+    def build_daily_creative_summary_from(report:, report_day:, category:)
+      # TODO: Add work start time
+      puts "\nBuilding the daily summary event"
+      total_time_logged = DateTimeHelper.readable_duration(report["total_grand"])
+      filtered_list = report["data"].filter { |entry| entry["tags"].include?(category) }
+      time_on_category = 0
+      report_string = filtered_list.map { |entry|
+        time_on_category += entry["dur"]
+        "\nProject: #{entry["project"]}, client: #{entry["client"]}\n#{DateTimeHelper.readable_duration(entry["dur"])}\n"
+      }
+      [
+        {
+          start: format_date(report_day, "05:34:59", "+02:00"),
+          end: format_date(report_day, "05:39:59", "+02:00"),
+          title: "Daily #{category} summary",
+          duration: 300000,
+          calendars_list: [category],
+          description:
+            "#{format_game_time_today(time_on_category)}" \
+            "\n#{format_total_time_today(report["total_grand"])}" + report_string.join("\n")
+        }
+      ]
+    end
+
     private
 
     def format_date(date, time, timezone)
@@ -104,6 +128,11 @@ module Toggl
     def format_work_time_today(time_in_milliseconds)
       readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
       "🕤Work time logged today:\n➡️#{readable_time}\n"
+    end
+
+    def format_game_time_today(time_in_milliseconds)
+      readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
+      "🎮Game time logged today:\n➡️#{readable_time}\n"
     end
 
     def format_total_time_last_week(time_in_milliseconds)
