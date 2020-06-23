@@ -108,7 +108,7 @@ module Toggl
           duration: 300000,
           calendars_list: [category],
           description:
-            "#{format_game_time_today(time_on_category)}" \
+            "#{format_time_today_for(time: time_on_category, category: category)}" \
             "\n#{format_total_time_today(report["total_grand"])}" + report_string.join("\n")
         }
       ]
@@ -130,9 +130,21 @@ module Toggl
       "🕤Work time logged today:\n➡️#{readable_time}\n"
     end
 
-    def format_game_time_today(time_in_milliseconds)
-      readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
-      "🎮Game time logged today:\n➡️#{readable_time}\n"
+    def format_time_today_for(time:, category:)
+      readable_time = DateTimeHelper.readable_duration(time)
+      "#{format_by(category)} time logged today:\n➡️#{readable_time}\n"
+    end
+
+    def format_by(option)
+      if option == "game"
+        return "🎮Game"
+      elsif option == "work"
+        return "🕤Work"
+      elsif option == "total"
+        return "⏱Total"
+      else
+        return "❓Unknown"
+      end
     end
 
     def format_total_time_last_week(time_in_milliseconds)
