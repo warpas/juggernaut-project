@@ -82,10 +82,11 @@ module Toggl
           end: format_date(report_day, "05:09:59", "+02:00"),
           title: "Daily work summary",
           duration: 300000,
-          calendars_list: ["work"],
+          calendars_list: [category],
           description:
-            "#{format_work_time_today(time_on_work)}" \
-            "\n#{format_total_time_today(report["total_grand"])}" + report_string.join("\n")
+            "#{format_time_today_for(time: time_on_work, category: category)}" \
+            "\n#{format_time_today_for(time: report["total_grand"], category: "total")}" \
+            "\n#{separator}\n#{report_string.join("\n")}"
         }
       ]
     end
@@ -102,6 +103,7 @@ module Toggl
       }
       [
         {
+          # TODO: figure out what to do about start and end time
           start: format_date(report_day, "05:34:59", "+02:00"),
           end: format_date(report_day, "05:39:59", "+02:00"),
           title: "Daily #{category} summary",
@@ -109,7 +111,8 @@ module Toggl
           calendars_list: [category],
           description:
             "#{format_time_today_for(time: time_on_category, category: category)}" \
-            "\n#{format_total_time_today(report["total_grand"])}" + report_string.join("\n")
+            "\n#{format_time_today_for(time: report["total_grand"], category: "total")}" \
+            "\n#{separator}\n#{report_string.join("\n")}"
         }
       ]
     end
@@ -123,11 +126,6 @@ module Toggl
     def format_total_time_today(time_in_milliseconds)
       readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
       "⏱Total time logged today:\n#{readable_time}\n"
-    end
-
-    def format_work_time_today(time_in_milliseconds)
-      readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
-      "🕤Work time logged today:\n➡️#{readable_time}\n"
     end
 
     def format_time_today_for(time:, category:)
