@@ -18,7 +18,7 @@ module Toggl
           calendars_list: entry["tags"],
           description: "Duration: #{DateTimeHelper.readable_duration(entry["dur"])}\n" \
           "Client: #{entry["client"]}\nProject: #{entry["project"]}\n" \
-          "#{format_total_time_today(report["total_grand"])}\n\n" \
+          "#{format_time_today_for(time: report["total_grand"], category: "total")}\n\n" \
           "Destination calendar: #{entry["tags"]}"
         }
       end
@@ -67,32 +67,6 @@ module Toggl
     end
 
     def build_daily_summary_from(report:, report_day:, category:)
-      # TODO: Add work start time
-      puts "\nBuilding the daily summary event"
-      total_time_logged = DateTimeHelper.readable_duration(report["total_grand"])
-      filtered_list = report["data"].filter { |entry| entry["tags"].include?("work") }
-      time_on_work = 0
-      report_string = filtered_list.map { |entry|
-        time_on_work += entry["dur"]
-        "\nProject: #{entry["project"]}, client: #{entry["client"]}\n#{DateTimeHelper.readable_duration(entry["dur"])}\n"
-      }
-      [
-        {
-          start: format_date(report_day, "05:04:59", "+02:00"),
-          end: format_date(report_day, "05:09:59", "+02:00"),
-          title: "Daily work summary",
-          duration: 300000,
-          calendars_list: [category],
-          description:
-            "#{format_time_today_for(time: time_on_work, category: category)}" \
-            "\n#{format_time_today_for(time: report["total_grand"], category: "total")}" \
-            "\n#{separator}\n#{report_string.join("\n")}"
-        }
-      ]
-    end
-
-    def build_daily_creative_summary_from(report:, report_day:, category:)
-      # TODO: Add work start time
       puts "\nBuilding the daily summary event"
       total_time_logged = DateTimeHelper.readable_duration(report["total_grand"])
       filtered_list = report["data"].filter { |entry| entry["tags"].include?(category) }
@@ -103,9 +77,8 @@ module Toggl
       }
       [
         {
-          # TODO: figure out what to do about start and end time
-          start: format_date(report_day, "05:34:59", "+02:00"),
-          end: format_date(report_day, "05:39:59", "+02:00"),
+          start: format_date(report_day, "05:04:59", "+02:00"),
+          end: format_date(report_day, "05:09:59", "+02:00"),
           title: "Daily #{category} summary",
           duration: 300000,
           calendars_list: [category],
@@ -123,11 +96,7 @@ module Toggl
       DateTime.parse("#{date.year}-#{date.month}-#{date.day}T#{time}#{timezone}")
     end
 
-    def format_total_time_today(time_in_milliseconds)
-      readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
-      "⏱Total time logged today:\n#{readable_time}\n"
-    end
-
+    # TODO: Add a "when" parameter
     def format_time_today_for(time:, category:)
       readable_time = DateTimeHelper.readable_duration(time)
       "#{format_by(category)} time logged today:\n➡️#{readable_time}\n"
@@ -145,6 +114,7 @@ module Toggl
       end
     end
 
+    # TODO: Replace with format_time_today_for with "when" parameter
     def format_total_time_last_week(time_in_milliseconds)
       readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
       "⏱Total time logged last week:\n#{readable_time}\n"
