@@ -18,7 +18,7 @@ module Toggl
           calendars_list: entry["tags"],
           description: "Duration: #{DateTimeHelper.readable_duration(entry["dur"])}\n" \
           "Client: #{entry["client"]}\nProject: #{entry["project"]}\n" \
-          "#{format_time_today_for(time: report["total_grand"], category: "total")}\n\n" \
+          "#{format_time_for(time: report["total_grand"], category: "total", period: "today")}\n\n" \
           "Destination calendar: #{entry["tags"]}"
         }
       end
@@ -83,8 +83,8 @@ module Toggl
           duration: 300000,
           calendars_list: [category],
           description:
-            "#{format_time_today_for(time: time_on_category, category: category)}" \
-            "\n#{format_time_today_for(time: report["total_grand"], category: "total")}" \
+            "#{format_time_for(time: time_on_category, category: category, period: "today")}\n" \
+            "#{format_time_for(time: report["total_grand"], category: "total", period: "today")}\n" \
             "\n#{separator}\n#{report_string.join("\n")}"
         }
       ]
@@ -96,10 +96,9 @@ module Toggl
       DateTime.parse("#{date.year}-#{date.month}-#{date.day}T#{time}#{timezone}")
     end
 
-    # TODO: Add a "when" parameter
-    def format_time_today_for(time:, category:)
+    def format_time_for(time:, category:, period:)
       readable_time = DateTimeHelper.readable_duration(time)
-      "#{format_by(category)} time logged today:\n➡️#{readable_time}\n"
+      "#{format_by(category)} time logged #{period}:\n➡️#{readable_time}\n"
     end
 
     def format_by(option)
@@ -114,7 +113,7 @@ module Toggl
       end
     end
 
-    # TODO: Replace with format_time_today_for with "when" parameter
+    # TODO: Replace with format_time_today_for with "period" parameter
     def format_total_time_last_week(time_in_milliseconds)
       readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
       "⏱Total time logged last week:\n#{readable_time}\n"
