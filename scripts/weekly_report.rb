@@ -14,6 +14,7 @@ def build_weekly_summary(date_string)
   adapter.build_weekly_summary(report: toggl.report_summary, report_day: week_end + 1)
 end
 
+puts "\n⌨️  Running weekly_report script"
 date = CommandLine.get_date_from_command_line(ARGV)
 
 prepared_entry_list =

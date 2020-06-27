@@ -24,6 +24,7 @@ def date
   cl_date
 end
 
+puts "\n⌨️  Running weekly_work_report script"
 prepared_entry_list = build_weekly_summary(date.to_s)
 
 puts "\ninitiating Google Calendar integration"

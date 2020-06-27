@@ -11,6 +11,7 @@ def build_daily_summary(date_string)
   adapter.build_daily_summary_from(report: toggl.report_details, report_day: date, category: "game")
 end
 
+puts "\n⌨️  Running daily_creative_report script"
 date = CommandLine.get_date_from_command_line(ARGV)
 
 date_string =

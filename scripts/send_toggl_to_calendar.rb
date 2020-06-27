@@ -20,6 +20,7 @@ end
 
 # def compare_goals_to_reality
 
+puts "\n⌨️  Running send_toggl_to_calendar script"
 # TODO: change the way date is given. Ideally a GUI with a date picker.
 date = CommandLine.get_date_from_command_line(ARGV)
 

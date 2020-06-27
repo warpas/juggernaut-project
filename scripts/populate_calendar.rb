@@ -17,6 +17,7 @@ def copy_events(date:, source_cal:, destination_cal:, color_coding:)
   source_calendar.copy_to_calendar(date: date, destination: destination_calendar, color_coding: color_coding)
 end
 
+puts "\n⌨️  Running populate_calendar script"
 cl_date = CommandLine.get_date_from_command_line(ARGV)
 date = cl_date.empty? ? Date.today.to_s : cl_date
 
