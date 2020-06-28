@@ -1,6 +1,6 @@
 require_relative "../libs/google/sheets"
 
-test_sheet = Google::Sheets.new(config_file: "dw_credentials", token_file: "dws_token", file_id: "test")
+test_sheet = Google::Sheets.new(file_id: "test")
 test_sheet.get_spreadsheet_values(range: "Sheet1!A1:F14")
 
 test_sheet.send_to_sheets(values: [["example"]], range: "Sheet1!B6")
@@ -17,5 +17,5 @@ values = [
 test_sheet.send_to_sheets(values: values, range: "Sheet1!B7:F14")
 test_sheet.get_spreadsheet_values(range: "Sheet1!A1:F14")
 
-accounting_doc = Google::Sheets.new(config_file: "dw_credentials", token_file: "dws_token", file_id: "accounting")
+accounting_doc = Google::Sheets.new(file_id: "accounting")
 accounting_doc.get_spreadsheet_values(range: "Spendings!A1:K84")

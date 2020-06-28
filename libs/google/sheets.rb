@@ -7,15 +7,17 @@ module Google
   require "json"
 
   class Sheets
-    def initialize(config_file: "credentials", token_file: "token", file_id:)
-      credentials_path = "libs/google/#{config_file}.secret.json".freeze
-      token_path = "libs/google/#{token_file}.secret.yaml".freeze
-      @config = get_json_from_file(credentials_path)
+    def initialize(
+      config_file: "libs/google/sheets/credentials.secret.json",
+      token_file: "libs/google/sheets/token.secret.yaml",
+      file_id:
+    )
+      @config = get_json_from_file(config_file)
       @spreadsheet_id = assign_spreadsheet_id(file_id)
 
       @service = Google::Apis::SheetsV4::SheetsService.new
       @service.client_options.application_name = application_name
-      @service.authorization = authorize(credentials_path: credentials_path, token_path: token_path)
+      @service.authorization = authorize(credentials_path: config_file, token_path: token_file)
     end
 
     def get_spreadsheet_values(range:)
