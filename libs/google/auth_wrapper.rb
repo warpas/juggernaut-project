@@ -10,15 +10,14 @@ module Google
       client_id = Google::Auth::ClientId.from_file credentials_path
       token_store = Google::Auth::Stores::FileTokenStore.new file: token_path
       authorizer = Google::Auth::UserAuthorizer.new client_id, scope, token_store
-      user_id = "default"
-      credentials = authorizer.get_credentials user_id
+      credentials = authorizer.get_credentials self.user_id
       if credentials.nil?
-        url = authorizer.get_authorization_url base_url: oob_uri
+        url = authorizer.get_authorization_url base_url: self.oob_uri
         puts "Open the following URL in the browser and enter the " \
              "resulting code after authorization:\n" + url
         code = gets
         credentials = authorizer.get_and_store_credentials_from_code(
-          user_id: user_id, code: code, base_url: oob_uri
+          user_id: self.user_id, code: code, base_url: self.oob_uri
         )
       end
       credentials
@@ -26,8 +25,12 @@ module Google
 
     private
 
-    def oob_uri
+    def self.oob_uri
       "urn:ietf:wg:oauth:2.0:oob".freeze
+    end
+
+    def self.user_id
+      "default".freeze
     end
   end
 end
