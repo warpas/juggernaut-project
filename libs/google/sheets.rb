@@ -34,14 +34,30 @@ module Google
 
     def send_to_sheets(values: [["test"]], range: "Sheet1!B4")
       request_body = Google::Apis::SheetsV4::ValueRange.new(range: range, values: values)
-      response = @service.update_spreadsheet_value(spreadsheet_id, range, request_body, value_input_option: "RAW")
+      response = service.update_spreadsheet_value(
+        spreadsheet_id,
+        range,
+        request_body,
+        value_input_option: "USER_ENTERED"
+      )
       puts response.to_json
       response
     end
 
+    def append_to_sheet(values: [["test"]], range: "Sheet1!B4")
+      request_body = Google::Apis::SheetsV4::ValueRange.new(values: values)
+      result = service.append_spreadsheet_value(
+        spreadsheet_id,
+        range,
+        request_body,
+        value_input_option: "USER_ENTERED"
+      )
+      puts "#{result.updates.updated_cells} cells appended."
+    end
+
     private
 
-    attr_reader :spreadsheet_id
+    attr_reader :spreadsheet_id, :service
 
     def get_json_from_file(file_path)
       file = File.read(file_path)
