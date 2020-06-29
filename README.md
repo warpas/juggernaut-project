@@ -111,3 +111,7 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
         ✅ fetch workspaces from Toggl
 
         - do it after UI
+
+    - further Toggl development
+        - add a function to list all untagged time entries
+        - add a function to tag untagged entry
