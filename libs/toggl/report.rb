@@ -53,6 +53,107 @@ module Toggl
       @total_time
     end
 
+    def get_time_for(date:, category:)
+      puts "date #{date}"
+      puts "category #{category}"
+      if category == "consumption"
+        category_entry_list = report_details["data"].select do |time_entry|
+          time_entry["tags"].include?("game") ||
+          time_entry["project"] == "Abnegation - Passive entertainment" ||
+          time_entry["project"] == "Growth - Reading" ||
+          time_entry["project"] == "Growth - Study" ||
+          time_entry["project"] == "Growth - Edutainment" ||
+          time_entry["project"] == "Growth - intentional Video"
+        end
+        if category_entry_list.empty?
+          return 0
+        else
+          total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
+          return total_category_time
+        end
+      end
+      if category == "creative"
+        category_entry_list = report_details["data"].select do |time_entry|
+          time_entry["tags"].include?("game") ||
+          time_entry["description"] == "Focused work" ||
+          time_entry["project"] == "Creative - Writing" ||
+          time_entry["project"] == "Dev - Scripts and utilities" ||
+          time_entry["project"] == "Dev - Finance app" ||
+          time_entry["project"] == "Dev - Resume generator" ||
+          time_entry["project"] == "Dev - Other Projects"
+        end
+        if category_entry_list.empty?
+          return 0
+        else
+          total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
+          return total_category_time
+        end
+      end
+      if category == "work"
+        category_entry_list = report_details["data"].select do |time_entry|
+          time_entry["tags"].include?("work")
+        end
+        if category_entry_list.empty?
+          return 0
+        else
+          total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
+          return total_category_time
+        end
+      end
+      if category == "games"
+        category_entry_list = report_details["data"].select do |time_entry|
+          time_entry["tags"].include?("game")
+        end
+        if category_entry_list.empty?
+          return 0
+        else
+          total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
+          return total_category_time
+        end
+      end
+      if category == "exercise"
+        category_entry_list = report_details["data"].select do |time_entry|
+          time_entry["tags"].include?("exercise")
+        end
+        if category_entry_list.empty?
+          return 0
+        else
+          total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
+          return total_category_time
+        end
+      end
+      if category == "reading"
+        category_entry_list = report_summary["data"].select do |time_entry|
+          time_entry["title"]["project"] == "Growth - Reading"
+        end
+        if category_entry_list.empty?
+          return 0
+        else
+          return category_entry_list.first["time"]
+        end
+      end
+      if category == "writing"
+        category_entry_list = report_summary["data"].select do |time_entry|
+          time_entry["title"]["project"] == "Creative - Writing"
+        end
+        if category_entry_list.empty?
+          return 0
+        else
+          return category_entry_list.first["time"]
+        end
+      end
+      if category == "sleep"
+        category_entry_list = report_summary["data"].select do |time_entry|
+          time_entry["title"]["project"] == "Sleeping"
+        end
+        if category_entry_list.empty?
+          return 0
+        else
+          return category_entry_list.first["time"]
+        end
+      end
+    end
+
     private
 
     attr_reader :workspace_id
