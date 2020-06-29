@@ -1,12 +1,19 @@
 require_relative "../libs/google/sheets"
 require_relative "../libs/toggl/report"
+require_relative "../date_time_helper"
 
 def get_time_for(date: Date.today, category: "any")
   toggl = Toggl::Report.new(date)
   toggl.get_time_for(date: date, category: category)
 end
 
-def do_everything(date: (Date.today-2).to_s)
+def loop_for(days: 1)
+  (1..days).each do |day|
+    do_everything_once(date: (Date.today - day).to_s)
+  end
+end
+
+def do_everything_once(date: (Date.today-2).to_s)
   trends_sheet = Google::Sheets.new(file_id: "trends")
   trends_sheet.get_spreadsheet_values(range: "Data!A:I")
 
@@ -22,14 +29,14 @@ def do_everything(date: (Date.today-2).to_s)
   values = [
     [
       date,
-      reading_time,
-      writing_time,
-      work_time,
-      games_time,
-      consumption_time,
-      creative_time,
-      sleep_time,
-      exercise_time
+      DateTimeHelper.sheets_duration_format(reading_time),
+      DateTimeHelper.sheets_duration_format(writing_time),
+      DateTimeHelper.sheets_duration_format(work_time),
+      DateTimeHelper.sheets_duration_format(games_time),
+      DateTimeHelper.sheets_duration_format(consumption_time),
+      DateTimeHelper.sheets_duration_format(creative_time),
+      DateTimeHelper.sheets_duration_format(sleep_time),
+      DateTimeHelper.sheets_duration_format(exercise_time)
     ],
   ]
 
@@ -37,4 +44,7 @@ def do_everything(date: (Date.today-2).to_s)
   trends_sheet.get_spreadsheet_values(range: "Data!A:I")
 end
 
-do_everything()
+# TODO: Modify this to ignore reported dates
+# TODO: Split into 2 scripts
+# loop_for(days: 60)
+do_everything_once()
