@@ -28,7 +28,9 @@ module Toggl
     def build_weekly_summary(report:, report_day:)
       total_time_report = format_total_time_last_week(report["total_grand"])
       report_string = report["data"].map { |entry|
-        "\nProject: #{entry["title"]["project"]}, client: #{entry["title"]["client"]}\n#{DateTimeHelper.readable_duration(entry["time"])}\n"
+        "\nProject: #{entry["title"]["project"]}," \
+        "client: #{entry["title"]["client"]}\n" \
+        "#{DateTimeHelper.readable_duration(entry["time"])}\n"
       }
       [
         {
@@ -49,7 +51,8 @@ module Toggl
       time_on_work = 0
       report_string = filtered_list.map { |entry|
         time_on_work += entry["dur"]
-        "\nProject: #{entry["project"]}, client: #{entry["client"]}\n#{DateTimeHelper.readable_duration(entry["dur"])}\n"
+        "\nProject: #{entry["project"]}, client: #{entry["client"]}\n" \
+        "#{DateTimeHelper.readable_duration(entry["dur"])}\n"
       }
       [
         {
@@ -73,7 +76,8 @@ module Toggl
       time_on_category = 0
       report_string = filtered_list.map { |entry|
         time_on_category += entry["dur"]
-        "\nProject: #{entry["project"]}, client: #{entry["client"]}\n#{DateTimeHelper.readable_duration(entry["dur"])}\n"
+        "\nProject: #{entry["project"]}, client: #{entry["client"]}\n" \
+        "#{DateTimeHelper.readable_duration(entry["dur"])}\n"
       }
       [
         {
