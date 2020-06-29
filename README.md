@@ -115,3 +115,5 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
     - further Toggl development
         - add a function to list all untagged time entries
         - add a function to tag untagged entry
+        - add a function for splitting events that ran past midnight
+        - add an Apple Shortcuts automation for splitting events that ran past midnight

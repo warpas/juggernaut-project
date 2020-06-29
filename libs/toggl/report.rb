@@ -74,7 +74,6 @@ module Toggl
       end
       if category == "creative"
         category_entry_list = report_details["data"].select do |time_entry|
-          time_entry["tags"].include?("game") ||
           time_entry["description"] == "Focused work" ||
           time_entry["project"] == "Creative - Writing" ||
           time_entry["project"] == "Dev - Scripts and utilities" ||

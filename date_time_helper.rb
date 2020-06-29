@@ -9,6 +9,13 @@ module DateTimeHelper
     "#{hours} hours, #{minutes} minutes and #{seconds} seconds"
   end
 
+  def self.sheets_duration_format(milliseconds)
+    time_integer = milliseconds.to_i
+    time_in_seconds = time_integer / 1000
+    total_minutes = time_in_seconds / 60
+    "#{total_minutes}"
+  end
+
   def self.get_next_closest_sunday(date)
     date - date.cwday + 7
   end
