@@ -54,8 +54,8 @@ module Toggl
     end
 
     def get_time_for(date:, category:)
-      puts "date #{date}"
-      puts "category #{category}"
+      # TODO: define outside rules for these categories
+      # TODO: Add tests before switching to these rules
       if category == "consumption"
         category_entry_list = report_details["data"].select do |time_entry|
           time_entry["tags"].include?("game") ||
