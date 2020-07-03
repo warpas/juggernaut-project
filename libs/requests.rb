@@ -1,5 +1,6 @@
 module Requests
   require "faraday"
+
   class Adapter
     def initialize
       puts "inside RequestAdapter.initialize"
@@ -7,8 +8,6 @@ module Requests
 
     def get_request(address, headers)
       # TODO: Add unit tests.
-
-      puts "inside RequestAdapter.get_request"
       puts "sending a GET request to #{address}"
 
       # TODO: replace it with Faraday.new?
@@ -25,7 +24,21 @@ module Requests
     end
 
     def post_request(address, headers, body)
-      # TODO: Add handling.
+      puts "sending a POST request to #{address}"
+
+      # TODO: replace it with Faraday.new?
+      response = Faraday.post(address) { |request|
+        headers.each do |header|
+          request.headers[:content_type] = 'application/json'
+          request.headers[header[:key]] = header[:value]
+          request.body = body
+        end
+      }
+      if response.status == 200
+        response.to_hash
+      else
+        "Something went wrong in GET request to #{address}"
+      end
     end
 
     def basic_auth_token(auth_address, username, password)
