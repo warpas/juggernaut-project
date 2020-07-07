@@ -13,7 +13,7 @@ def loop_for(days: 1)
   end
 end
 
-def do_everything_once(date: (Date.today-2).to_s)
+def do_everything_once(date: (Date.today-1).to_s)
   trends_sheet = Google::Sheets.new(file_id: "trends")
   trends_sheet.get_spreadsheet_values(range: "Data!A:I")
 
@@ -40,6 +40,8 @@ def do_everything_once(date: (Date.today-2).to_s)
     ],
   ]
 
+  # TODO: only append if the date is not already there
+  # TODO: maybe update if the date is there but the values are different?
   trends_sheet.append_to_sheet(values: values, range: "Data!A:I")
   trends_sheet.get_spreadsheet_values(range: "Data!A:I")
 end
