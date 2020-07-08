@@ -3,45 +3,101 @@ module Toggl
   require_relative "auth"
 
   class TimeEntry
-    def initialize(project_id:, start: Time.now.to_s)
-      @project_id = project_id
+    def initialize(entry)#project_id:, start: Time.now.to_s)
+      @project_id = entry["pid"]
+      @entry = entry
+      @entry["created_with"] = app_name
+      @entry["duration"] = entry["dur"] / 1000
+      puts "@entry[duration] #{@entry["duration"]}"
+
+      # TODO: separate adapter from TimeEntry object
       @request_adapter = Requests::Adapter.new
     end
 
+    def as_json
+      JSON.generate({"time_entry" => @entry})
+    end
+
     def save
-      response = @request_adapter.post_request(time_entries_url, headers, body)
-      response_body = JSON.parse(response[:body])
+      response = @request_adapter.post_request(time_entries_url, headers, as_json)
       puts response
+      response_body = JSON.parse(response[:body])
       puts response_body
       response
     end
 
     def self.split(entry_to_split:, breakpoint:)
       # TODO: change it to an instance method. Add TimeEntry.find(id)
-      puts "entry_to_split.start = #{entry_to_split["start"]}"
-      puts "entry_to_split.end = #{entry_to_split["end"]}"
-      puts "entry_to_split.duration = #{entry_to_split["dur"]}"
+      # TODO: it shouldn't split on days that have been split already
+      old_duration = self.calculate_duration(scope_start: entry_to_split["start"], scope_end: entry_to_split["end"])
+      first_duration = self.calculate_duration(scope_start: entry_to_split["start"], scope_end: breakpoint)
+      last_duration = self.calculate_duration(scope_start: breakpoint, scope_end: entry_to_split["end"])
+      puts "first calculated_duration = #{first_duration}"
+      puts "last calculated_duration = #{last_duration}"
+      puts "sum of the two = #{first_duration + last_duration}"
 
-      pre_entry = copy_with_changes(copy: entry_to_split, change: {end: breakpoint})
-      post_midnight_entry = copy_with_changes(copy: entry_to_split, change: {start: breakpoint})
-      remove(entry_to_split)
+      pre_entry = copy_with_changes(copy: entry_to_split, change: {"end" => breakpoint, "dur" => first_duration})
+      post_entry = copy_with_changes(copy: entry_to_split, change: {"start" => breakpoint, "dur" => last_duration})
+
+      time_entry_object = TimeEntry.new(entry_to_split)
+      time_entry_object.remove
+    end
+
+    # TODO: take ID as an argument
+    def get_details
+      url = "#{time_entries_url}/#{@entry["id"]}"
+      response = @request_adapter.get_request(url, headers)
+      puts "response = #{response}"
+    end
+
+    def remove
+      # TODO: change it to an instance method
+      puts "\nentry_to_remove = #{@entry}"
+      url = "#{time_entries_url}/#{@entry["id"]}"
+      response = @request_adapter.delete_request(url, headers)
+      puts "response = #{response}"
+      puts "Entry removed successfully!" if response[:status] == 200
     end
 
     private
 
     attr_reader :project_id
 
-    def self.copy_with_changes(copy:, change:)
-      # TODO: change it to an instance method
-
-      puts "entry_to_split = #{copy}"
-      puts "change = #{change}"
+    def self.calculate_duration(scope_start:, scope_end:)
+      ((DateTime.parse(scope_end).to_time - DateTime.parse(scope_start).to_time) * 1000).to_i
     end
 
-    def self.remove(entry)
+    def self.copy_with_changes(copy:, change:)
       # TODO: change it to an instance method
+      params_whitelist = [
+        "pid",
+        "tid",
+        "uid",
+        "description",
+        "start",
+        "end",
+        "updated",
+        "dur",
+        "user",
+        "use_stop",
+        "client",
+        "project",
+        "project_color",
+        "project_hex_color",
+        "task",
+        "cur",
+        "tags",
+      ]
+      filtered_entry = copy.select do |key, value|
+        params_whitelist.include?(key)
+      end
 
-      puts "entry_to_remove = #{entry}"
+      change.each do |key, value|
+        filtered_entry[key] = value
+      end
+      entry = TimeEntry.new(filtered_entry)
+      response = entry.save
+      puts "Copy created successfully!" if response[:status] == 200
     end
 
     def time_entries_url
@@ -50,10 +106,6 @@ module Toggl
 
     def headers
       Toggl::Auth.headers
-    end
-
-    def body
-      "{\"time_entry\":{\"description\":\"Test timer\",\"tags\":[\"work\"],\"duration\":1200,\"start\":\"2020-07-03T17:58:58.000Z\",\"pid\":#{project_id},\"created_with\":\"#{app_name}\"}}"
     end
 
     def app_name

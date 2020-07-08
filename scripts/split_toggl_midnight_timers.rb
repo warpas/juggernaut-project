@@ -25,7 +25,8 @@ puts date
 toggl = Toggl::Report.new(report_date.to_s)
 details = toggl.report_details
 puts "details = \n#{details}"
-midnight = DateTime.new(report_date.year, report_date.month, report_date.day + 1, 0, 1, 0, '+02:00')
+midnight_date = report_date + 1
+midnight = DateTime.new(midnight_date.year, midnight_date.month, midnight_date.day, 0, 0, 1, '+02:00')
 puts "date = #{date}"
 puts "report_date = #{report_date}"
 puts "midnight = #{midnight}"
@@ -33,7 +34,10 @@ selection = details["data"].select do |entry|
   includes_midnight?(entry, midnight)
 end
 
-puts "selection = #{selection}"
-puts "selection.count = #{selection.count}"
-
-Toggl::TimeEntry.split(entry_to_split: selection.first, breakpoint: midnight)
+if selection.count == 1
+  Toggl::TimeEntry.split(entry_to_split: selection.first, breakpoint: midnight.to_s)
+elsif selection.empty?
+  puts "No entries to split"
+else
+  puts "This is a weird situation. How is it possible that there are multiple entries to split?"
+end
