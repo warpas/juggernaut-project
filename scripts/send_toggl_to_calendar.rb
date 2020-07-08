@@ -33,4 +33,5 @@ prepared_entry_list =
 
 puts "\ninitiating Google Calendar integration"
 calendar = Google::Calendar.new
+# TODO: Add or update, instead of just add.
 calendar.add_list_of_entries_no_duplicates(prepared_entry_list)
