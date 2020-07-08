@@ -19,6 +19,7 @@ module Requests
       if response.status == 200
         response.to_hash
       else
+        puts "Error: #{response.reason_phrase}, #{response.body}"
         "Something went wrong in GET request to #{address}"
       end
     end
@@ -34,10 +35,29 @@ module Requests
           request.body = body
         end
       }
+      puts "\nResponse:"
       if response.status == 200
         response.to_hash
       else
-        "Something went wrong in GET request to #{address}"
+        puts "Error: #{response.reason_phrase}, #{response.body}"
+        "Something went wrong in POST request to #{address}"
+      end
+    end
+
+    def delete_request(address, headers)
+      puts "sending a DELETE request to #{address}"
+
+      # TODO: replace it with Faraday.new?
+      response = Faraday.delete(address) { |request|
+        headers.each do |header|
+          request.headers[header[:key]] = header[:value]
+        end
+      }
+      if response.status == 200
+        response.to_hash
+      else
+        puts "Error: #{response.reason_phrase}, #{response.body}"
+        "Something went wrong in DELETE request to #{address}"
       end
     end
 
