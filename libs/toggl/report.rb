@@ -53,11 +53,11 @@ module Toggl
       @total_time
     end
 
-    def get_time_for(date:, category:)
+    def get_time_for(date:, category:, report_detailed:, report_summarized:)
       # TODO: define outside rules for these categories
       # TODO: Add tests before switching to these rules
       if category == "consumption"
-        category_entry_list = report_details["data"].select do |time_entry|
+        category_entry_list = report_detailed["data"].select do |time_entry|
           time_entry["tags"].include?("game") ||
           time_entry["project"] == "Abnegation - Passive entertainment" ||
           time_entry["project"] == "Growth - Reading" ||
@@ -73,7 +73,7 @@ module Toggl
         end
       end
       if category == "creative"
-        category_entry_list = report_details["data"].select do |time_entry|
+        category_entry_list = report_detailed["data"].select do |time_entry|
           time_entry["description"] == "Focused work" ||
           time_entry["project"] == "Creative - Writing" ||
           time_entry["project"] == "Dev - Scripts and utilities" ||
@@ -89,7 +89,7 @@ module Toggl
         end
       end
       if category == "work"
-        category_entry_list = report_details["data"].select do |time_entry|
+        category_entry_list = report_detailed["data"].select do |time_entry|
           time_entry["tags"].include?("work")
         end
         if category_entry_list.empty?
@@ -100,7 +100,7 @@ module Toggl
         end
       end
       if category == "games"
-        category_entry_list = report_details["data"].select do |time_entry|
+        category_entry_list = report_detailed["data"].select do |time_entry|
           time_entry["tags"].include?("game")
         end
         if category_entry_list.empty?
@@ -111,7 +111,7 @@ module Toggl
         end
       end
       if category == "exercise"
-        category_entry_list = report_details["data"].select do |time_entry|
+        category_entry_list = report_detailed["data"].select do |time_entry|
           time_entry["tags"].include?("exercise")
         end
         if category_entry_list.empty?
@@ -122,7 +122,7 @@ module Toggl
         end
       end
       if category == "reading"
-        category_entry_list = report_summary["data"].select do |time_entry|
+        category_entry_list = report_summarized["data"].select do |time_entry|
           time_entry["title"]["project"] == "Growth - Reading"
         end
         if category_entry_list.empty?
@@ -132,7 +132,7 @@ module Toggl
         end
       end
       if category == "writing"
-        category_entry_list = report_summary["data"].select do |time_entry|
+        category_entry_list = report_summarized["data"].select do |time_entry|
           time_entry["title"]["project"] == "Creative - Writing"
         end
         if category_entry_list.empty?
@@ -142,7 +142,7 @@ module Toggl
         end
       end
       if category == "sleep"
-        category_entry_list = report_summary["data"].select do |time_entry|
+        category_entry_list = report_summarized["data"].select do |time_entry|
           time_entry["title"]["project"] == "Sleeping"
         end
         if category_entry_list.empty?

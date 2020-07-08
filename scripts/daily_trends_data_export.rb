@@ -2,29 +2,26 @@ require_relative "../libs/google/sheets"
 require_relative "../libs/toggl/report"
 require_relative "../date_time_helper"
 
-def get_time_for(date: Date.today, category: "any")
-  toggl = Toggl::Report.new(date)
-  toggl.get_time_for(date: date, category: category)
-end
-
 def loop_for(days: 1)
-  (1..days).each do |day|
+  (1..days).reverse_each do |day|
     do_everything_once(date: (Date.today - day).to_s)
   end
 end
 
 def do_everything_once(date: (Date.today-1).to_s)
   trends_sheet = Google::Sheets.new(file_id: "trends")
-  trends_sheet.get_spreadsheet_values(range: "Data!A:I")
 
-  reading_time = get_time_for(date: date, category: "reading")
-  writing_time = get_time_for(date: date, category: "writing")
-  work_time = get_time_for(date: date, category: "work")
-  games_time = get_time_for(date: date, category: "games")
-  consumption_time = get_time_for(date: date, category: "consumption")
-  creative_time = get_time_for(date: date, category: "creative")
-  sleep_time = get_time_for(date: date, category: "sleep")
-  exercise_time = get_time_for(date: date, category: "exercise")
+  toggl = Toggl::Report.new(date)
+  rd = toggl.report_details
+  rs = toggl.report_summary
+  reading_time = toggl.get_time_for(date: date, category: "reading", report_detailed: rd, report_summarized: rs)
+  writing_time = toggl.get_time_for(date: date, category: "writing", report_detailed: rd, report_summarized: rs)
+  work_time = toggl.get_time_for(date: date, category: "work", report_detailed: rd, report_summarized: rs)
+  games_time = toggl.get_time_for(date: date, category: "games", report_detailed: rd, report_summarized: rs)
+  consumption_time = toggl.get_time_for(date: date, category: "consumption", report_detailed: rd, report_summarized: rs)
+  creative_time = toggl.get_time_for(date: date, category: "creative", report_detailed: rd, report_summarized: rs)
+  sleep_time = toggl.get_time_for(date: date, category: "sleep", report_detailed: rd, report_summarized: rs)
+  exercise_time = toggl.get_time_for(date: date, category: "exercise", report_detailed: rd, report_summarized: rs)
 
   values = [
     [
@@ -43,7 +40,7 @@ def do_everything_once(date: (Date.today-1).to_s)
   # TODO: only append if the date is not already there
   # TODO: maybe update if the date is there but the values are different?
   trends_sheet.append_to_sheet(values: values, range: "Data!A:I")
-  trends_sheet.get_spreadsheet_values(range: "Data!A:I")
+  # trends_sheet.get_spreadsheet_values(range: "Data!A:I")
 end
 
 # TODO: Modify this to ignore reported dates
