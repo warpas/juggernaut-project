@@ -1,6 +1,7 @@
 require_relative "../libs/command_line"
 require_relative "../libs/toggl/report"
 require_relative "../libs/toggl/time_entry"
+require_relative "../date_time_helper"
 require "date"
 
 def includes_midnight?(entry, midnight)
@@ -20,22 +21,15 @@ report_date =
     Date.parse(date) - 1
   end
 
-puts report_date
-puts date
 toggl = Toggl::Report.new(report_date.to_s)
 details = toggl.report_details
-puts "details = \n#{details}"
-midnight_date = report_date + 1
-midnight = DateTime.new(midnight_date.year, midnight_date.month, midnight_date.day, 0, 0, 1, '+02:00')
-puts "date = #{date}"
-puts "report_date = #{report_date}"
-puts "midnight = #{midnight}"
+midnight = DateTimeHelper.get_next_midnight(report_date)
 selection = details["data"].select do |entry|
   includes_midnight?(entry, midnight)
 end
 
 if selection.count == 1
-  Toggl::TimeEntry.split(entry_to_split: selection.first, breakpoint: midnight.to_s)
+  Toggl::TimeEntry.split(entry_to_split: selection.first, breakpoint: midnight)
 elsif selection.empty?
   puts "No entries to split"
 else

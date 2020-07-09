@@ -28,16 +28,13 @@ module Toggl
 
     def self.split(entry_to_split:, breakpoint:)
       # TODO: change it to an instance method. Add TimeEntry.find(id)
-      # TODO: it shouldn't split on days that have been split already
-      old_duration = self.calculate_duration(scope_start: entry_to_split["start"], scope_end: entry_to_split["end"])
-      first_duration = self.calculate_duration(scope_start: entry_to_split["start"], scope_end: breakpoint)
-      last_duration = self.calculate_duration(scope_start: breakpoint, scope_end: entry_to_split["end"])
-      puts "first calculated_duration = #{first_duration}"
-      puts "last calculated_duration = #{last_duration}"
-      puts "sum of the two = #{first_duration + last_duration}"
+      breakpoint_end = DateTimeHelper.seconds_before(breakpoint, 70)
+      breakpoint_start = DateTimeHelper.seconds_after(breakpoint, 70)
+      first_duration = self.calculate_duration(scope_start: entry_to_split["start"], scope_end: breakpoint_end.to_s)
+      last_duration = self.calculate_duration(scope_start: breakpoint_start.to_s, scope_end: entry_to_split["end"])
 
-      pre_entry = copy_with_changes(copy: entry_to_split, change: {"end" => breakpoint, "dur" => first_duration})
-      post_entry = copy_with_changes(copy: entry_to_split, change: {"start" => breakpoint, "dur" => last_duration})
+      copy_with_changes(copy: entry_to_split, change: {"end" => breakpoint_end, "dur" => first_duration})
+      copy_with_changes(copy: entry_to_split, change: {"start" => breakpoint_start, "dur" => last_duration})
 
       time_entry_object = TimeEntry.new(entry_to_split)
       time_entry_object.remove

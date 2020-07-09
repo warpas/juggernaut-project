@@ -23,4 +23,17 @@ module DateTimeHelper
   def self.get_week_start(date)
     date - date.cwday + 1
   end
+
+  def self.get_next_midnight(date)
+    next_day = date + 1
+    DateTime.new(next_day.year, next_day.month, next_day.day, 0, 0, 1, '+02:00')
+  end
+
+  def self.seconds_before(date_time, seconds)
+    date_time - 0.00001 * seconds
+  end
+
+  def self.seconds_after(date_time, seconds)
+    date_time + 0.00001 * seconds
+  end
 end
