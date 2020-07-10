@@ -29,7 +29,7 @@ selection = details["data"].select do |entry|
 end
 
 if selection.count == 1
-  Toggl::TimeEntry.split(entry_to_split: selection.first, breakpoint: midnight)
+  Toggl::TimeEntry.new(selection.first).split(breakpoint: midnight)
 elsif selection.empty?
   puts "No entries to split"
 else

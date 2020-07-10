@@ -26,18 +26,18 @@ module Toggl
       response
     end
 
-    def self.split(entry_to_split:, breakpoint:)
+    def split(breakpoint:)
+      @entry
       # TODO: change it to an instance method. Add TimeEntry.find(id)
-      breakpoint_end = DateTimeHelper.seconds_before(breakpoint, 70)
-      breakpoint_start = DateTimeHelper.seconds_after(breakpoint, 70)
-      first_duration = self.calculate_duration(scope_start: entry_to_split["start"], scope_end: breakpoint_end.to_s)
-      last_duration = self.calculate_duration(scope_start: breakpoint_start.to_s, scope_end: entry_to_split["end"])
+      before_breakpoint = DateTimeHelper.seconds_before(breakpoint, 70)
+      after_breakpoint = DateTimeHelper.seconds_after(breakpoint, 70)
+      first_duration = TimeEntry.calculate_duration(scope_start: @entry["start"], scope_end: before_breakpoint.to_s)
+      last_duration = TimeEntry.calculate_duration(scope_start: after_breakpoint.to_s, scope_end: @entry["end"])
 
-      copy_with_changes(copy: entry_to_split, change: {"end" => breakpoint_end, "dur" => first_duration})
-      copy_with_changes(copy: entry_to_split, change: {"start" => breakpoint_start, "dur" => last_duration})
+      copy_with_changes(change: {"end" => before_breakpoint, "dur" => first_duration})
+      copy_with_changes(change: {"start" => after_breakpoint, "dur" => last_duration})
 
-      time_entry_object = TimeEntry.new(entry_to_split)
-      time_entry_object.remove
+      remove
     end
 
     # TODO: take ID as an argument
@@ -60,13 +60,39 @@ module Toggl
 
     attr_reader :project_id
 
+    # TODO: Move to DateTimeHelper
     def self.calculate_duration(scope_start:, scope_end:)
       ((DateTime.parse(scope_end).to_time - DateTime.parse(scope_start).to_time) * 1000).to_i
     end
 
-    def self.copy_with_changes(copy:, change:)
+    def copy_with_changes(change:)
       # TODO: change it to an instance method
-      params_whitelist = [
+      filtered_entry = @entry.select do |key, _|
+        TimeEntry.params_whitelist.include?(key)
+      end
+
+      change.each do |key, value|
+        filtered_entry[key] = value
+      end
+
+      response = TimeEntry.new(filtered_entry).save
+      puts "Copy created successfully!" if response[:status] == 200
+    end
+
+    def time_entries_url
+      "https://www.toggl.com/api/v8/time_entries"
+    end
+
+    def headers
+      Toggl::Auth.headers
+    end
+
+    def app_name
+      "Juggernaut"
+    end
+
+    def self.params_whitelist
+      [
         "pid",
         "tid",
         "uid",
@@ -85,28 +111,6 @@ module Toggl
         "cur",
         "tags",
       ]
-      filtered_entry = copy.select do |key, value|
-        params_whitelist.include?(key)
-      end
-
-      change.each do |key, value|
-        filtered_entry[key] = value
-      end
-      entry = TimeEntry.new(filtered_entry)
-      response = entry.save
-      puts "Copy created successfully!" if response[:status] == 200
-    end
-
-    def time_entries_url
-      "https://www.toggl.com/api/v8/time_entries"
-    end
-
-    def headers
-      Toggl::Auth.headers
-    end
-
-    def app_name
-      "Juggernaut"
     end
   end
 end
