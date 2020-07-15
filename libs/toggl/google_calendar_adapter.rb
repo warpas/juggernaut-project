@@ -40,6 +40,7 @@ module Toggl
           title: "Last week summary",
           duration: 300000,
           calendars_list: ["work"],
+          # TODO: I want this to compare total time with last week
           description: total_time_report + report_string.join("\n")
         }
       ]
@@ -62,6 +63,7 @@ module Toggl
           duration: 300000,
           calendars_list: ["work"],
           description:
+          # TODO: I want this to compare work time with last week
           "#{format_work_time_last_week(time_on_work)}" \
           "\n#{format_total_time_last_week(report["total_grand"])}" \
           "\n#{separator}\n#{report_string.join("\n")}"

@@ -29,10 +29,12 @@ module DateTimeHelper
     DateTime.new(next_day.year, next_day.month, next_day.day, 0, 0, 1, '+02:00')
   end
 
+  # TODO: this method's implementation needs to be more accurate
   def self.seconds_before(date_time, seconds)
     date_time - 0.00001 * seconds
   end
 
+  # TODO: this method's implementation needs to be more accurate
   def self.seconds_after(date_time, seconds)
     date_time + 0.00001 * seconds
   end

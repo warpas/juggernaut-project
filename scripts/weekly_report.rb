@@ -6,6 +6,7 @@ require_relative "../date_time_helper"
 require "date"
 
 def build_weekly_summary(date_string)
+  # TODO: I want this to compare total time with last week
   date = Date.parse(date_string)
   week_start = DateTimeHelper.get_week_start(date)
   week_end = DateTimeHelper.get_next_closest_sunday(date)
