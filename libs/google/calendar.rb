@@ -92,7 +92,6 @@ module Google
 
     # TODO: make sure entry_details.start and entry_details.end are DateTime
     def add_entry_without_duplicates(entry_details)
-      pust "Attempting to add entry = #{entry_details}"
       start_date = entry_details[:start].strftime
       date = start_date.split("T").first
       output_calendar_list = sanitize_calendar_list(entry_details[:calendars_list])
@@ -153,9 +152,9 @@ module Google
           title: event.summary
         }
         if color_coding != "" && event.color_id == color_coding
-          destination.add_entry_without_duplicates(entry)
+          destination.add_entry_without_duplicates(entry) if !entry[:start].nil?
         elsif color_coding == ""
-          destination.add_entry_without_duplicates(entry)
+          destination.add_entry_without_duplicates(entry) if !entry[:start].nil?
         end
       end
     end
