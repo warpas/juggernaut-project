@@ -31,7 +31,7 @@ row_list = []
 (1..31).each do |day|
   # TODO: connect date and sheet name for this case
   date = "2020-06-#{day}"
-  split = date.split('-').map(&:to_i)
+  split = date.split("-").map(&:to_i)
   date_is_valid = Date.valid_date?(split[0], split[1], split[2])
 
   if date_is_valid

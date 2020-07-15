@@ -8,7 +8,7 @@ def loop_for(days: 1)
   end
 end
 
-def do_everything_once(date: (Date.today-1).to_s)
+def do_everything_once(date: (Date.today - 1).to_s)
   trends_sheet = Google::Sheets.new(file_id: "trends")
 
   toggl = Toggl::Report.new(date)
@@ -34,7 +34,7 @@ def do_everything_once(date: (Date.today-1).to_s)
       DateTimeHelper.sheets_duration_format(creative_time),
       DateTimeHelper.sheets_duration_format(sleep_time),
       DateTimeHelper.sheets_duration_format(exercise_time)
-    ],
+    ]
   ]
 
   # TODO: only append if the date is not already there

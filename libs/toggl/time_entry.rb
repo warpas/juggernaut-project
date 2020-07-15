@@ -3,7 +3,7 @@ module Toggl
   require_relative "auth"
 
   class TimeEntry
-    def initialize(entry)#project_id:, start: Time.now.to_s)
+    def initialize(entry) # project_id:, start: Time.now.to_s)
       @project_id = entry["pid"]
       @entry = entry
       @entry["created_with"] = app_name
@@ -67,9 +67,9 @@ module Toggl
 
     def copy_with_changes(change:)
       # TODO: change it to an instance method
-      filtered_entry = @entry.select do |key, _|
+      filtered_entry = @entry.select { |key, _|
         TimeEntry.params_whitelist.include?(key)
-      end
+      }
 
       change.each do |key, value|
         filtered_entry[key] = value
@@ -109,7 +109,7 @@ module Toggl
         "project_hex_color",
         "task",
         "cur",
-        "tags",
+        "tags"
       ]
     end
   end

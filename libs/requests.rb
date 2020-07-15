@@ -30,7 +30,7 @@ module Requests
       # TODO: replace it with Faraday.new?
       response = Faraday.post(address) { |request|
         headers.each do |header|
-          request.headers[:content_type] = 'application/json'
+          request.headers[:content_type] = "application/json"
           request.headers[header[:key]] = header[:value]
           request.body = body
         end

@@ -109,13 +109,13 @@ module Toggl
 
     def format_by(option)
       if option == "game"
-        return "🎮Game"
+        "🎮Game"
       elsif option == "work"
-        return "🕤Work"
+        "🕤Work"
       elsif option == "total"
-        return "⏱Total"
+        "⏱Total"
       else
-        return "❓Unknown"
+        "❓Unknown"
       end
     end
 

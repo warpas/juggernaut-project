@@ -1,1 +1,1 @@
-load 'scripts/weekly_work_report.rb'
+load "scripts/weekly_work_report.rb"

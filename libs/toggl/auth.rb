@@ -19,7 +19,7 @@ module Toggl
     end
 
     def self.api_token
-      config = self.get_json_from_file("libs/toggl/config.secret.json")
+      config = get_json_from_file("libs/toggl/config.secret.json")
       config["tokens"]["api"]
     end
   end

@@ -24,9 +24,9 @@ report_date =
 toggl = Toggl::Report.new(report_date.to_s)
 details = toggl.report_details
 midnight = DateTimeHelper.get_next_midnight(report_date)
-selection = details["data"].select do |entry|
+selection = details["data"].select { |entry|
   includes_midnight?(entry, midnight)
-end
+}
 
 if selection.count == 1
   Toggl::TimeEntry.new(selection.first).split(breakpoint: midnight)

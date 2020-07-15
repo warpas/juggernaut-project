@@ -13,7 +13,7 @@ module DateTimeHelper
     time_integer = milliseconds.to_i
     time_in_seconds = time_integer / 1000
     total_minutes = time_in_seconds / 60
-    "#{total_minutes}"
+    total_minutes.to_s
   end
 
   def self.get_next_closest_sunday(date)
@@ -26,7 +26,7 @@ module DateTimeHelper
 
   def self.get_next_midnight(date)
     next_day = date + 1
-    DateTime.new(next_day.year, next_day.month, next_day.day, 0, 0, 1, '+02:00')
+    DateTime.new(next_day.year, next_day.month, next_day.day, 0, 0, 1, "+02:00")
   end
 
   # TODO: this method's implementation needs to be more accurate

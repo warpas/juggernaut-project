@@ -152,9 +152,9 @@ module Google
           title: event.summary
         }
         if color_coding != "" && event.color_id == color_coding
-          destination.add_entry_without_duplicates(entry) if !entry[:start].nil?
+          destination.add_entry_without_duplicates(entry) unless entry[:start].nil?
         elsif color_coding == ""
-          destination.add_entry_without_duplicates(entry) if !entry[:start].nil?
+          destination.add_entry_without_duplicates(entry) unless entry[:start].nil?
         end
       end
     end
