@@ -79,6 +79,8 @@ module Toggl
             time_entry["project"] == "Dev - Scripts and utilities" ||
             time_entry["project"] == "Dev - Finance app" ||
             time_entry["project"] == "Dev - Resume generator" ||
+            time_entry["project"] == "Dev - Prototyping" ||
+            time_entry["project"] == "Dev - Juggernaut" ||
             time_entry["project"] == "Dev - Other Projects"
         }
         if category_entry_list.empty?
@@ -87,6 +89,12 @@ module Toggl
           total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
           return total_category_time
         end
+      end
+      if category == "intentional"
+        # TODO: to be implemented
+      end
+      if category == "unintentional"
+        # TODO: to be implemented
       end
       if category == "work"
         category_entry_list = report_detailed["data"].select { |time_entry|
