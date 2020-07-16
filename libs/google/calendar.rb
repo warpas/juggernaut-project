@@ -52,6 +52,7 @@ module Google
           time_max: "#{date}T23:59:59+02:00"
         }
       response = @service.list_events(calendar_id, optional_params)
+      # TODO: line above warning: Using the last argument as keyword parameters is deprecated; maybe ** should be added to the call
       response.items
     end
 
@@ -73,7 +74,7 @@ module Google
 
     def insert_calendar_event(event, cal_id = @calendar_id)
       result = @service.insert_event(cal_id, event)
-      puts "Event created: #{result.html_link}"
+      puts "✅  Event created: #{result.html_link}"
     rescue => _e
       puts "Duplicate event found"
     end
@@ -123,8 +124,9 @@ module Google
       event = build_calendar_event(entry_details)
       output_calendar_list = sanitize_calendar_list(entry_details[:calendars_list])
       output_calendar_list.each do |calendar|
+        # TODO: use insert_event function
         result = @service.insert_event(calendar, event)
-        puts "Event created: #{result.html_link}"
+        puts "✅  Event created: #{result.html_link}"
       end
     end
 

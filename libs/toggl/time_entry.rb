@@ -53,7 +53,7 @@ module Toggl
       url = "#{time_entries_url}/#{@entry["id"]}"
       response = @request_adapter.delete_request(url, headers)
       puts "response = #{response}"
-      puts "Entry removed successfully!" if response[:status] == 200
+      puts "✅  Entry removed successfully!" if response[:status] == 200
     end
 
     private
@@ -76,7 +76,7 @@ module Toggl
       end
 
       response = TimeEntry.new(filtered_entry).save
-      puts "Copy created successfully!" if response[:status] == 200
+      puts "✅  Copy created successfully!" if response[:status] == 200
     end
 
     def time_entries_url

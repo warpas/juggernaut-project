@@ -41,9 +41,12 @@ def do_everything_once(date: (Date.today - 1).to_s)
   # TODO: maybe update if the date is there but the values are different?
   trends_sheet.append_to_sheet(values: values, range: "Data!A:I")
   # trends_sheet.get_spreadsheet_values(range: "Data!A:I")
+  puts "✅  Trend data appended for #{date}"
 end
+
+puts "\n⌨️  Running daily_trends_data_export script"
 
 # TODO: Modify this to ignore reported dates
 # TODO: Split into 2 scripts
 # loop_for(days: 60)
-do_everything_once()
+do_everything_once

@@ -14,7 +14,10 @@ def copy_events(date:, source_cal:, destination_cal:, color_coding:)
     token_file: "libs/google/calendar/dsc_token.secret.yaml",
     calendar_name: destination_cal
   )
-  source_calendar.copy_to_calendar(date: date, destination: destination_calendar, color_coding: color_coding)
+  result = source_calendar.copy_to_calendar(date: date, destination: destination_calendar, color_coding: color_coding)
+
+  puts "✅  Events copied successfully"
+  return result
 end
 
 puts "\n⌨️  Running populate_calendar script"
