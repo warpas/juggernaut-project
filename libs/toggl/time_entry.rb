@@ -8,7 +8,6 @@ module Toggl
       @entry = entry
       @entry["created_with"] = app_name
       @entry["duration"] = entry["dur"] / 1000
-      puts "@entry[duration] #{@entry["duration"]}"
 
       # TODO: separate adapter from TimeEntry object
       @request_adapter = Requests::Adapter.new
@@ -20,9 +19,7 @@ module Toggl
 
     def save
       response = @request_adapter.post_request(time_entries_url, headers, as_json)
-      puts response
       response_body = JSON.parse(response[:body])
-      puts response_body
       response
     end
 
@@ -43,8 +40,8 @@ module Toggl
     # TODO: take ID as an argument
     def get_details
       url = "#{time_entries_url}/#{@entry["id"]}"
-      response = @request_adapter.get_request(url, headers)
-      puts "response = #{response}"
+      @request_adapter.get_request(url, headers)
+      # puts "response = #{response}"
     end
 
     def remove
@@ -52,7 +49,6 @@ module Toggl
       puts "\nentry_to_remove = #{@entry}"
       url = "#{time_entries_url}/#{@entry["id"]}"
       response = @request_adapter.delete_request(url, headers)
-      puts "response = #{response}"
       puts "✅  Entry removed successfully!" if response[:status] == 200
     end
 
