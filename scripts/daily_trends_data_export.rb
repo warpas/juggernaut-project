@@ -46,7 +46,16 @@ end
 
 puts "\n⌨️  Running daily_trends_data_export script"
 
+date = CommandLine.get_date_from_command_line(ARGV)
+
+report_date =
+  if date.empty?
+    Date.today - 1
+  else
+    Date.parse(date) - 1
+  end
+
 # TODO: Modify this to ignore reported dates
 # TODO: Split into 2 scripts
 # loop_for(days: 60)
-do_everything_once
+do_everything_once(date: report_date.to_s)
