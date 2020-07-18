@@ -31,7 +31,7 @@ selection = details["data"].select { |entry|
 if selection.count == 1
   Toggl::TimeEntry.new(selection.first).split(breakpoint: midnight)
 elsif selection.empty?
-  puts "No entries to split"
+  puts "☑️  No entries to split"
 else
   puts "This is a weird situation. How is it possible that there are multiple entries to split?"
 end
