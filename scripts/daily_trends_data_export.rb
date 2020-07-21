@@ -1,3 +1,4 @@
+require_relative "../libs/command_line"
 require_relative "../libs/google/sheets"
 require_relative "../libs/toggl/report"
 require_relative "../date_time_helper"
