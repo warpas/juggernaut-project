@@ -20,7 +20,7 @@ describe Summaries::Daily::Trends do
     end
 
     it "should return an trends row for today if no date is given" do
-      expect(subject.build()).to eq(todays_trends)
+      expect(subject.build).to eq(todays_trends)
     end
 
     it "should return an empty trends row if there was no data on the date given" do

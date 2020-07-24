@@ -1,6 +1,6 @@
 weekly_scripts =
   [
-    "scripts/weekly_work_report.rb",
+    "scripts/weekly_work_report.rb"
   ]
 
 iterator = 1
