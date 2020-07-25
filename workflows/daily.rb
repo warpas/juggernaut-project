@@ -1,3 +1,5 @@
+require_relative "../libs/workflows/runner"
+
 daily_scripts =
   [
     "scripts/split_toggl_midnight_timers.rb",
@@ -8,12 +10,4 @@ daily_scripts =
     "scripts/daily_trends_data_export.rb"
   ]
 
-iterator = 1
-script_count = daily_scripts.count
-daily_scripts.each do |script|
-  puts "\n⚙️  Running script number #{iterator} / #{script_count}\n"
-  load script
-  puts "\n✅  Script number #{iterator} / #{script_count} ran successfully\n"
-  iterator += 1
-end
-puts "\n✅  All scripts within the workflow ran successfully!!"
+Workflows::Runner.new(scripts: daily_scripts).start
