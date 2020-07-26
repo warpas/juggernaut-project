@@ -7,9 +7,9 @@ require "date"
 
 def build_weekly_summary(date_string)
   # TODO: I want this to compare work time with last week
-  date = Date.parse(date_string)
-  week_start = DateTimeHelper.get_week_start(date)
-  week_end = DateTimeHelper.get_next_closest_sunday(date)
+  parsed_date = Date.parse(date_string)
+  week_start = DateTimeHelper.get_week_start(parsed_date)
+  week_end = DateTimeHelper.get_next_closest_sunday(parsed_date)
   toggl = Toggl::Report.new(week_start, week_end)
   adapter = Toggl::GoogleCalendarAdapter.new
   adapter.build_weekly_summary_from(report: toggl.report_details, report_day: week_end + 1, category: "work")
@@ -19,14 +19,14 @@ def last_week_date
   Date.today - 7
 end
 
-def date
-  cl_date = CommandLine.get_date_from_command_line(ARGV)
-  return last_week_date if cl_date.empty?
-  cl_date
+def cl_date
+  given_date = CommandLine.get_date_from_command_line(ARGV)
+  return last_week_date if given_date.empty?
+  given_date
 end
 
 puts "\n⌨️  Running weekly_work_report script"
-prepared_entry_list = build_weekly_summary(date.to_s)
+prepared_entry_list = build_weekly_summary(cl_date.to_s)
 
 puts "\ninitiating Google Calendar integration"
 calendar = Google::Calendar.new
