@@ -1,3 +1,5 @@
+require_relative "../interface/command_line"
+
 module Workflows
   class Runner
     def initialize(scripts: [])
@@ -8,18 +10,20 @@ module Workflows
       iterator = 1
       script_count = @script_list.count
       @script_list.each do |script|
-        puts "\n⚙️  Running script number #{iterator} / #{script_count}\n"
+        log "\n⚙️  Running script number #{iterator} / #{script_count}\n"
         load script
-        puts "\n✅  Script number #{iterator} / #{script_count} ran successfully\n"
+        log "\n✅  Script number #{iterator} / #{script_count} ran successfully\n"
         iterator += 1
       end
-      puts "\n✅  All scripts within the workflow ran successfully!!"
+      log "\n✅  All scripts within the workflow ran successfully!!"
     end
 
     private
 
     attr_reader :script_list
+
+    def log(string)
+      Interface::CommandLine.log(string)
+    end
   end
 end
-
-

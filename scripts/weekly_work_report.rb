@@ -1,4 +1,4 @@
-require_relative "../libs/command_line"
+require_relative "../libs/interface/command_line"
 require_relative "../libs/toggl/report"
 require_relative "../libs/toggl/google_calendar_adapter"
 require_relative "../libs/google/calendar"
@@ -20,9 +20,8 @@ def last_week_date
 end
 
 def cl_date
-  given_date = CommandLine.get_date_from_command_line(ARGV)
-  return last_week_date if given_date.empty?
-  given_date
+  cli = Interface::CommandLine.new(args: ARGV)
+  cli.get_runtime_date(default: last_week_date)
 end
 
 puts "\n⌨️  Running weekly_work_report script"
