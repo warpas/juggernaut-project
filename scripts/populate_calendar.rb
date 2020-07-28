@@ -16,7 +16,7 @@ def copy_events(date:, source_cal:, destination_cal:, color_coding:)
   )
   result = source_calendar.copy_to_calendar(date: date, destination: destination_calendar, color_coding: color_coding)
 
-  puts "✅  Events copied successfully"
+  puts "\n✅  Events from #{source_calendar.name} copied successfully"
   result
 end
 

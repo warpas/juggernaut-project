@@ -17,12 +17,15 @@ module Google
       calendar_name: "primary"
     )
       @config = get_json_from_file(config_file)
+      @name = calendar_name
       @calendar_id = get_calendar_id_for(calendar_name)
 
       @service = Google::Apis::CalendarV3::CalendarService.new
       @service.client_options.application_name = application_name
       @service.authorization = authorize(credentials_path: config_file, token_path: token_file)
     end
+
+    attr_reader :name
 
     def fetch_next_events(count)
       # Fetch the next 'count' events for the user
