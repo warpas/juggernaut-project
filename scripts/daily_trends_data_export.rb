@@ -1,4 +1,4 @@
-require_relative "../libs/command_line"
+require_relative "../libs/interface/command_line"
 require_relative "../libs/summaries/daily/trends"
 require_relative "../libs/google/sheets"
 require_relative "../libs/toggl/report"
@@ -28,14 +28,8 @@ end
 
 puts "\n⌨️  Running daily_trends_data_export script"
 
-date = CommandLine.get_date_from_command_line(ARGV)
-
-report_date =
-  if date.empty?
-    Date.today - 1
-  else
-    Date.parse(date) - 1
-  end
+cli = Interface::CommandLine.new(args: ARGV)
+report_date = cli.get_runtime_date(default: Date.today) - 1
 
 # TODO: Modify this to ignore reported dates
 # TODO: Split into 2 scripts
