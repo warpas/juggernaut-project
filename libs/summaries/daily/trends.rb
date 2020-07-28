@@ -14,17 +14,17 @@ module Summaries
 
       private
 
-      def do_everything_once(date: (Date.today - 1).to_s)
-        reading_time = get_time_for(date: date, category: "reading", report_detailed: @detailed_report, report_summarized: @cumulative_report)
-        writing_time = get_time_for(date: date, category: "writing", report_detailed: @detailed_report, report_summarized: @cumulative_report)
-        work_time = get_time_for(date: date, category: "work", report_detailed: @detailed_report, report_summarized: @cumulative_report)
-        games_time = get_time_for(date: date, category: "games", report_detailed: @detailed_report, report_summarized: @cumulative_report)
-        consumption_time = get_time_for(date: date, category: "consumption", report_detailed: @detailed_report, report_summarized: @cumulative_report)
-        creative_time = get_time_for(date: date, category: "creative", report_detailed: @detailed_report, report_summarized: @cumulative_report)
-        sleep_time = get_time_for(date: date, category: "sleep", report_detailed: @detailed_report, report_summarized: @cumulative_report)
-        exercise_time = get_time_for(date: date, category: "exercise", report_detailed: @detailed_report, report_summarized: @cumulative_report)
+      def do_everything_once(date:)
+        reading_time = get_time_for(category: "reading", report_detailed: @detailed_report, report_summarized: @cumulative_report)
+        writing_time = get_time_for(category: "writing", report_detailed: @detailed_report, report_summarized: @cumulative_report)
+        work_time = get_time_for(category: "work", report_detailed: @detailed_report, report_summarized: @cumulative_report)
+        games_time = get_time_for(category: "games", report_detailed: @detailed_report, report_summarized: @cumulative_report)
+        consumption_time = get_time_for(category: "consumption", report_detailed: @detailed_report, report_summarized: @cumulative_report)
+        creative_time = get_time_for(category: "creative", report_detailed: @detailed_report, report_summarized: @cumulative_report)
+        sleep_time = get_time_for(category: "sleep", report_detailed: @detailed_report, report_summarized: @cumulative_report)
+        exercise_time = get_time_for(category: "exercise", report_detailed: @detailed_report, report_summarized: @cumulative_report)
 
-        values = [
+        [
           [
             date.to_s,
             DateTimeHelper.sheets_duration_format(reading_time),
@@ -39,7 +39,7 @@ module Summaries
         ]
       end
 
-      def get_time_for(date:, category:, report_detailed:, report_summarized:)
+      def get_time_for(category:, report_detailed:, report_summarized:)
         # TODO: define outside rules for these categories
         # TODO: Add tests before switching to these rules
         if category == "consumption"
