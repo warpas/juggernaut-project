@@ -115,7 +115,7 @@ module Google
           end
           add_entry(entry_details) unless found
         end
-        puts "Naught but duplicates and tumbleweeds found." if found
+        puts "☑️   Naught but duplicates and tumbleweeds found." if found
       end
     end
 
