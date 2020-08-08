@@ -14,29 +14,21 @@ module Summaries
 
       private
 
-      def do_everything_once(date:)
-        reading_time = get_time_for(category: "reading", report_detailed: @detailed_report, report_summarized: @cumulative_report)
-        writing_time = get_time_for(category: "writing", report_detailed: @detailed_report, report_summarized: @cumulative_report)
-        work_time = get_time_for(category: "work", report_detailed: @detailed_report, report_summarized: @cumulative_report)
-        games_time = get_time_for(category: "games", report_detailed: @detailed_report, report_summarized: @cumulative_report)
-        consumption_time = get_time_for(category: "consumption", report_detailed: @detailed_report, report_summarized: @cumulative_report)
-        creative_time = get_time_for(category: "creative", report_detailed: @detailed_report, report_summarized: @cumulative_report)
-        sleep_time = get_time_for(category: "sleep", report_detailed: @detailed_report, report_summarized: @cumulative_report)
-        exercise_time = get_time_for(category: "exercise", report_detailed: @detailed_report, report_summarized: @cumulative_report)
+      def categories
+        %w[reading writing work games consumption creative sleep exercise]
+      end
 
-        [
-          [
-            date.to_s,
-            DateTimeHelper.sheets_duration_format(reading_time),
-            DateTimeHelper.sheets_duration_format(writing_time),
-            DateTimeHelper.sheets_duration_format(work_time),
-            DateTimeHelper.sheets_duration_format(games_time),
-            DateTimeHelper.sheets_duration_format(consumption_time),
-            DateTimeHelper.sheets_duration_format(creative_time),
-            DateTimeHelper.sheets_duration_format(sleep_time),
-            DateTimeHelper.sheets_duration_format(exercise_time)
-          ]
-        ]
+      def do_everything_once(date:)
+        durations_list =
+          categories.map do |category|
+            time_in_minutes = get_time_for(
+              category: category,
+              report_detailed: @detailed_report,
+              report_summarized: @cumulative_report
+            )
+            DateTimeHelper.sheets_duration_format(time_in_minutes)
+          end
+        [durations_list.unshift(date.to_s)]
       end
 
       def get_time_for(category:, report_detailed:, report_summarized:)
