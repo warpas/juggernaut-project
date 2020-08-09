@@ -45,7 +45,7 @@ module Requests
     end
 
     def delete_request(address, headers)
-      puts "📤✂️  sending a DELETE request to #{address}"
+      puts "📤🗑  sending a DELETE request to #{address}"
 
       # TODO: replace it with Faraday.new?
       response = Faraday.delete(address) { |request|

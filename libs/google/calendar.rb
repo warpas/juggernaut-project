@@ -77,7 +77,7 @@ module Google
 
     def insert_calendar_event(event, cal_id = @calendar_id)
       result = @service.insert_event(cal_id, event)
-      puts "✅  Event created: #{result.html_link}"
+      puts "📆  Event created: #{result.html_link}"
     rescue => _e
       puts "Duplicate event found"
     end
@@ -129,7 +129,7 @@ module Google
       output_calendar_list.each do |calendar|
         # TODO: use insert_event function
         result = @service.insert_event(calendar, event)
-        puts "✅  Event created: #{result.html_link}"
+        puts "📆  Event created: #{result.html_link}"
       end
     end
 

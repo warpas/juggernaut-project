@@ -15,7 +15,7 @@ module Workflows
         log "\n✅  Script number #{iterator} / #{script_count} ran successfully\n"
         iterator += 1
       end
-      log "\n✅  All scripts within the workflow ran successfully!!"
+      log "\n❎  All scripts within the workflow ran successfully!!"
     end
 
     private
