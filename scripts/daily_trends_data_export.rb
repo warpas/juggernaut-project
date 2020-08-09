@@ -23,7 +23,7 @@ def do_everything_once(date: (Date.today - 1))
   # TODO: maybe update if the date is there but the values are different?
   trends_sheet.append_to_sheet(values: values, range: "Data!A:I")
   # trends_sheet.get_spreadsheet_values(range: "Data!A:I")
-  puts "✅  Trend data appended for #{date}"
+  puts "📈  Trend data appended for #{date}"
 end
 
 puts "\n⌨️  Running daily_trends_data_export script"
