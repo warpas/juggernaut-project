@@ -1,7 +1,5 @@
 require "spec_helper"
 
-# TODO: everything here needs better names
-# TODO: everything here needs to be implemented. For now it's an exercise in public interface design
 describe Summaries::Daily::Trends do
   subject { described_class }
 
