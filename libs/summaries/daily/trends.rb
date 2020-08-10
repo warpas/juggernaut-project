@@ -1,5 +1,19 @@
 require_relative "../../../date_time_helper"
 
+class TrendsPayload
+  attr_reader :payload
+
+  def initialize(trends: [], date: Date.today)
+    @payload = prepare(trends, date)
+  end
+
+  private
+
+  def prepare(list, date)
+    [list.unshift(date.to_s)]
+  end
+end
+
 module Summaries
   module Daily
     class Trends
@@ -9,7 +23,7 @@ module Summaries
       end
 
       def build(date: Date.today)
-        do_everything_once(date: date)
+        TrendsPayload.new(trends: count_durations, date: date).payload
       end
 
       private
@@ -18,17 +32,15 @@ module Summaries
         %w[reading writing work games consumption creative sleep exercise]
       end
 
-      def do_everything_once(date:)
-        durations_list =
-          categories.map do |category|
-            time_in_minutes = get_time_for(
-              category: category,
-              report_detailed: @detailed_report,
-              report_summarized: @cumulative_report
-            )
-            DateTimeHelper.sheets_duration_format(time_in_minutes)
-          end
-        [durations_list.unshift(date.to_s)]
+      def count_durations
+        categories.map do |category|
+          time_in_minutes = get_time_for(
+            category: category,
+            report_detailed: @detailed_report,
+            report_summarized: @cumulative_report
+          )
+          DateTimeHelper.sheets_duration_format(time_in_minutes)
+        end
       end
 
       def get_time_for(category:, report_detailed:, report_summarized:)
