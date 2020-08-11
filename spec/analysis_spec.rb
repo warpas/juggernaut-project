@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Summaries::Daily::Trends do
+describe Analysis::DailyTrendsReport do
   subject { described_class }
 
   let(:before_logging) { Date.parse("2019-07-17") }

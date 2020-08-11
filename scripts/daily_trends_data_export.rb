@@ -1,8 +1,7 @@
 require_relative "../libs/interface/command_line"
-require_relative "../libs/summaries/daily/trends"
-require_relative "../libs/google/sheets"
 require_relative "../libs/toggl/report"
-require_relative "../date_time_helper"
+require_relative "../libs/analysis/daily_trends_report"
+require_relative "../libs/google/sheets"
 
 def loop_for(days: 1)
   (1..days).reverse_each do |day|
@@ -14,7 +13,7 @@ def do_everything_once(date: (Date.today - 1))
   trends_sheet = Google::Sheets.new(file_id: "trends")
 
   toggl = Toggl::Report.new(date)
-  values = Summaries::Daily::Trends.new(
+  values = Analysis::DailyTrendsReport.new(
     cumulative: toggl.report_summary,
     detailed: toggl.report_details
   ).build(date: date)

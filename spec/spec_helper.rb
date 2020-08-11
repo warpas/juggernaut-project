@@ -1,6 +1,6 @@
 require_relative "../libs/toggl/report"
 require_relative "../libs/toggl/google_calendar_adapter"
-require_relative "../libs/summaries/daily/trends"
+require_relative "../libs/analysis/daily_trends_report"
 require_relative "../libs/activities/log"
 require_relative "../libs/interface/command_line"
 require_relative "../date_time_helper"

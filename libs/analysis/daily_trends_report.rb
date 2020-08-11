@@ -1,4 +1,4 @@
-require_relative "../../../date_time_helper"
+require_relative "../../date_time_helper"
 
 class TrendsPayload
   attr_reader :payload
@@ -14,9 +14,9 @@ class TrendsPayload
   end
 end
 
-module Summaries
+module Analysis
   module Daily
-    class Trends
+    class TrendsReport
       def initialize(cumulative: {"data" => []}, detailed: {"data" => []})
         @cumulative_report = cumulative
         @detailed_report = detailed
