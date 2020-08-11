@@ -1,20 +1,26 @@
 require_relative "../../date_time_helper"
 
-class TrendsPayload
-  attr_reader :payload
-
-  def initialize(trends: [], date: Date.today)
-    @payload = prepare(trends, date)
-  end
-
-  private
-
-  def prepare(list, date)
-    [list.unshift(date.to_s)]
-  end
-end
-
 module Analysis
+  class TrendsPayload
+    attr_reader :payload
+
+    def initialize(trends: [], date: Date.today)
+      @payload = prepare(trends, date)
+    end
+
+    private
+
+    def prepare(list, date)
+      [list.unshift(date.to_s)]
+    end
+  end
+
+  class TrendCategories
+    def self.as_list
+      %w[reading writing work games consumption creative sleep exercise]
+    end
+  end
+
   class DailyTrendsReport
     def initialize(cumulative: {"data" => []}, detailed: {"data" => []})
       @cumulative_report = cumulative
@@ -22,17 +28,13 @@ module Analysis
     end
 
     def build(date: Date.today)
-      TrendsPayload.new(trends: count_durations, date: date).payload
+      TrendsPayload.new(trends: trends_list, date: date).payload
     end
 
     private
 
-    def categories
-      %w[reading writing work games consumption creative sleep exercise]
-    end
-
-    def count_durations
-      categories.map do |category|
+    def trends_list
+      TrendCategories.as_list.map do |category|
         time_in_minutes = get_time_for(
           category: category,
           report_detailed: @detailed_report,
