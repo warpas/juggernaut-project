@@ -16,8 +16,10 @@ module Analysis
   end
 
   class TrendCategories
+    CATEGORIES = %w[reading writing work games consumption creative sleep exercise].freeze
+
     def self.as_list
-      %w[reading writing work games consumption creative sleep exercise]
+      CATEGORIES
     end
   end
 
