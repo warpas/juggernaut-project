@@ -4,8 +4,6 @@ describe Workflows::Runner do
   subject { described_class }
 
   describe "#run" do
-    it "should return today's date by default" do
-      expect(subject).to respond_to(:new)
-    end
+    it { should respond_to(:new) }
   end
 end
