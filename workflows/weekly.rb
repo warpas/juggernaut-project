@@ -1,8 +1,3 @@
-require_relative "../libs/workflows/runner"
+require_relative "../libs/workflows/context"
 
-weekly_scripts =
-  [
-    "scripts/weekly_work_report.rb"
-  ]
-
-Workflows::Runner.new(scripts: weekly_scripts).start
+Workflows::Context.run_weekly_workflow
