@@ -7,10 +7,8 @@ module Workflows
     end
 
     def self.tasks
-      self.daily_scripts
+      daily_scripts
     end
-
-    private
 
     def self.daily_scripts
       [
@@ -22,5 +20,7 @@ module Workflows
         "scripts/daily_trends_data_export.rb"
       ]
     end
+
+    private_class_method :daily_scripts
   end
 end

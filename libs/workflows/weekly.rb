@@ -7,15 +7,15 @@ module Workflows
     end
 
     def self.tasks
-      self.weekly_scripts
+      weekly_scripts
     end
-
-    private
 
     def self.weekly_scripts
       [
         "scripts/weekly_work_report.rb"
       ]
     end
+
+    private_class_method :weekly_scripts
   end
 end
