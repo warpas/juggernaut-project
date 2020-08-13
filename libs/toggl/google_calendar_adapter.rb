@@ -55,6 +55,7 @@ module Toggl
         "\nProject: #{entry["project"]}, client: #{entry["client"]}\n" \
         "#{DateTimeHelper.readable_duration(entry["dur"])}\n"
       }
+      average_daily_work_time = (time_on_work / 7).to_i
       [
         {
           start: format_date(report_day, "06:04:59", "+02:00"),
@@ -65,6 +66,7 @@ module Toggl
           description:
           # TODO: I want this to compare work time with last week
           "#{format_work_time_last_week(time_on_work)}" \
+          "\n#{format_average_daily_work_time_last_week(average_daily_work_time)}" \
           "\n#{format_total_time_last_week(report["total_grand"])}" \
           "\n#{separator}\n#{report_string.join("\n")}"
         }
@@ -128,6 +130,12 @@ module Toggl
     def format_work_time_last_week(time_in_milliseconds)
       readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
       "🕤Work time logged last week:\n➡️#{readable_time}\n"
+    end
+
+    def format_average_daily_work_time_last_week(time_in_milliseconds)
+      puts "time_in_milliseconds = #{time_in_milliseconds}"
+      readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
+      "📎Average daily work time logged last week:\n➡️#{readable_time}\n"
     end
 
     def separator
