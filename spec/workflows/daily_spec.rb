@@ -9,7 +9,9 @@ describe Workflows::Daily do
     end
 
     xit "should send a message to the workflow Runner"
+  end
 
+  describe "#tasks" do
     it "should respond to the 'tasks' message" do
       expect(subject).to respond_to(:tasks)
     end
