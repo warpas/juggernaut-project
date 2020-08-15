@@ -133,7 +133,6 @@ module Toggl
     end
 
     def format_average_daily_work_time_last_week(time_in_milliseconds)
-      puts "time_in_milliseconds = #{time_in_milliseconds}"
       readable_time = DateTimeHelper.readable_duration(time_in_milliseconds)
       "📎Average daily work time logged last week:\n➡️#{readable_time}\n"
     end
