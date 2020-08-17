@@ -35,7 +35,22 @@ module Toggl
     end
 
     def report_details
-      report("details")
+      # TODO: value object needed. Could be called DetailedReport or TimeEntryLog or something like that
+      report = report("details")
+      total_count = report["total_count"] #=>166
+      per_page = report["per_page"] #=>50
+      total_pages = total_count / per_page
+      report_data_lists = [report["data"]]
+      (1..total_pages).each do |page_number|
+        report_page = ask_for_page(number: page_number + 1)
+        report_data_lists.push(report_page["data"])
+      end
+      time_entries = report_data_lists.flatten
+      time_entries_count = time_entries.count
+      puts "⛔️   Time Entries count doens't add up. Look into it.\n➡️   Should have been: #{total_count}\n➡️   Was: #{time_entries_count}" if time_entries_count != total_count
+      full_report = report
+      full_report["data"] = time_entries
+      full_report
     end
 
     def get_work_start_time(the_day_in_question)
@@ -80,6 +95,14 @@ module Toggl
       response = @request_adapter.get_request(report_path, auth_headers)
       body = JSON.parse(response[:body])
       @total_time = body["total_grand"]
+      body
+    end
+
+    def ask_for_page(number:)
+      report_path = report_path("details") + "&page=#{number}"
+      response = @request_adapter.get_request(report_path, auth_headers)
+      body = JSON.parse(response[:body])
+      # puts "response_body = #{body}"
       body
     end
 
