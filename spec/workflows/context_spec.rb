@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Workflows::Context do
+describe Workflows do
   subject { described_class }
 
   describe "#run_weekly_workflow" do

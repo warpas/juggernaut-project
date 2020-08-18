@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Executive::Context do
+describe Executive do
   subject { described_class }
 
   describe "#generate_weekly_work_report" do
