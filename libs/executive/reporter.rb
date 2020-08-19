@@ -5,7 +5,6 @@ require_relative "../google/calendar"
 require_relative "../../date_time_helper"
 require "date"
 
-
 module Executive
   class Reporter
     def self.generate_weekly_work_report
