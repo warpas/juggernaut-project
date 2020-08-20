@@ -22,6 +22,5 @@ end
 puts "\n⌨️  Running weekly_report script"
 prepared_entry_list = build_weekly_summary(cl_date)
 
-puts "\ninitiating Google Calendar integration"
 calendar = Google::Calendar.new
 calendar.add_list_of_entries_no_duplicates(prepared_entry_list)

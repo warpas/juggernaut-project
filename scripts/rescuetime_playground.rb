@@ -54,6 +54,5 @@ prepared_entry_list = parsed_response.map { |daily_summary|
   build_calendar_event(daily_summary: daily_summary)
 }
 
-puts "\ninitiating Google Calendar integration"
 calendar = Google::Calendar.new
 calendar.add_list_of_entries_no_duplicates(prepared_entry_list)
