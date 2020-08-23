@@ -28,7 +28,7 @@ module Interface
       argument
     end
 
-    def self.log(string)
+    def self.log_output(string)
       puts string
     end
   end

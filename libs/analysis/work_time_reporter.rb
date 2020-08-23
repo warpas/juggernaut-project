@@ -37,6 +37,10 @@ module Analysis
 
     attr_reader :cli
 
+    def log(string)
+      Interface::CommandLine.log_output(string)
+    end
+
     def calculate_time_to_halfway_point(time, available_hours)
       halfway_point = available_hours / 2
       halfway_point_milliseconds = halfway_point * 3600 * 1000
@@ -50,21 +54,20 @@ module Analysis
     def print_availability_message(time)
       available_milliseconds = time * 3600 * 1000
       formatted_availability = DateTimeHelper.readable_duration(available_milliseconds)
-      puts "Availability today: #{formatted_availability}"
+      log "Availability today: #{formatted_availability}"
     end
 
     def print_work_time_message(time)
       formatted_time = DateTimeHelper.readable_duration(time)
-      puts "Worked today for: #{formatted_time}"
-
+      log "Worked today for: #{formatted_time}"
     end
 
     def print_halfway_message(time_left)
       if time_left > 0
         formatted_halfway = DateTimeHelper.readable_duration(time_left)
-        puts "Time left until the halfway point today: #{formatted_halfway}"
+        log "Time left until the halfway point today: #{formatted_halfway}"
       else
-        puts "🎉🎉🎉   Halfway point reached!!  🎉🎉🎉"
+        log "🎉🎉🎉   Halfway point reached!!  🎉🎉🎉"
       end
     end
   end

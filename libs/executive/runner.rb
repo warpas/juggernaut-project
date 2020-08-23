@@ -23,7 +23,7 @@ module Executive
     private
 
     def log(string)
-      Interface::CommandLine.log(string)
+      Interface::CommandLine.log_output(string)
     end
   end
 end

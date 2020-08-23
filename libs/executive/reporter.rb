@@ -16,12 +16,6 @@ module Executive
       calendar.add_list_of_entries_no_duplicates(prepared_entry_list)
     end
 
-    def self.log(string)
-      Interface::CommandLine.log(string)
-    end
-
-    private_class_method :log
-
     # TODO: move the following functions further
     # TODO: the Workflows context might turn out to be unncessary. Should I merge it wit Executive?
     def self.build_weekly_summary(date_string)
@@ -43,6 +37,11 @@ module Executive
       cli.get_runtime_date(default: last_week_date)
     end
 
+    def self.log(string)
+      Interface::CommandLine.log_output(string)
+    end
+
+    private_class_method :log
     private_class_method :build_weekly_summary
     private_class_method :last_week_date
     private_class_method :cl_date
