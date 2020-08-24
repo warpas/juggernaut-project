@@ -31,5 +31,9 @@ module Interface
     def self.log_output(string)
       puts string
     end
+
+    def self.get_input
+      gets
+    end
   end
 end
