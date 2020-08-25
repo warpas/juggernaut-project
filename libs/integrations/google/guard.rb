@@ -1,4 +1,5 @@
 require_relative "../interface/command_line"
+require_relative "../maintenance/context"
 require "googleauth"
 require "googleauth/stores/file_token_store"
 
@@ -42,7 +43,7 @@ module Integrations
       end
 
       def log(string)
-        Interface::CommandLine.log_output(string)
+        Maintenance::Logger.log_info(message: string)
       end
 
       def get_input

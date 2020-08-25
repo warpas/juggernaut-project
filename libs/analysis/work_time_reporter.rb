@@ -1,5 +1,6 @@
 require_relative "../toggl/report"
 require_relative "../interface/command_line"
+require_relative "../maintenance/context"
 require_relative "../../date_time_helper"
 require "date"
 
@@ -38,7 +39,7 @@ module Analysis
     attr_reader :cli
 
     def log(string)
-      Interface::CommandLine.log_output(string)
+      Maintenance::Logger.log_info(message: string)
     end
 
     def calculate_time_to_halfway_point(time, available_hours)

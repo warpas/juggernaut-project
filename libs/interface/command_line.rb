@@ -2,7 +2,7 @@ require "date"
 
 module Interface
   class CommandLine
-    def initialize(args: [])
+    def initialize(args: ARGV)
       @runtime_args = args
     end
 
@@ -28,7 +28,7 @@ module Interface
       argument
     end
 
-    def self.log_output(string)
+    def log_output(string)
       puts string
     end
 

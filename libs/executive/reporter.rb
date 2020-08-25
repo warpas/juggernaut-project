@@ -1,4 +1,5 @@
 require_relative "../interface/command_line"
+require_relative "../maintenance/context"
 require_relative "../toggl/report"
 require_relative "../toggl/google_calendar_adapter"
 require_relative "../google/calendar"
@@ -38,7 +39,7 @@ module Executive
     end
 
     def self.log(string)
-      Interface::CommandLine.log_output(string)
+      Maintenance::Logger.log_info(message: string)
     end
 
     private_class_method :log

@@ -1,4 +1,5 @@
 require_relative "../interface/command_line"
+require_relative "../maintenance/context"
 
 module Workflows
   class Runner
@@ -23,7 +24,7 @@ module Workflows
     attr_reader :script_list
 
     def log(string)
-      Interface::CommandLine.log_output(string)
+      Maintenance::Logger.log_info(message: string)
     end
   end
 end

@@ -1,3 +1,5 @@
+require_relative "../maintenance/context"
+
 module Executive
   class Runner
     def initialize(scripts: [])
@@ -23,7 +25,7 @@ module Executive
     private
 
     def log(string)
-      Interface::CommandLine.log_output(string)
+      Maintenance::Logger.log_info(message: string)
     end
   end
 end
