@@ -7,7 +7,7 @@ describe Activities::Log do
   let(:friday) { Date.parse("2020-07-17") }
 
   describe "#list_for" do
-    it "should return a list of activities logged on the specified day" do
+    xit "should return a list of activities logged on the specified day" do
     end
   end
 end
