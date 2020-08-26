@@ -47,7 +47,7 @@ module Integrations
       end
 
       def get_input
-        Interface::CommandLine.get_input
+        Interface::CommandLine.new.get_input
       end
     end
   end

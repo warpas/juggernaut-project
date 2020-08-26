@@ -32,7 +32,7 @@ module Interface
       puts string
     end
 
-    def self.get_input
+    def get_input
       gets
     end
   end
