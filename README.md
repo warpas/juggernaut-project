@@ -8,8 +8,8 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
     * Enter the name of the App
     * Select "Desktop app"
     * Click on "Download Client Configuration"
-    * Move and rename that file as `libs/google/credentials.secret.json`. Alternatively paste those values inside of `libs/google/credentials.secret.json.example` and remove the `.example` extension.
-3. Add Toggl config file. Rename `libs/toggl/config.secret.json.example` to `libs/toggl/config.secret.json` and fill the required values. You can get your API token from [Toggl's user profile page](https://toggl.com/app/profile). Make sure it's inside quotation marks.
+    * Move and rename that file as `lib/google/credentials.secret.json`. Alternatively paste those values inside of `lib/google/credentials.secret.json.example` and remove the `.example` extension.
+3. Add Toggl config file. Rename `lib/toggl/config.secret.json.example` to `lib/toggl/config.secret.json` and fill the required values. You can get your API token from [Toggl's user profile page](https://toggl.com/app/profile). Make sure it's inside quotation marks.
 4. Log some time in Toggl. Default settings work best with yesterday.
 5. Run `bundle install`
 6. Run `scripts/send_toggl_to_calendar`

@@ -1,4 +1,4 @@
-require_relative "../libs/google/sheets"
+require_relative "../lib/google/sheets"
 
 test_sheet = Google::Sheets.new(file_id: "test")
 test_sheet.get_spreadsheet_values(range: "Sheet1!A1:F14")

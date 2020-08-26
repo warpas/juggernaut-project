@@ -1,6 +1,6 @@
-require_relative "../libs/command_line"
-require_relative "../libs/toggl/report"
-require_relative "../libs/toggl/time_entry"
+require_relative "../lib/command_line"
+require_relative "../lib/toggl/report"
+require_relative "../lib/toggl/time_entry"
 require_relative "../date_time_helper"
 require "date"
 

@@ -1,5 +1,5 @@
-require_relative "../libs/google/calendar"
-require_relative "../libs/google/sheets"
+require_relative "../lib/google/calendar"
+require_relative "../lib/google/sheets"
 require "json"
 
 def build_row(date:, source_calendar:)

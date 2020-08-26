@@ -1,3 +1,3 @@
-require_relative "../libs/workflows/context"
+require_relative "../lib/workflows/context"
 
 Workflows.run_daily_workflow

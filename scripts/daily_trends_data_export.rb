@@ -1,6 +1,6 @@
-require_relative "../libs/interface/command_line"
-require_relative "../libs/analysis/context"
-require_relative "../libs/google/sheets"
+require_relative "../lib/interface/command_line"
+require_relative "../lib/analysis/context"
+require_relative "../lib/google/sheets"
 
 def loop_for(days: 1)
   (1..days).reverse_each do |day|

@@ -1,5 +1,5 @@
-require_relative "../libs/requests"
-require_relative "../libs/google/calendar"
+require_relative "../lib/requests"
+require_relative "../lib/google/calendar"
 require "json"
 require "date"
 

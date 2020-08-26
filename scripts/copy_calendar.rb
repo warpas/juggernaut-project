@@ -1,4 +1,4 @@
-require_relative "../libs/google/calendar"
+require_relative "../lib/google/calendar"
 
 # Copy all calendars with names starting with "Exercise -" to the defined calendar
 calendar_object = Google::Calendar.new(calendar_name: "exercise")

@@ -1,7 +1,7 @@
-require_relative "../libs/interface/command_line"
-require_relative "../libs/toggl/report"
-require_relative "../libs/toggl/google_calendar_adapter"
-require_relative "../libs/google/calendar"
+require_relative "../lib/interface/command_line"
+require_relative "../lib/toggl/report"
+require_relative "../lib/toggl/google_calendar_adapter"
+require_relative "../lib/google/calendar"
 require_relative "../date_time_helper"
 require "date"
 

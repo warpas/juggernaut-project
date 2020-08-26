@@ -8,8 +8,8 @@ module Google
 
   class Sheets
     def initialize(
-      config_file: "libs/google/sheets/credentials.secret.json",
-      token_file: "libs/google/sheets/token.secret.yaml",
+      config_file: "lib/google/sheets/credentials.secret.json",
+      token_file: "lib/google/sheets/token.secret.yaml",
       file_id:
     )
       @config = get_json_from_file(config_file)

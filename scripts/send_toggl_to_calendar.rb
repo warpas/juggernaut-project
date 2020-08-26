@@ -1,7 +1,7 @@
-require_relative "../libs/command_line"
-require_relative "../libs/toggl/report"
-require_relative "../libs/toggl/google_calendar_adapter"
-require_relative "../libs/google/calendar"
+require_relative "../lib/command_line"
+require_relative "../lib/toggl/report"
+require_relative "../lib/toggl/google_calendar_adapter"
+require_relative "../lib/google/calendar"
 require "date"
 
 # TODO: Add unit tests.
