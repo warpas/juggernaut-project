@@ -47,107 +47,130 @@ module Analysis
       # TODO: define outside rules for these categories
       # TODO: Add tests before switching to these rules
       if category == "consumption"
-        category_entry_list = report_detailed["data"].select { |time_entry|
-          time_entry["tags"].include?("game") ||
-            time_entry["project"] == "Abnegation - Passive entertainment" ||
-            time_entry["project"] == "Growth - Reading" ||
-            time_entry["project"] == "Growth - Study" ||
-            time_entry["project"] == "Growth - Edutainment" ||
-            time_entry["project"] == "Growth - intentional Video"
-        }
-        if category_entry_list.empty?
-          return 0
-        else
-          total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
-          return total_category_time
-        end
-      end
-      if category == "creative"
-        category_entry_list = report_detailed["data"].select { |time_entry|
-          time_entry["description"] == "Focused work" ||
-            time_entry["project"] == "Creative - Writing" ||
-            time_entry["project"] == "Dev - Scripts and utilities" ||
-            time_entry["project"] == "Dev - Finance app" ||
-            time_entry["project"] == "Dev - Resume generator" ||
-            time_entry["project"] == "Dev - Prototyping" ||
-            time_entry["project"] == "Dev - Juggernaut" ||
-            time_entry["project"] == "Dev - Other Projects"
-        }
-        if category_entry_list.empty?
-          return 0
-        else
-          total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
-          return total_category_time
-        end
-      end
-      if category == "intentional"
+        time_for_consumption(report: report_detailed)
+      elsif category == "creative"
+        time_for_creative(report: report_detailed)
+      elsif category == "intentional"
         # TODO: to be implemented
-      end
-      if category == "unintentional"
+      elsif category == "unintentional"
         # TODO: to be implemented
+      elsif category == "work"
+        time_for_work(report: report_detailed)
+      elsif category == "games"
+        time_for_games(report: report_detailed)
+      elsif category == "exercise"
+        time_for_exercise(report: report_detailed)
+      elsif category == "reading"
+        time_for_reading(report: report_summarized)
+      elsif category == "writing"
+        time_for_writing(report: report_summarized)
+      elsif category == "sleep"
+        time_for_sleep(report: report_summarized)
       end
-      if category == "work"
-        category_entry_list = report_detailed["data"].select { |time_entry|
-          time_entry["tags"].include?("work")
-        }
-        if category_entry_list.empty?
-          return 0
-        else
-          total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
-          return total_category_time
-        end
+    end
+
+    def time_for_consumption(report:)
+      category_entry_list = report["data"].select { |time_entry|
+        time_entry["tags"].include?("game") ||
+          time_entry["project"] == "Abnegation - Passive entertainment" ||
+          time_entry["project"] == "Growth - Reading" ||
+          time_entry["project"] == "Growth - Study" ||
+          time_entry["project"] == "Growth - Edutainment" ||
+          time_entry["project"] == "Growth - intentional Video"
+      }
+      if category_entry_list.empty?
+        0
+      else
+        total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
+        total_category_time
       end
-      if category == "games"
-        category_entry_list = report_detailed["data"].select { |time_entry|
-          time_entry["tags"].include?("game")
-        }
-        if category_entry_list.empty?
-          return 0
-        else
-          total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
-          return total_category_time
-        end
+    end
+
+    def time_for_creative(report:)
+      category_entry_list = report["data"].select { |time_entry|
+        time_entry["description"] == "Focused work" ||
+          time_entry["project"] == "Creative - Writing" ||
+          time_entry["project"] == "Dev - Scripts and utilities" ||
+          time_entry["project"] == "Dev - Finance app" ||
+          time_entry["project"] == "Dev - Resume generator" ||
+          time_entry["project"] == "Dev - Prototyping" ||
+          time_entry["project"] == "Dev - Juggernaut" ||
+          time_entry["project"] == "Dev - Other Projects"
+      }
+      if category_entry_list.empty?
+        0
+      else
+        total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
+        total_category_time
       end
-      if category == "exercise"
-        category_entry_list = report_detailed["data"].select { |time_entry|
-          time_entry["tags"].include?("exercise")
-        }
-        if category_entry_list.empty?
-          return 0
-        else
-          total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
-          return total_category_time
-        end
+    end
+
+    def time_for_work(report:)
+      category_entry_list = report["data"].select { |time_entry|
+        time_entry["tags"].include?("work")
+      }
+      if category_entry_list.empty?
+        0
+      else
+        total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
+        total_category_time
       end
-      if category == "reading"
-        category_entry_list = report_summarized["data"].select { |time_entry|
-          time_entry["title"]["project"] == "Growth - Reading"
-        }
-        if category_entry_list.empty?
-          return 0
-        else
-          return category_entry_list.first["time"]
-        end
+    end
+
+    def time_for_games(report:)
+      category_entry_list = report["data"].select { |time_entry|
+        time_entry["tags"].include?("game")
+      }
+      if category_entry_list.empty?
+        0
+      else
+        total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
+        total_category_time
       end
-      if category == "writing"
-        category_entry_list = report_summarized["data"].select { |time_entry|
-          time_entry["title"]["project"] == "Creative - Writing"
-        }
-        if category_entry_list.empty?
-          return 0
-        else
-          return category_entry_list.first["time"]
-        end
+    end
+
+    def time_for_exercise(report:)
+      category_entry_list = report["data"].select { |time_entry|
+        time_entry["tags"].include?("exercise")
+      }
+      if category_entry_list.empty?
+        0
+      else
+        total_category_time = category_entry_list.map { |entry| entry["dur"] }.sum
+        total_category_time
       end
-      if category == "sleep"
-        category_entry_list = report_summarized["data"].select { |time_entry|
-          time_entry["title"]["project"] == "Sleeping"
-        }
-        if category_entry_list.empty?
-          0
-        else
-          category_entry_list.first["time"]
-        end
+    end
+
+    def time_for_reading(report:)
+      category_entry_list = report["data"].select { |time_entry|
+        time_entry["title"]["project"] == "Growth - Reading"
+      }
+      if category_entry_list.empty?
+        0
+      else
+        category_entry_list.first["time"]
+      end
+    end
+
+    def time_for_writing(report:)
+      category_entry_list = report["data"].select { |time_entry|
+        time_entry["title"]["project"] == "Creative - Writing"
+      }
+      if category_entry_list.empty?
+        0
+      else
+        category_entry_list.first["time"]
+      end
+    end
+
+    def time_for_sleep(report:)
+      category_entry_list = report["data"].select { |time_entry|
+        time_entry["title"]["project"] == "Sleeping"
+      }
+      if category_entry_list.empty?
+        0
+      else
+        category_entry_list.first["time"]
       end
     end
   end
