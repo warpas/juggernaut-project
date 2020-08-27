@@ -15,14 +15,6 @@ module Analysis
     end
   end
 
-  class TrendCategories
-    CATEGORIES = %w[reading writing work games consumption creative sleep exercise].freeze
-
-    def self.as_list
-      CATEGORIES
-    end
-  end
-
   class DailyTrendsReport
     def initialize(cumulative: {"data" => []}, detailed: {"data" => []})
       @cumulative_report = cumulative
@@ -36,7 +28,7 @@ module Analysis
     private
 
     def trends_list
-      TrendCategories.as_list.map do |category|
+      category_list.map do |category|
         time_in_minutes = get_time_for(
           category: category,
           report_detailed: @detailed_report,
@@ -44,6 +36,10 @@ module Analysis
         )
         DateTimeHelper.sheets_duration_format(time_in_minutes)
       end
+    end
+
+    def category_list
+      Activities::Category.list
     end
 
     def get_time_for(category:, report_detailed:, report_summarized:)

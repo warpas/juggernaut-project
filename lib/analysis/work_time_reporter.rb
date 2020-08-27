@@ -26,7 +26,7 @@ module Analysis
         category["time"]
       end
       time_in_milliseconds = time_list.sum
-      available_hours = get_availability_time_in_hours(date: date)
+      available_hours = get_availability_time_in_hours
       time_to_halfway = calculate_time_to_halfway_point(time_in_milliseconds, available_hours)
 
       print_availability_message(available_hours)
@@ -48,7 +48,7 @@ module Analysis
       halfway_point_milliseconds - time
     end
 
-    def get_availability_time_in_hours(date:)
+    def get_availability_time_in_hours
       @cli.get_runtime_argument(name: "availability", default: 8).to_i
     end
 
@@ -64,7 +64,7 @@ module Analysis
     end
 
     def print_halfway_message(time_left)
-      if time_left > 0
+      if time_left.positive?
         formatted_halfway = DateTimeHelper.readable_duration(time_left)
         log "Time left until the halfway point today: #{formatted_halfway}"
       else
