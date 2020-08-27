@@ -45,7 +45,6 @@ module Analysis
 
     def get_time_for(category:, report_detailed:, report_summarized:)
       # TODO: define outside rules for these categories
-      # TODO: Add tests before switching to these rules
       if category == "consumption"
         time_for_consumption(report: report_detailed)
       elsif category == "creative"
