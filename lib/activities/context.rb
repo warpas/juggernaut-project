@@ -7,5 +7,6 @@ module Activities
   end
 
   def self.list_categories
+    Activities::Category.list
   end
 end

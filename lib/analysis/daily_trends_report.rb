@@ -1,5 +1,5 @@
 require_relative "../../date_time_helper"
-require_relative "../activities/category"
+require_relative "../activities"
 
 module Analysis
   class TrendsPayload
@@ -40,7 +40,7 @@ module Analysis
     end
 
     def category_list
-      Activities::Category.list
+      Activities.list_categories
     end
 
     def get_time_for(category:, report_detailed:, report_summarized:)
@@ -52,7 +52,7 @@ module Analysis
       elsif category == "intentional"
         # TODO: to be implemented
       elsif category == "unintentional"
-        # TODO: to be implemented
+        # TODO: #1 to be implemented
       elsif category == "work"
         time_for_work(report: report_detailed)
       elsif category == "games"
