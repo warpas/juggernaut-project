@@ -1,5 +1,5 @@
 require_relative "../../date_time_helper"
-require_relative "../activities"
+require_relative "../activities/context"
 
 module Analysis
   class TrendsPayload
