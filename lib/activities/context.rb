@@ -1,4 +1,5 @@
 require_relative "log"
+require_relative "day_log"
 require_relative "category"
 
 module Activities
