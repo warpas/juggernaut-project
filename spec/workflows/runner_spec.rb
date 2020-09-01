@@ -2,18 +2,18 @@ require "spec_helper"
 
 describe Workflows::Runner do
   subject { described_class }
+  it { should respond_to(:new) }
 
   describe "#new" do
-    it { should respond_to(:new) }
-
     xit "should test the interesting stuff"
   end
 
-  describe "#start" do
+  describe "instance" do
     subject { described_class.new }
-
     it { should respond_to(:start) }
 
-    xit "should test the interesting stuff"
+    describe "#start" do
+      xit "should test the interesting stuff"
+    end
   end
 end

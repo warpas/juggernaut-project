@@ -1,6 +1,6 @@
 require "spec_helper"
 
-# TODO: make sure these test doesn't send any external requests
+# TODO: make sure these test don't send any external requests
 describe Toggl::Report do
   # RSpec.describe Toggl::Connection do
   subject { described_class.new(date) }
