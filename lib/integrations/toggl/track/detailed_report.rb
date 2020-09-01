@@ -1,7 +1,7 @@
-require_relative "../../../toggl/report"
+require_relative "../../../toggl/legacy"
 
 module Integrations
-  module Toggle # TODO: Change to Toggl
+  module Toggl
     module Track
       class DetailedReport
         attr_reader :start_date, :end_date, :time_entries
@@ -20,7 +20,7 @@ module Integrations
         private
 
         def toggl_detailed_report
-          Toggl::Report.new(@start_date).report_details
+          LegacyToggl.report_details(date: @start_date)
         end
       end
     end

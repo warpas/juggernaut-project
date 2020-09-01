@@ -6,7 +6,7 @@ module Activities
 
     def initialize(date:)
       @date = date
-      @entries = Integrations::Toggle::Track.get_entries_for(date: date)
+      @entries = Integrations::Toggl::Track.get_entries_for(date: date)
     end
   end
 end
