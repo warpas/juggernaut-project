@@ -1,7 +1,12 @@
 require_relative 'report'
 
 module LegacyToggl
-  def self.report_details(date:)
-    Toggl::Report.new(@start_date).report_details
+  class Report
+    def initialize
+    end
+
+    def report_details(date:)
+      Toggl::Report.new(date).report_details
+    end
   end
 end
