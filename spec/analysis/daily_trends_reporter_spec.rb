@@ -5,11 +5,12 @@ describe Analysis::DailyTrendsReport do
 
   let(:before_logging) { Date.parse("2019-07-17") }
   let(:friday) { Date.parse("2020-07-17") }
+  let(:summary_report) { ReportFixture.summary }
+  let(:detailed_report) { ReportFixture.detailed }
+
   let(:empty_trends) { [["2019-07-17", "0", "0", "0", "0", "0", "0", "0", "0"]] }
   let(:trends) { [["2020-07-17", "146", "0", "149", "149", "296", "2", "543", "1"]] }
   let(:todays_trends) { [[Date.today.to_s, "0", "0", "0", "0", "0", "0", "0", "0"]] }
-  let(:summary_report) { ReportFixture.summary }
-  let(:detailed_report) { ReportFixture.detailed }
 
   describe "#build" do
     it "should generate a trend data row based on Time Log data for the day" do
