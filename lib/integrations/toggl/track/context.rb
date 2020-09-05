@@ -1,4 +1,5 @@
 require_relative "detailed_report"
+require_relative "time_entry"
 
 module Integrations
   module Toggl
