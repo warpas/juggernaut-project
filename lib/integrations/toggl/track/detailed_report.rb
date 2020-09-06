@@ -16,13 +16,12 @@ module Integrations
         end
 
         def self.get_entries_for(date:)
-          self.new(start_date: date).time_entries
+          new(start_date: date).time_entries
         end
 
         private
 
         attr_reader :toggl_raw_report
-
       end
     end
   end

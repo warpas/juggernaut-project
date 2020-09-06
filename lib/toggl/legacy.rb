@@ -1,4 +1,4 @@
-require_relative 'report'
+require_relative "report"
 
 module LegacyToggl
   class Report

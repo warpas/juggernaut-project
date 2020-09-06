@@ -7,8 +7,8 @@ module Maintenance
     end
 
     def self.log_info(message:)
-      cli = Interface::CommandLine.new()
-      self.new(interface: cli).info(message: message)
+      cli = Interface::CommandLine.new
+      new(interface: cli).info(message: message)
     end
 
     def info(message:)

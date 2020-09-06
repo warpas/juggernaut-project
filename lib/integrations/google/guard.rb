@@ -12,6 +12,7 @@ module Integrations
         authorizer = Google::Auth::UserAuthorizer.new client_id, scope, token_store
         authorize(authorizer: authorizer)
       end
+
       ##
       # Ensure valid credentials, either by restoring from the saved credentials
       # files or intitiating an OAuth2 authorization. If authorization is required,

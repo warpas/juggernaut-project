@@ -8,10 +8,12 @@ end
 
 # TODO: make sure these test don't send any external requests ‼️‼️
 describe Integrations::Toggl::Track::DetailedReport do
-  subject { described_class.new(
-    start_date: friday,
-    toggl_connection: TogglDouble.new,
-    ) }
+  subject {
+    described_class.new(
+      start_date: friday,
+      toggl_connection: TogglDouble.new
+    )
+  }
   let(:friday) { Date.parse("2020-07-17") }
   it { should respond_to(:start_date) }
   it { should respond_to(:end_date) }

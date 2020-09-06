@@ -19,12 +19,12 @@ module Analysis
       client_name = @cli.get_runtime_argument(name: "client", default: "Client")
       toggl = Toggl::Report.new(date)
 
-      filtered_report = toggl.report_summary["data"].select do |category|
+      filtered_report = toggl.report_summary["data"].select { |category|
         category["title"]["client"] == client_name
-      end
-      time_list = filtered_report.map do |category|
+      }
+      time_list = filtered_report.map { |category|
         category["time"]
-      end
+      }
       time_in_milliseconds = time_list.sum
       available_hours = get_availability_time_in_hours
       time_to_halfway = calculate_time_to_halfway_point(time_in_milliseconds, available_hours)
