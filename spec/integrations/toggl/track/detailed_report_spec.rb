@@ -15,6 +15,8 @@ describe Integrations::Toggl::Track::DetailedReport do
     )
   }
   let(:friday) { Date.parse("2020-07-17") }
+  let(:reported_seconds) { 66293 }
+  let(:time_entries_count) { 13 }
   it { should respond_to(:start_date) }
   it { should respond_to(:end_date) }
   it { should respond_to(:recorded_seconds) }
@@ -23,19 +25,19 @@ describe Integrations::Toggl::Track::DetailedReport do
 
   describe "#recorded_seconds" do
     it "should should return the total time logged (in seconds)" do
-      expect(subject.recorded_seconds).to eq(66293)
+      expect(subject.recorded_seconds).to eq(reported_seconds)
     end
   end
 
   describe "#entries_count" do
     it "should should return the total time entries count from the report" do
-      expect(subject.entries_count).to eq(13)
+      expect(subject.entries_count).to eq(time_entries_count)
     end
   end
 
   describe "#time_entries" do
-    xit "should should return a list of time entries" do
-      expect(subject.time_entries).to eq([])
+    it "should should return a list of time entries" do
+      expect(subject.time_entries.length).to eq(time_entries_count)
     end
   end
 end

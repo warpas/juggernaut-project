@@ -3,8 +3,8 @@ require "spec_helper"
 describe Integrations::Toggl::Track::TimeEntry do
   subject { described_class.new(client: "Client 1") }
   let(:friday) { Date.parse("2020-07-17") }
-  let(:friday_noon) { Time.parse(friday.to_s) + 12 * 3600 }
   let(:two_hours) { 2 * 3600 }
+  let(:friday_noon) { Time.parse(friday.to_s) + 12 * 3600 }
   it { should respond_to(:client) }
   it { should respond_to(:project) }
   it { should respond_to(:description) }
@@ -21,8 +21,8 @@ describe Integrations::Toggl::Track::TimeEntry do
         description: "Black Mesa",
         tags: ["game"],
         duration: two_hours,
-        start_time: friday_noon,
-        end_time: friday_noon + two_hours
+        start: friday_noon,
+        end: friday_noon + two_hours
       ).start_time).to eq(friday_noon)
     end
   end

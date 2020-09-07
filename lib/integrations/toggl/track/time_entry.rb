@@ -7,7 +7,11 @@ module Integrations
         def initialize(args)
           @project = args[:project]
           @client = args[:client]
-          @start_time = args[:start_time]
+          @description = args[:description]
+          @duration = args[:dur]
+          @tags = args[:tags]
+          @start_time = args[:start]
+          @end_time = args[:end]
         end
       end
     end
