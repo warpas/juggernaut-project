@@ -39,5 +39,17 @@ describe Integrations::Toggl::Track::DetailedReport do
     it "should should return a list of time entries" do
       expect(subject.time_entries.length).to eq(time_entries_count)
     end
+
+    context "single entry" do
+      let(:time_entry) { subject.time_entries.first }
+
+      it "should respond to clients" do
+        expect(subject.time_entries.first).to respond_to(:client)
+        expect(subject.time_entries.first).to respond_to(:description)
+        expect(subject.time_entries.first).to respond_to(:project)
+        expect(subject.time_entries.first).to respond_to(:start_time)
+        expect(subject.time_entries.first).to respond_to(:end_time)
+      end
+    end
   end
 end
