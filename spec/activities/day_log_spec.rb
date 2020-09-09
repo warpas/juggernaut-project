@@ -1,9 +1,21 @@
 require "spec_helper"
 
-describe Activities::DayLog do
-  subject { described_class.new(date: friday) }
+class TogglDouble
+  def report_details(date:)
+    ReportFixture.detailed
+  end
+end
 
-  let(:friday) { Date.parse("2020-08-28") }
+class TrackerDouble
+  def get_entries_for(date:)
+    Integrations::Toggl::Track::DetailedReport.new(start_date: date, toggl_connection: TogglDouble.new).time_entries
+  end
+end
+
+describe Activities::DayLog do
+  subject { described_class.new(date: friday, tracker: TrackerDouble.new) }
+
+  let(:friday) { Date.parse("2020-07-17") }
 
   it { should respond_to(:date) }
   it { should respond_to(:entries) }

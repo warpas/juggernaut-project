@@ -4,9 +4,13 @@ module Activities
   class DayLog
     attr_reader :date, :entries
 
-    def initialize(date:)
+    def initialize(date:, tracker:)
       @date = date
-      @entries = Integrations::Toggl::Track.get_entries_for(date: date)
+      @entries = tracker.get_entries_for(date: date)
+    end
+
+    def client_list
+      puts "entries = #{entries}"
     end
   end
 end

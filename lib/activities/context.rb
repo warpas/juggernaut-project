@@ -10,4 +10,8 @@ module Activities
   def self.list_categories
     Activities::Category.list
   end
+
+  def self.day_log_entries(date:)
+    Activities::DayLog.new(date: date, tracker: Integrations::Toggl::Track).entries
+  end
 end
