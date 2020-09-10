@@ -1,3 +1,4 @@
+require_relative "exporter"
 require_relative "reporter"
 
 module Executive
