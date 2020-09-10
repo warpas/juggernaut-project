@@ -6,7 +6,6 @@ class TogglDouble
   end
 end
 
-# TODO: make sure these test don't send any external requests ‼️‼️
 describe Integrations::Toggl::Track::DetailedReport do
   subject {
     described_class.new(
