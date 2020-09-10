@@ -6,31 +6,37 @@ require "date"
 
 # TODO: Add unit tests.
 
-def build_calendar_entry_from(days_ago:)
-  # TODO: move what should be in Toggl API to toggl file.
-  date = Date.today - days_ago
-  get_entry_list_for(date)
-end
+module Executive
+  class Exporter
+    def self.need_a_good_name_for_this_but_now_its_publish_entries
+      # def compare_goals_to_reality
 
-def get_entry_list_for(date)
-  toggl = Toggl::Report.new(date)
-  adapter = Toggl::GoogleCalendarAdapter.new
-  adapter.build_entry_list_from(report: toggl.report_details)
-end
+      puts "\n⌨️  Running send_toggl_to_calendar script"
+      # TODO: change the way date is given. Ideally a GUI with a date picker.
+      date = CommandLine.get_date_from_command_line(ARGV)
 
-# def compare_goals_to_reality
+      prepared_entry_list =
+        if date.empty?
+          build_calendar_entry_from(days_ago: 1)
+        else
+          get_entry_list_for(Date.parse(date))
+        end
 
-puts "\n⌨️  Running send_toggl_to_calendar script"
-# TODO: change the way date is given. Ideally a GUI with a date picker.
-date = CommandLine.get_date_from_command_line(ARGV)
+      calendar = Google::Calendar.new
+      # TODO: Add or update, instead of just add.
+      calendar.add_list_of_entries_no_duplicates(prepared_entry_list)
+    end
 
-prepared_entry_list =
-  if date.empty?
-    build_calendar_entry_from(days_ago: 1)
-  else
-    get_entry_list_for(Date.parse(date))
+    def self.build_calendar_entry_from(days_ago:)
+      # TODO: move what should be in Toggl API to toggl file.
+      date = Date.today - days_ago
+      get_entry_list_for(date)
+    end
+
+    def self.get_entry_list_for(date)
+      toggl = Toggl::Report.new(date)
+      adapter = Toggl::GoogleCalendarAdapter.new
+      adapter.build_entry_list_from(report: toggl.report_details)
+    end
   end
-
-calendar = Google::Calendar.new
-# TODO: Add or update, instead of just add.
-calendar.add_list_of_entries_no_duplicates(prepared_entry_list)
+end

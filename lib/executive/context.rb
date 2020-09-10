@@ -7,5 +7,6 @@ module Executive
   end
 
   def self.send_activities_to_calendar
+    Executive::Exporter.need_a_good_name_for_this_but_now_its_publish_entries
   end
 end
