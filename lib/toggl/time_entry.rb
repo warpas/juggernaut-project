@@ -58,6 +58,7 @@ module Toggl
 
     # TODO: Move to DateTimeHelper
     def self.calculate_duration(scope_start:, scope_end:)
+      # TODO: handle negative values
       ((DateTime.parse(scope_end).to_time - DateTime.parse(scope_start).to_time) * 1000).to_i
     end
 
