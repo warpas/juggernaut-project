@@ -17,8 +17,7 @@ module Toggl
           duration: entry["dur"],
           calendars_list: entry["tags"],
           description: "Duration: #{DateTimeHelper.readable_duration(entry["dur"])}\n" \
-          "Client: #{entry["client"]}\nProject: #{entry["project"]}\n" \
-          "#{format_time_for(time: report["total_grand"], category: "total", period: "today")}\n\n" \
+          "Client: #{entry["client"]}\nProject: #{entry["project"]}\n\n" \
           "Destination calendar: #{entry["tags"]}"
         }
       end
