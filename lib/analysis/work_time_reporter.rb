@@ -1,8 +1,11 @@
-require_relative "../toggl/report"
-require_relative "../interface/command_line"
-require_relative "../maintenance/context"
-require_relative "../../date_time_helper"
-require "date"
+# frozen_string_literal: true
+
+require_relative '../toggl/report'
+require_relative '../interface/command_line'
+require_relative '../integrations/toggl/track/context'
+require_relative '../maintenance/context'
+require_relative '../../date_time_helper'
+require 'date'
 
 module Analysis
   class WorkTimeReporter
@@ -16,15 +19,11 @@ module Analysis
     end
 
     def build_report(date:)
-      client_name = @cli.get_runtime_argument(name: "client", default: "Client")
-      toggl = Toggl::Report.new(date)
-
-      filtered_report = toggl.report_summary["data"].select { |category|
-        category["title"]["client"] == client_name
-      }
-      time_list = filtered_report.map { |category|
-        category["time"]
-      }
+      client_name = @cli.get_runtime_argument(name: 'client', default: 'All')
+      filtered_report = tracker.get_summary_for(date: date, client: client_name)
+      time_list = filtered_report.map do |category|
+        category['time']
+      end
       time_in_milliseconds = time_list.sum
       available_hours = get_availability_time_in_hours
       time_to_halfway = calculate_time_to_halfway_point(time_in_milliseconds, available_hours)
@@ -38,6 +37,10 @@ module Analysis
 
     attr_reader :cli
 
+    def tracker
+      Integrations::Toggl::Track
+    end
+
     def log(string)
       Maintenance::Logger.log_info(message: string)
     end
@@ -49,7 +52,7 @@ module Analysis
     end
 
     def get_availability_time_in_hours
-      @cli.get_runtime_argument(name: "availability", default: 8).to_i
+      @cli.get_runtime_argument(name: 'availability', default: 8).to_i
     end
 
     def print_availability_message(time)
@@ -68,7 +71,7 @@ module Analysis
         formatted_halfway = DateTimeHelper.readable_duration(time_left)
         log "Time left until the halfway point today: #{formatted_halfway}"
       else
-        log "🎉🎉🎉   Halfway point reached!!  🎉🎉🎉"
+        log '🎉🎉🎉   Halfway point reached!!  🎉🎉🎉'
       end
     end
   end
