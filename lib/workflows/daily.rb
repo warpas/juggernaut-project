@@ -1,4 +1,6 @@
-require_relative "runner"
+# frozen_string_literal: true
+
+require_relative 'runner'
 
 module Workflows
   class Daily
@@ -12,12 +14,13 @@ module Workflows
 
     def self.daily_scripts
       [
-        "scripts/split_toggl_midnight_timers.rb",
-        "scripts/send_toggl_to_calendar.rb",
-        "scripts/populate_calendar.rb",
-        "scripts/daily_creative_report.rb",
-        "scripts/daily_work_report.rb",
-        "scripts/daily_trends_data_export.rb"
+        'scripts/split_toggl_midnight_timers.rb',
+        'scripts/send_toggl_to_calendar.rb',
+        'scripts/populate_calendar.rb',
+        'scripts/daily_creative_report.rb',
+        'scripts/daily_work_report.rb',
+        'scripts/daily_trends_data_export.rb',
+        'scripts/get_important_tasks.rb'
       ]
     end
 
