@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
 require_relative '../integrations/todoist/context'
+require_relative '../integrations/trello/context'
 require_relative '../maintenance/context'
 
 module Tasks
   def self.list_important
-    tasks = Integrations::Todoist.get_tasks_with(label: 'Current_Sprint')
-    display(tasks)
+    todoist_tasks = Integrations::Todoist.get_tasks_with(label: 'Current_Sprint')
+    display(todoist_tasks)
+    trello_tasks = Integrations::Trello.get_tasks
+    display(trello_tasks)
   end
 
   def self.log(string)
