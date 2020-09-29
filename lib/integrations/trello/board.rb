@@ -1,20 +1,30 @@
 # frozen_string_literal: true
 
 require_relative '../../requests'
-require 'json'
+require_relative '../../interface/files/context'
 
 module Integrations
   module Trello
     class Query
       def initialize
         @request_adapter = Requests::Adapter.new
+        @config = fetch_config
       end
 
       def run(entity:, id:)
-        request_path = build_path(entity: entity, query_id: id)
+        # TODO: use the id from args eventually
+        request_path = build_path(entity: entity, query_id: example_id)
         response = @request_adapter.get_request(request_path, request_headers)
         formatted_response = format_json(response)
         { name: formatted_response['name'] }
+      end
+
+      private
+
+      attr_reader :config
+
+      def fetch_config
+        Interface::Files.fetch_json_from(path: 'lib/integrations/trello/credentials.secret.json')
       end
 
       def build_path(entity:, query_id:)
@@ -25,20 +35,16 @@ module Integrations
         [{ key: 'Accept', value: 'application/json' }]
       end
 
-      def get_json_from_file(file_path)
-        # TODO: this should be in Interface::File context
-        file = File.read(file_path)
-        JSON.parse(file)
-      end
-
       def api_key
-        config = get_json_from_file('lib/integrations/trello/credentials.secret.json')
-        config['trello']['key']
+        @config['trello']['key']
       end
 
       def api_token
-        config = get_json_from_file('lib/integrations/trello/credentials.secret.json')
-        config['trello']['token']
+        @config['trello']['token']
+      end
+
+      def example_id
+        @config['trello']['example_board_id']
       end
 
       def format_json(response)
@@ -50,28 +56,15 @@ module Integrations
     end
 
     class Board
-      # TODO: remove the 'board' attribute
-      attr_reader :name, :url, :board, :description
+      attr_reader :name, :url, :description
 
       def initialize(id: 'Some_id', trello_query: Integrations::Trello::Query.new)
-        @board = trello_query.run(entity: 'boards', id: example_id)
-        @description = @board[:name]
+        board = trello_query.run(entity: 'boards', id: id)
+        @description = board[:name]
       end
 
       def self.get(id: 'Some_id')
         new(id: id)
-      end
-
-      def get_json_from_file(file_path)
-        # TODO: this should be in Interface::File context
-        file = File.read(file_path)
-        JSON.parse(file)
-      end
-
-      def example_id
-        # TODO: configuration's getting messy again. Clean it up
-        config = get_json_from_file('lib/integrations/trello/credentials.secret.json')
-        config['trello']['example_board_id']
       end
     end
   end
