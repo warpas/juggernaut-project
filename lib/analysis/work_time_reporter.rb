@@ -52,7 +52,7 @@ module Analysis
     end
 
     def get_availability_time_in_hours
-      @cli.get_runtime_argument(name: 'availability', default: 8).to_i
+      @cli.get_runtime_argument(name: 'availability', default: 8).to_f
     end
 
     def print_availability_message(time)
