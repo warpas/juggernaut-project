@@ -1,7 +1,9 @@
-require "date"
+# frozen_string_literal: true
+
+require 'date'
 
 module Interface
-  class CommandLine
+  class CommandLineWithoutContext
     def initialize(args: ARGV)
       @runtime_args = args
     end
@@ -9,21 +11,17 @@ module Interface
     def get_runtime_date(default: Date.today)
       date = default.to_s
       @runtime_args.each do |cl_argument|
-        split_params = cl_argument.split("=")
-        if split_params.first == "--date" && split_params.length == 2
-          date = split_params.last
-        end
+        split_params = cl_argument.split('=')
+        date = split_params.last if split_params.first == '--date' && split_params.length == 2
       end
       Date.parse(date)
     end
 
-    def get_runtime_argument(name: "argument", default: "default")
+    def get_runtime_argument(name: 'argument', default: 'default')
       argument = default
       @runtime_args.each do |cl_argument|
-        split_params = cl_argument.split("=")
-        if split_params.first == "--#{name}" && split_params.length == 2
-          argument = split_params.last
-        end
+        split_params = cl_argument.split('=')
+        argument = split_params.last if split_params.first == "--#{name}" && split_params.length == 2
       end
       argument
     end

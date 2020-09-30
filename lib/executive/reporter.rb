@@ -1,10 +1,12 @@
-require_relative "../interface/command_line"
-require_relative "../maintenance/context"
-require_relative "../toggl/report"
-require_relative "../toggl/google_calendar_adapter"
-require_relative "../google/calendar"
-require_relative "../../date_time_helper"
-require "date"
+# frozen_string_literal: true
+
+require_relative '../interface/command_line'
+require_relative '../maintenance/context'
+require_relative '../toggl/report'
+require_relative '../toggl/google_calendar_adapter'
+require_relative '../google/calendar'
+require_relative '../../date_time_helper'
+require 'date'
 
 module Executive
   class Reporter
@@ -26,7 +28,7 @@ module Executive
       week_end = DateTimeHelper.get_next_closest_sunday(parsed_date)
       toggl = Toggl::Report.new(week_start, week_end)
       adapter = Toggl::GoogleCalendarAdapter.new
-      adapter.build_weekly_summary_from(report: toggl.report_details, report_day: week_end + 1, category: "work")
+      adapter.build_weekly_summary_from(report: toggl.report_details, report_day: week_end + 1, category: 'work')
     end
 
     def self.last_week_date
@@ -34,7 +36,7 @@ module Executive
     end
 
     def self.cl_date
-      cli = Interface::CommandLine.new(args: ARGV)
+      cli = Interface::CommandLineWithoutContext.new(args: ARGV)
       cli.get_runtime_date(default: last_week_date)
     end
 

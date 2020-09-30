@@ -1,9 +1,11 @@
-require_relative "../lib/interface/command_line"
-require_relative "../lib/toggl/report"
-require_relative "../lib/toggl/google_calendar_adapter"
-require_relative "../lib/google/calendar"
-require_relative "../date_time_helper"
-require "date"
+# frozen_string_literal: true
+
+require_relative '../lib/interface/command_line'
+require_relative '../lib/toggl/report'
+require_relative '../lib/toggl/google_calendar_adapter'
+require_relative '../lib/google/calendar'
+require_relative '../date_time_helper'
+require 'date'
 
 def build_weekly_summary(date)
   # TODO: I want this to compare total time with last week
@@ -15,7 +17,7 @@ def build_weekly_summary(date)
 end
 
 def cl_date
-  cli = Interface::CommandLine.new(args: ARGV)
+  cli = Interface::CommandLineWithoutContext.new(args: ARGV)
   cli.get_runtime_date(default: Date.today - 7)
 end
 

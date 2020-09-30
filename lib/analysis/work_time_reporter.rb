@@ -15,10 +15,11 @@ module Analysis
     end
 
     def initialize
-      @cli = Interface::CommandLine.new(args: ARGV)
+      @cli = Interface::CommandLineWithoutContext.new(args: ARGV)
     end
 
     def build_report(date:)
+      # TODO: For now it just takes a summary report by Client. It has nothing to do with work 😭
       client_name = @cli.get_runtime_argument(name: 'client', default: 'All')
       filtered_report = tracker.get_summary_for(date: date, client: client_name)
       time_list = filtered_report.map do |category|

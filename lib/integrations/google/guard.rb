@@ -1,7 +1,9 @@
-require_relative "../interface/command_line"
-require_relative "../maintenance/context"
-require "googleauth"
-require "googleauth/stores/file_token_store"
+# frozen_string_literal: true
+
+require_relative '../interface/command_line'
+require_relative '../maintenance/context'
+require 'googleauth'
+require 'googleauth/stores/file_token_store'
 
 module Integrations
   module Google
@@ -23,7 +25,7 @@ module Integrations
         credentials = authorizer.get_credentials user_id
         if credentials.nil?
           url = authorizer.get_authorization_url base_url: oob_uri
-          log "Open the following URL in the browser and enter the " \
+          log 'Open the following URL in the browser and enter the ' \
               "resulting code after authorization:\n" + url
           code = get_input
           credentials = authorizer.get_and_store_credentials_from_code(
@@ -36,11 +38,11 @@ module Integrations
       private
 
       def oob_uri
-        "urn:ietf:wg:oauth:2.0:oob".freeze
+        'urn:ietf:wg:oauth:2.0:oob'
       end
 
       def user_id
-        "default".freeze
+        'default'
       end
 
       def log(string)
@@ -48,7 +50,7 @@ module Integrations
       end
 
       def get_input
-        Interface::CommandLine.new.get_input
+        Interface::CommandLineWithoutContext.new.get_input
       end
     end
   end

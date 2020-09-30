@@ -1,6 +1,8 @@
-require_relative "../lib/interface/command_line"
-require_relative "../lib/analysis/context"
-require_relative "../lib/google/sheets"
+# frozen_string_literal: true
+
+require_relative '../lib/interface/command_line'
+require_relative '../lib/analysis/context'
+require_relative '../lib/google/sheets'
 
 def loop_for(days: 1)
   (1..days).reverse_each do |day|
@@ -14,15 +16,15 @@ def do_everything_once(date: (Date.today - 1))
   # TODO: only append if the date is not already there
   # TODO: maybe update if the date is there but the values are different?
   Google::Sheets
-    .new(file_id: "trends")
-    .append_to_sheet(values: values, range: "Data!A:I")
+    .new(file_id: 'trends')
+    .append_to_sheet(values: values, range: 'Data!A:I')
   # trends_sheet.get_spreadsheet_values(range: "Data!A:I")
   puts "📈  Trend data appended for #{date}"
 end
 
 puts "\n⌨️  Running daily_trends_data_export script"
 
-cli = Interface::CommandLine.new(args: ARGV)
+cli = Interface::CommandLineWithoutContext.new(args: ARGV)
 report_date = cli.get_runtime_date(default: Date.today) - 1
 
 # TODO: Modify this to ignore reported dates
