@@ -1,18 +1,20 @@
-require_relative "../lib/command_line"
-require_relative "../lib/toggl/report"
-require_relative "../lib/toggl/google_calendar_adapter"
-require_relative "../lib/google/calendar"
-require "date"
+# frozen_string_literal: true
+
+require_relative '../lib/command_line'
+require_relative '../lib/toggl/report'
+require_relative '../lib/toggl/google_calendar_adapter'
+require_relative '../lib/google/calendar'
+require 'date'
 
 def build_daily_summary(date_string)
   date = Date.parse(date_string)
   toggl = Toggl::Report.new(date)
   adapter = Toggl::GoogleCalendarAdapter.new
-  adapter.build_daily_summary_from(report: toggl.report_details, report_day: date, category: "game")
+  adapter.build_daily_summary_from(report: toggl.report_details, report_day: date, category: 'game')
 end
 
 puts "\n⌨️  Running daily_creative_report script"
-date = CommandLine.get_date_from_command_line(ARGV)
+date = CommandLineOldest.get_date_from_command_line(ARGV)
 
 date_string =
   if date.empty?

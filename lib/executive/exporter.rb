@@ -1,8 +1,10 @@
-require_relative "../command_line"
-require_relative "../toggl/report"
-require_relative "../toggl/google_calendar_adapter"
-require_relative "../google/calendar"
-require "date"
+# frozen_string_literal: true
+
+require_relative '../command_line'
+require_relative '../toggl/report'
+require_relative '../toggl/google_calendar_adapter'
+require_relative '../google/calendar'
+require 'date'
 
 # TODO: Add unit tests.
 
@@ -13,7 +15,7 @@ module Executive
 
       puts "\n⌨️  Running send_toggl_to_calendar script"
       # TODO: change the way date is given. Ideally a GUI with a date picker.
-      date = CommandLine.get_date_from_command_line(ARGV)
+      date = CommandLineOldest.get_date_from_command_line(ARGV)
 
       prepared_entry_list =
         if date.empty?
