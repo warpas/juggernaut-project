@@ -8,6 +8,7 @@ require_relative '../lib/tasks/context'
 require_relative '../lib/workflows/context'
 require_relative '../lib/integrations/todoist/context'
 require_relative '../lib/integrations/toggl/track/context'
+require_relative '../lib/interface/context'
 
 # Other
 require_relative 'fixtures/reports'
