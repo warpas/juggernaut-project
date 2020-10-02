@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../interface/command_line'
+require_relative '../interface/command_line/context'
 
 module Maintenance
   class Logger
@@ -9,12 +9,12 @@ module Maintenance
     end
 
     def self.log_info(message:)
-      cli = Interface::CommandLineWithoutContext.new
+      cli = Interface::CommandLine
       new(interface: cli).info(message: message)
     end
 
     def info(message:)
-      @interface.log_output(message)
+      @interface.output(message)
     end
 
     private
