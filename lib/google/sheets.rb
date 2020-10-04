@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 module Google
-  require_relative "auth_wrapper"
-  require "google/apis/sheets_v4"
-  require "googleauth"
-  require "googleauth/stores/file_token_store"
-  require "fileutils"
-  require "json"
+  require_relative 'auth_wrapper'
+  require 'google/apis/sheets_v4'
+  require 'googleauth'
+  require 'googleauth/stores/file_token_store'
+  require 'fileutils'
+  require 'json'
 
   class Sheets
     def initialize(
-      config_file: "lib/google/sheets/credentials.secret.json",
-      token_file: "lib/google/sheets/token.secret.yaml",
+      config_file: 'lib/google/sheets/credentials.secret.json',
+      token_file: 'lib/google/sheets/token.secret.yaml',
       file_id:
     )
       @config = get_json_from_file(config_file)
@@ -22,35 +24,39 @@ module Google
 
     def get_spreadsheet_values(range:)
       response = @service.get_spreadsheet_values spreadsheet_id, range
-      puts "No data found." if response.values.empty?
+      puts 'No data found.' if response.values.empty?
       response.values.each do |row|
         row.each do |cell|
-          print cell + " | "
+          print cell + ' | '
         end
         puts "\n"
       end
       response
     end
 
-    def send_to_sheets(values: [["test"]], range: "Sheet1!B4")
+    def send_to_sheets(values: [['test']], range: 'Sheet1!B4')
       request_body = Google::Apis::SheetsV4::ValueRange.new(range: range, values: values)
       response = service.update_spreadsheet_value(
         spreadsheet_id,
         range,
         request_body,
-        value_input_option: "USER_ENTERED"
+        value_input_option: 'USER_ENTERED'
       )
       puts response.to_json
       response
     end
 
-    def append_to_sheet(values: [["test"]], range: "Sheet1!B4")
+    def append_trend_datapoint(payload:)
+      append_to_sheet(values: payload, range: 'Data!A:I')
+    end
+
+    def append_to_sheet(values: [['test']], range: 'Sheet1!B4')
       request_body = Google::Apis::SheetsV4::ValueRange.new(values: values)
       result = service.append_spreadsheet_value(
         spreadsheet_id,
         range,
         request_body,
-        value_input_option: "USER_ENTERED"
+        value_input_option: 'USER_ENTERED'
       )
       puts "#{result.updates.updated_cells} cells appended."
     end
@@ -70,11 +76,11 @@ module Google
     end
 
     def application_name
-      @config["application"]["name"]
+      @config['application']['name']
     end
 
     def assign_spreadsheet_id(spreadsheet_name)
-      @config["sheets"][spreadsheet_name]
+      @config['sheets'][spreadsheet_name]
     end
   end
 end

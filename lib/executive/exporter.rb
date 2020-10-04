@@ -13,10 +13,12 @@ require 'date'
 
 module Executive
   class Exporter
+    # Activities to calendar export functions below
+
     def self.need_a_good_name_for_this_but_now_its_publish_entries
+      log "\n⌨️  Running send_toggl_to_calendar script"
       # def compare_goals_to_reality
 
-      puts "\n⌨️  Running send_toggl_to_calendar script"
       # TODO: change the way date is given. Ideally a GUI with a date picker.
       date = CommandLineOldest.get_date_from_command_line(ARGV)
 
@@ -44,30 +46,33 @@ module Executive
       adapter.build_entry_list_from(report: toggl.report_details)
     end
 
-    def self.daily_trends_datapoints
-      do_the_trend_work unless trends_already_exported
+    # Trends export functions below
+
+    def self.export_trends_datapoint_for_today
+      log "\n⌨️  Running daily_trends_data_export script"
+      do_the_trend_work_once unless trends_already_exported
     end
 
     def self.trends_already_exported
       false
     end
 
-    def self.do_the_trend_work
-      puts "\n⌨️  Running daily_trends_data_export script"
-
-      cli = Interface::CommandLineWithoutContext.new(args: ARGV)
-      report_date = cli.get_runtime_date(default: Date.today) - 1
-
+    def self.do_the_trend_work_once
       # TODO: Modify this to ignore reported dates
       # TODO: Split into 2 scripts
-      # loop_for(days: 60)
-      do_everything_once(date: report_date)
+      do_everything_once(date: get_report_date)
     end
 
-    def self.loop_for(days: 1)
+    # TODO: unused, separate into another script
+    def self.do_the_trend_work_for(days: 1)
       (1..days).reverse_each do |day|
         do_everything_once(date: (Date.today - day))
       end
+    end
+
+    def self.get_report_date
+      cli = Interface::CommandLineWithoutContext.new(args: ARGV)
+      cli.get_runtime_date(default: Date.today) - 1
     end
 
     def self.do_everything_once(date: (Date.today - 1))
@@ -75,11 +80,21 @@ module Executive
 
       # TODO: only append if the date is not already there
       # TODO: maybe update if the date is there but the values are different?
-      Google::Sheets
-        .new(file_id: 'trends')
-        .append_to_sheet(values: values, range: 'Data!A:I')
-      # trends_sheet.get_spreadsheet_values(range: "Data!A:I")
-      puts "📈  Trend data appended for #{date}"
+      trends_file = Google::Sheets.new(file_id: 'trends')
+      send(payload: values, destination: trends_file)
+      log "📈  Trend data appended for #{date}"
     end
+
+    def self.send(payload:, destination:)
+      destination.append_trend_datapoint(payload: payload)
+    end
+
+    # Private utils functions below
+
+    def self.log(string)
+      Maintenance::Logger.log_info(message: string)
+    end
+
+    private_class_method :log
   end
 end

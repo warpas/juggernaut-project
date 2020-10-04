@@ -1,5 +1,8 @@
-require_relative "exporter"
-require_relative "reporter"
+# frozen_string_literal: true
+
+require_relative '../analysis/context'
+require_relative 'exporter'
+require_relative 'reporter'
 
 module Executive
   def self.generate_weekly_work_report
@@ -11,7 +14,7 @@ module Executive
     Executive::Exporter.need_a_good_name_for_this_but_now_its_publish_entries
   end
 
-  def self.export_daily_trends_datapoints
+  def self.export_trends_datapoint_for_today
     Executive::Exporter.daily_trends_datapoints
   end
 end
