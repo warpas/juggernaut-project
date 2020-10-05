@@ -2,4 +2,4 @@
 
 require_relative '../lib/executive/context'
 
-Executive.export_daily_trends_datapoints
+Executive.export_trends_datapoint_for_today

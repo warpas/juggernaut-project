@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Activities
   class Category
     CATEGORIES = %w[reading writing work games consumption creative sleep exercise].freeze

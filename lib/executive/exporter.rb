@@ -3,6 +3,7 @@
 require_relative '../command_line'
 require_relative '../interface/command_line'
 require_relative '../analysis/context'
+require_relative '../storage/context'
 require_relative '../toggl/report'
 require_relative '../toggl/google_calendar_adapter'
 require_relative '../google/calendar'
@@ -48,7 +49,7 @@ module Executive
 
     # Trends export functions below
 
-    def self.export_trends_datapoint_for_today
+    def self.daily_trends_datapoints
       log "\n⌨️  Running daily_trends_data_export script"
       do_the_trend_work_once unless trends_already_exported
     end
@@ -80,13 +81,20 @@ module Executive
 
       # TODO: only append if the date is not already there
       # TODO: maybe update if the date is there but the values are different?
-      trends_file = Google::Sheets.new(file_id: 'trends')
-      send(payload: values, destination: trends_file)
+      send(payload: values, destination: trends_destination_legacy)
       log "📈  Trend data appended for #{date}"
     end
 
     def self.send(payload:, destination:)
       destination.append_trend_datapoint(payload: payload)
+    end
+
+    def self.trends_destination_legacy
+      Google::Sheets.new(file_id: 'trends')
+    end
+
+    def self.trends_destination
+      Storage.trends_destination
     end
 
     # Private utils functions below
