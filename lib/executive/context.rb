@@ -11,7 +11,7 @@ module Executive
 
   def self.send_activities_to_calendar
     # TODO: get entries from Activities::DayLog.entries, then pass them to
-    Executive::Exporter.need_a_good_name_for_this_but_now_its_publish_entries
+    Executive::Exporter.publish_entries_in_calendar
   end
 
   def self.export_trends_datapoint_for_today

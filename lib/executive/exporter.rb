@@ -16,7 +16,7 @@ module Executive
   class Exporter
     # Activities to calendar export functions below
 
-    def self.need_a_good_name_for_this_but_now_its_publish_entries
+    def self.publish_entries_in_calendar
       log "\n⌨️  Running send_toggl_to_calendar script"
       # def compare_goals_to_reality
 
