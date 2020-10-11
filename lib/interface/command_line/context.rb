@@ -5,5 +5,9 @@ module Interface
     def self.output(message)
       puts message
     end
+
+    def sel.fetch_params(params: [:date])
+      # TODO: implement it
+    end
   end
 end
