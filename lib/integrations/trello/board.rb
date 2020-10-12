@@ -8,12 +8,12 @@ module Integrations
     class Query
       def initialize
         @request_adapter = Requests::Adapter.new
-        @config = fetch_config
+        @config = Integrations::Trello::Config.new
       end
 
       def run(entity:, id:)
         # TODO: use the id from args eventually
-        request_path = build_path(entity: entity, query_id: example_id)
+        request_path = build_path(entity: entity, query_id: id)
         response = @request_adapter.get_request(request_path, request_headers)
         formatted_response = format_json(response)
         { name: formatted_response['name'] }
@@ -28,23 +28,19 @@ module Integrations
       end
 
       def build_path(entity:, query_id:)
-        "https://api.trello.com/1/#{entity}/#{query_id}?key=#{api_key}&token=#{api_token}"
+        "https://api.trello.com/1/#{query_structure(entity, query_id)}?#{auth_params}"
       end
 
       def request_headers
         [{ key: 'Accept', value: 'application/json' }]
       end
 
-      def api_key
-        @config['trello']['key']
+      def auth_params
+        @config.auth
       end
 
-      def api_token
-        @config['trello']['token']
-      end
-
-      def example_id
-        @config['trello']['example_board_id']
+      def query_structure(entity, entity_id)
+        @config.fetch_url_structure(entity: entity, id: entity_id)
       end
 
       def format_json(response)
@@ -55,15 +51,47 @@ module Integrations
       end
     end
 
+    class Config
+      def initialize
+        @secret = fetch_config
+      end
+
+      def auth
+        "key=#{api_key}&token=#{api_token}"
+      end
+
+      def fetch_url_structure(entity:, id:)
+        "#{entity}/#{fetch_entity(entity: entity, id: id)}"
+      end
+
+      def fetch_entity(entity: 'boards', id: 'example_board_id')
+        @secret['trello'][entity][id]
+      end
+
+      private
+
+      def fetch_config
+        Interface::Files.fetch_json_from(path: 'lib/integrations/trello/credentials.secret.json')
+      end
+
+      def api_key
+        @secret['trello']['key']
+      end
+
+      def api_token
+        @secret['trello']['token']
+      end
+    end
+
     class Board
       attr_reader :name, :url, :description
 
-      def initialize(id: 'Some_id', trello_query: Integrations::Trello::Query.new)
+      def initialize(id: 'example_board_id', trello_query: Integrations::Trello::Query.new)
         board = trello_query.run(entity: 'boards', id: id)
         @description = board[:name]
       end
 
-      def self.get(id: 'Some_id')
+      def self.get(id: 'example_board_id')
         new(id: id)
       end
     end

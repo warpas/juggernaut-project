@@ -6,7 +6,7 @@ module Interface
       puts message
     end
 
-    def sel.fetch_params(params: [:date])
+    def self.fetch_params(params: [:date])
       # TODO: implement it
     end
   end
