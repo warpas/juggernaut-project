@@ -15,7 +15,45 @@ module Integrations
         request_path = build_path(entity: entity, query_id: id)
         response = @request_adapter.get_request(request_path, request_headers)
         formatted_response = format_json(response)
-        { name: formatted_response['name'] }
+        {
+          name: formatted_response['name'],
+          url: formatted_response['shortUrl'],
+          trello_id: formatted_response['id']
+        }
+      end
+
+      def run_lists_query(entity:, id:)
+        request_path = build_path_lists(entity: entity, query_id: id)
+        response = @request_adapter.get_request(request_path, request_headers)
+        formatted_response = format_json(response)
+        lists = []
+        formatted_response.each do |list|
+          lists.push(
+            {
+              id: list['id'],
+              name: list['name']
+            }
+          )
+        end
+        lists
+      end
+
+      def run_cards_query(entity:, id:)
+        request_path = build_path_cards(query_id: id)
+        response = @request_adapter.get_request(request_path, request_headers)
+        formatted_response = format_json(response)
+        cards = []
+        formatted_response.each do |card|
+          cards.push(
+            {
+              id: card['id'],
+              name: card['name'],
+              description: card['desc'],
+              url: card['url']
+            }
+          )
+        end
+        cards
       end
 
       private
@@ -24,6 +62,14 @@ module Integrations
 
       def build_path(entity:, query_id:)
         "https://api.trello.com/1/#{query_structure(entity, query_id)}?#{auth_params}"
+      end
+
+      def build_path_lists(entity:, query_id:)
+        "https://api.trello.com/1/#{query_structure(entity, query_id)}/lists?#{auth_params}"
+      end
+
+      def build_path_cards(query_id:)
+        "https://api.trello.com/1/lists/#{query_id}/cards?#{auth_params}"
       end
 
       def request_headers

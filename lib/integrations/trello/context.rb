@@ -5,10 +5,17 @@ require_relative 'board'
 module Integrations
   module Trello
     def self.get_tasks
-      [
-        Integrations::Trello::Board.get,
-        Integrations::Trello::Board.get(id: 'important_progress_board_id')
-      ]
+      board = Integrations::Trello::Board.get(id: 'important_progress_board_id')
+      array =
+        [
+          Integrations::Trello::Board.get,
+          board
+        ]
+      cards = board.fetch_cards(list: 'In progress')
+      cards.each do |card|
+        array.push(card)
+      end
+      array
     end
   end
 end
