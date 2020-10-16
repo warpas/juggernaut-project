@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'card'
+require_relative 'query'
 
 module Integrations
   module Trello
