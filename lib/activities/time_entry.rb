@@ -1,4 +1,6 @@
-require_relative "../integrations/toggl/track/context"
+# frozen_string_literal: true
+
+require_relative '../integrations/toggl/track/context'
 
 module Activities
   class TimeEntry
@@ -12,5 +14,9 @@ module Activities
       # Integrations::Toggl::Track::Query.new
       Integrations::Toggl::Track.get_entries_for(date: date)
     end
+
+    private
+
+    attr_reader :external_id
   end
 end
