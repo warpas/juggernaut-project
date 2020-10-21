@@ -1,10 +1,12 @@
-require_relative "log"
-require_relative "day_log"
-require_relative "category"
+# frozen_string_literal: true
+
+require_relative 'log'
+require_relative 'day_log'
+require_relative 'category'
 
 module Activities
   def self.show_log_for(date:)
-    Activities::Log.list_for(date: date)
+    Activities::Log.new(tracker_class: Integrations::Toggl::Track).list_for(date: date)
   end
 
   def self.list_categories
