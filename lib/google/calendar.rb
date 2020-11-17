@@ -1,20 +1,22 @@
+# frozen_string_literal: true
+
 module Google
-  require_relative "auth_wrapper"
-  require "google/apis/calendar_v3"
-  require "googleauth"
-  require "googleauth/stores/file_token_store"
-  require "date"
-  require "fileutils"
-  require "json"
+  require_relative 'auth_wrapper'
+  require 'google/apis/calendar_v3'
+  require 'googleauth'
+  require 'googleauth/stores/file_token_store'
+  require 'date'
+  require 'fileutils'
+  require 'json'
 
   class Calendar
     # TODO: Design a clear and minimal interface.
     # TODO: Add unit tests.
 
     def initialize(
-      config_file: "lib/google/calendar/credentials.secret.json",
-      token_file: "lib/google/calendar/token.secret.yaml",
-      calendar_name: "primary"
+      config_file: 'lib/google/calendar/credentials.secret.json',
+      token_file: 'lib/google/calendar/token.secret.yaml',
+      calendar_name: 'primary'
     )
       @config = get_json_from_file(config_file)
       @name = calendar_name
@@ -33,12 +35,12 @@ module Google
         {
           max_results: count,
           single_events: true,
-          order_by: "startTime",
+          order_by: 'startTime',
           time_min: DateTime.now.rfc3339
         }
       response = @service.list_events(calendar_id, optional_params)
-      puts "Upcoming events:"
-      puts "No upcoming events found" if response.items.empty?
+      puts 'Upcoming events:'
+      puts 'No upcoming events found' if response.items.empty?
       response.items.each do |event|
         start = event.start.date || event.start.date_time
         puts "- #{event.summary} (#{start})"
@@ -78,8 +80,8 @@ module Google
     def insert_calendar_event(event, cal_id = @calendar_id)
       result = @service.insert_event(cal_id, event)
       puts "📆  Event created: #{result.html_link}"
-    rescue => _e
-      puts "Duplicate event found"
+    rescue StandardError => _e
+      puts 'Duplicate event found'
     end
 
     def add_list_of_entries(entry_list)
@@ -97,7 +99,7 @@ module Google
     # TODO: make sure entry_details.start and entry_details.end are DateTime
     def add_entry_without_duplicates(entry_details)
       start_date = entry_details[:start].strftime
-      date = start_date.split("T").first
+      date = start_date.split('T').first
       output_calendar_list = sanitize_calendar_list(entry_details[:calendars_list])
       output_calendar_list.each do |calendar|
         day_events = fetch_events_from(date, calendar)
@@ -107,15 +109,15 @@ module Google
           found = false
           # TODO: use include? instead
           day_events.each do |event|
-            if (event.start.date_time.to_s == entry_details[:start].strftime) &&
-                (event.summary == entry_details[:title]) &&
-                (event.description == entry_details[:description])
-              found = true
-            end
+            next unless (event.start.date_time.to_s == entry_details[:start].strftime) &&
+                        (event.summary == entry_details[:title]) &&
+                        (event.description == entry_details[:description])
+
+            found = true
           end
           add_entry(entry_details) unless found
         end
-        puts "☑️   Naught but duplicates and tumbleweeds found." if found
+        puts '☑️   Naught but duplicates and tumbleweeds found.' if found
       end
     end
 
@@ -140,11 +142,11 @@ module Google
 
     def list_calendars
       response = @service.list_calendar_lists.to_json
-      json_list = JSON.parse(response)["items"]
+      json_list = JSON.parse(response)['items']
       json_list.map do |calendar_item|
         {
-          name: calendar_item["summary"],
-          id: calendar_item["id"]
+          name: calendar_item['summary'],
+          id: calendar_item['id']
         }
       end
     end
@@ -156,9 +158,9 @@ module Google
           end: event.end.date_time,
           title: event.summary
         }
-        if color_coding != "" && event.color_id == color_coding
+        if color_coding != '' && event.color_id == color_coding
           destination.add_entry_without_duplicates(entry) unless entry[:start].nil?
-        elsif color_coding == ""
+        elsif color_coding == ''
           destination.add_entry_without_duplicates(entry) unless entry[:start].nil?
         end
       end
@@ -182,12 +184,12 @@ module Google
     end
 
     def application_name
-      @config["application"]["name"]
+      @config['application']['name']
     end
 
     def get_calendar_id_for(calendar_name)
-      from_config = @config["calendars"][calendar_name]
-      from_config.nil? ? "primary" : from_config
+      from_config = @config['calendars'][calendar_name]
+      from_config.nil? ? 'primary' : from_config
     end
 
     def build_calendar_event(details)
@@ -206,8 +208,9 @@ module Google
 
     def sanitize_calendar_list(calendar_list)
       return [calendar_id] if calendar_list.nil?
-      evaluated_list = calendar_list.map { |name| @config["calendars"][name] }
-      sanitized_list = evaluated_list.reject { |x| x.nil? }
+
+      evaluated_list = calendar_list.map { |name| @config['calendars'][name] }
+      sanitized_list = evaluated_list.reject(&:nil?)
       sanitized_list.empty? ? [calendar_id] : sanitized_list
     end
   end
