@@ -13,7 +13,10 @@ module Executive
     def self.generate_weekly_work_report
       # TODO: move to Executive::Runner
       log "\n⌨️  Running weekly_work_report script"
-      prepared_entry_list = build_weekly_summary(cl_date.to_s)
+      date = cl_date
+      puts "for the date of #{date}"
+
+      prepared_entry_list = build_weekly_summary(date.to_s)
 
       calendar = Google::Calendar.new
       calendar.add_list_of_entries_no_duplicates(prepared_entry_list)
