@@ -1,5 +1,7 @@
-require_relative "../interface/command_line"
-require_relative "../maintenance/context"
+# frozen_string_literal: true
+
+require_relative '../interface/command_line'
+require_relative '../maintenance/context'
 
 module Workflows
   class Runner
