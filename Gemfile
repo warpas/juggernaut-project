@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 gem 'faraday'
-gem 'google-api-client' # TODO: Replace this gem, because it's no longer supported
+gem 'google-api-client' # TODO: [2021-08] Replace this gem, because it's no longer supported
 # *******************************************************************************
 # The google-api-client gem is deprecated and will likely not be updated further.
 
