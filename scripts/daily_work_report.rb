@@ -15,6 +15,7 @@ end
 
 puts "\n⌨️  Running daily_work_report script"
 date = CommandLineOldest.get_date_from_command_line(ARGV)
+puts "for the date of #{date}"
 
 date_string =
   if date.empty?

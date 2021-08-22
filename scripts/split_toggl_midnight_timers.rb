@@ -15,6 +15,7 @@ end
 puts "\n⌨️  Running split_toggl_midnight_timers script"
 # TODO: change the way date is given. Ideally a GUI with a date picker.
 date = CommandLineOldest.get_date_from_command_line(ARGV)
+puts "for the date of #{date}"
 
 report_date =
   if date.empty?
