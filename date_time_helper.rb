@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DateTimeHelper
   def self.readable_duration(milliseconds)
     time_integer = milliseconds.to_i
@@ -26,7 +28,7 @@ module DateTimeHelper
 
   def self.get_next_midnight(date)
     next_day = date + 1
-    DateTime.new(next_day.year, next_day.month, next_day.day, 0, 0, 1, "+02:00")
+    DateTime.new(next_day.year, next_day.month, next_day.day, 0, 0, 1, '+02:00')
   end
 
   # TODO: this method's implementation needs to be more accurate
