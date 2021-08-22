@@ -28,10 +28,12 @@ module Analysis
       time_in_milliseconds = time_list.sum
       available_hours = get_availability_time_in_hours
       time_to_halfway = calculate_time_to_halfway_point(time_in_milliseconds, available_hours)
+      time_to_finish_line = calculate_time_to_finish_line(time_in_milliseconds, available_hours)
 
       print_availability_message(available_hours)
       print_work_time_message(time_in_milliseconds)
       print_halfway_message(time_to_halfway)
+      print_finish_line_message(time_to_finish_line)
     end
 
     private
@@ -50,6 +52,12 @@ module Analysis
       halfway_point = available_hours / 2
       halfway_point_milliseconds = halfway_point * 3600 * 1000
       halfway_point_milliseconds - time
+    end
+
+    def calculate_time_to_finish_line(time, available_hours)
+      finish_line = available_hours - 1
+      finish_line_milliseconds = finish_line * 3600 * 1000
+      finish_line_milliseconds - time
     end
 
     def get_availability_time_in_hours
@@ -73,6 +81,15 @@ module Analysis
         log "Time left until the halfway point today: #{formatted_halfway}"
       else
         log '🎉🎉🎉   Halfway point reached!!  🎉🎉🎉'
+      end
+    end
+
+    def print_finish_line_message(time_left)
+      if time_left.positive?
+        formatted_finish_line = DateTimeHelper.readable_duration(time_left)
+        log "Time left until the finish line today: #{formatted_finish_line}"
+      else
+        log '🎉🎉🎉🎉🎉   Finish line reached!!!  🎉🎉🎉🎉🎉'
       end
     end
   end
