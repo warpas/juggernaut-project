@@ -19,3 +19,6 @@ require_relative '../lib/toggl/report'
 require_relative '../lib/toggl/google_calendar_adapter'
 require_relative '../date_time_helper'
 require 'time'
+
+# TODO: structure needed for the following
+require_relative '../scripts/invoice_abstract.rb'

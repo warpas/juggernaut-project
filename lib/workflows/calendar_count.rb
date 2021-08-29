@@ -12,7 +12,7 @@ module Workflows
 
     def self.calendar_count_scripts
       [
-        # 'scripts/how_much_work_today.rb'
+        'scripts/invoice_abstract.rb'
       ]
     end
 
