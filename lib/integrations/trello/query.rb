@@ -195,7 +195,7 @@ Obiecałem innym:
       end
 
       def list_obligations_to_others_for_the_day
-        "- Dominika zakładka \"Kariera\"\n- Mariusz nosorożce"
+        "- Zakładka \"card_name\"\n- Project"
       end
 
       attr_reader :config
