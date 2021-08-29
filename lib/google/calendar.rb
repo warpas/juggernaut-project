@@ -61,6 +61,18 @@ module Google
       response.items
     end
 
+    def fetch_events_from_short(date)
+      optional_params =
+        {
+          single_events: true,
+          # order_by: "startTime",
+          time_min: "#{date}T00:00:01+02:00",
+          time_max: "#{date}T23:59:59+02:00"
+        }
+      response = @service.list_events(calendar_id, optional_params)
+      response.items
+    end
+
     def fetch_events_from(date, cal_id)
       optional_params =
         {
