@@ -26,5 +26,5 @@ puts "\n⌨️  Running populate_calendar script"
 cl_date = CommandLineOldest.get_date_from_command_line(ARGV)
 date = cl_date.empty? ? Date.today.to_s : cl_date
 
-copy_events(date: date, source_cal: 'primary', destination_cal: 'surykartka', color_coding: '')
-copy_events(date: date, source_cal: 'color_coded', destination_cal: 'surykartka', color_coding: '7')
+copy_events(date: date, source_cal: 'primary', destination_cal: 'destination', color_coding: '')
+copy_events(date: date, source_cal: 'color_coded', destination_cal: 'destination', color_coding: '7')
