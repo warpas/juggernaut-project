@@ -79,7 +79,22 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
 
     ✅ work weekly report separate from other weekly reports
 
-4. v1.0 release
+5. v0.1 release
+    ✅ add first version tag to Github
+
+6. v0.2 release
+    - update to Ruby 3.0 or higher
+    - make sure the project runs on M1 Macs
+    - handle Google's deprecation of OAuth out-of-band (OOB), move to a safer method
+    - update existing Google Calendar and Sheets functionality so that it works on Ruby 3 and M1 Macs
+      - add tests for Google integrations
+      - review and update the public interfaces for Google integrations
+
+7. v.0.2.1 release
+    - update Toggl integrations to work under v2.0 circumstances
+    - add tests for Toggl integrations
+
+8. v1.0 release
 
     - publish it as a gem on RubyGems
 
@@ -96,7 +111,7 @@ A simple Ruby script to export time logged through Toggl to Google Calendar
             - Google Calendar list of calendars shouldn't be stored in credentials file, because it's too much upfront config
             - Same for Google Sheets
 
-6. After v1.0
+9. After v1.0
 
     - add the option to change calendar entry color
 
