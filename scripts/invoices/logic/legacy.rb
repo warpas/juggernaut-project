@@ -15,11 +15,39 @@ class OldInvoice
   end
 
   def build_row(date:, source_calendar:)
-    []
+    result_array = [
+      date
+    ]
+
+    _head, *tail = *result_array
+    return [] if tail.sum.zero?
+
+    result_array
   end
 
   def build_list(month_number:, year_number:, calendar:)
-    []
+    # TODO: smarter cycle through days of month
+    days = (1..31)
+    row_list = []
+    skipped_dates = []
+    days.each do |day|
+      # TODO: connect date and sheet name for this case
+
+      date = "#{year_number}-#{month_number}-#{day}"
+      split_date = date.split('-')
+      is_date_valid = Date.valid_date?(split_date[0].to_i, split_date[1].to_i, split_date[2].to_i)
+      puts "is #{date} valid? #{is_date_valid}"
+      next unless is_date_valid
+
+      row_candidate = build_row(date:, source_calendar: calendar)
+      if !row_candidate.empty?
+        row_list << row_candidate
+      else
+        # TODO: is this useful? Make it useful or get rid of it
+        skipped_dates << [date]
+      end
+    end
+    row_list
   end
 
   def send_list_to_sheets(destination_sheet:, row_list:)
