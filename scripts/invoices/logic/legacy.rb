@@ -15,9 +15,24 @@ class OldInvoice
   end
 
   def build_row(date:, source_calendar:)
-    result_array = [
-      date
-    ]
+    events = source_calendar.fetch_events(date)
+
+    daily_ns_count = 0
+    categories = @config.event_categories
+    event_categories_list = events.map do |event|
+      daily_ns_count += 1 if event.summary.include?('(NS)')
+      selection = categories.select { |category| category[:color] == event.color_id }
+
+      selection.empty? ? @config.default_category_name : selection.first[:name]
+    end
+    puts event_categories_list
+    puts "daily_ns_count = #{daily_ns_count}"
+
+    result_array = [date]
+    categories.each do |category|
+      result_array << event_categories_list.count(category[:name])
+    end
+    result_array << daily_ns_count
 
     _head, *tail = *result_array
     return [] if tail.sum.zero?
