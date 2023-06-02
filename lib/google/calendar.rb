@@ -31,14 +31,14 @@ module Google
 
     def fetch_next_events(count)
       # Fetch the next 'count' events for the user
-      optional_params =
-        {
-          max_results: count,
-          single_events: true,
-          order_by: 'startTime',
-          time_min: DateTime.now.rfc3339
-        }
-      response = @service.list_events(calendar_id, optional_params)
+      # optional_params =
+      #   {
+      #     max_results: count,
+      #     single_events: true,
+      #     order_by: 'startTime',
+      #     time_min: DateTime.now.rfc3339
+      #   }
+      response = @service.list_events(calendar_id, max_results: count, single_events: true, order_by: 'startTime', time_min: DateTime.now.rfc3339)
       puts 'Upcoming events:'
       puts 'No upcoming events found' if response.items.empty?
       response.items.each do |event|
@@ -49,39 +49,45 @@ module Google
     end
 
     def fetch_events(date)
-      optional_params =
-        {
-          single_events: true,
-          # order_by: "startTime",
-          time_min: "#{date}T00:00:01+02:00",
-          time_max: "#{date}T23:59:59+02:00"
-        }
-      response = @service.list_events(calendar_id, optional_params)
+      # optional_params =
+      #   {
+      #     single_events: true,
+      #     # order_by: "startTime",
+      #     time_min: "#{date}T00:00:01+02:00",
+      #     time_max: "#{date}T23:59:59+02:00"
+      #   }
+      response = @service.list_events(calendar_id, single_events: true, time_min: "#{date}T00:00:01+02:00", time_max: "#{date}T23:59:59+02:00")
       # TODO: line above warning: Using the last argument as keyword parameters is deprecated; maybe ** should be added to the call
       response.items
     end
 
     def fetch_events_from_short(date)
-      optional_params =
-        {
-          single_events: true,
-          # order_by: "startTime",
-          time_min: "#{date}T00:00:01+02:00",
-          time_max: "#{date}T23:59:59+02:00"
-        }
-      response = @service.list_events(calendar_id, optional_params)
+      # optional_params =
+      #   {
+      #     single_events: true,
+      #     # order_by: "startTime",
+      #     time_min: "#{date}T00:00:01+02:00",
+      #     time_max: "#{date}T23:59:59+02:00"
+      #   }
+      response = @service.list_events(calendar_id,
+        single_events: true,
+        time_min: "#{date}T00:00:01+02:00",
+        time_max: "#{date}T23:59:59+02:00")
       response.items
     end
 
     def fetch_events_from(date, cal_id)
-      optional_params =
-        {
-          single_events: true,
-          # order_by: "startTime",
-          time_min: "#{date}T00:00:01+02:00",
-          time_max: "#{date}T23:59:59+02:00"
-        }
-      response = @service.list_events(cal_id, optional_params)
+      # optional_params =
+      #   {
+      #     single_events: true,
+      #     # order_by: "startTime",
+      #     time_min: "#{date}T00:00:01+02:00",
+      #     time_max: "#{date}T23:59:59+02:00"
+      #   }
+      response = @service.list_events(cal_id,
+        single_events: true,
+        time_min: "#{date}T00:00:01+02:00",
+        time_max: "#{date}T23:59:59+02:00")
       response.items
     end
 
