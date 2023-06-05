@@ -61,6 +61,28 @@ module Google
       puts "#{result.updates.updated_cells} cells appended."
     end
 
+    def add_sheet_to_spreadsheet(name)
+      sheet_properties = Google::Apis::SheetsV4::SheetProperties.new(title: name)
+      new_sheet_request = Google::Apis::SheetsV4::AddSheetRequest.new(properties: sheet_properties)
+      batch_request = Google::Apis::SheetsV4::Request.new(add_sheet: new_sheet_request)
+      request_body = Google::Apis::SheetsV4::BatchUpdateSpreadsheetRequest.new(requests: [batch_request])
+      begin
+        result = service.batch_update_spreadsheet(
+          spreadsheet_id,
+          request_body)
+        rescue Google::Apis::TransmissionError
+          puts "Transmission timed out"
+        rescue Google::Apis::ClientError
+          puts "Sheet with name already exists"
+        else
+          puts "Sheet added successfully"
+        ensure
+          puts "Script runtime complete"
+      end
+    end
+
+
+
     private
 
     attr_reader :spreadsheet_id, :service
