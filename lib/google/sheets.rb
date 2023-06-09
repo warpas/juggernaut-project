@@ -81,8 +81,6 @@ module Google
       end
     end
 
-
-
     private
 
     attr_reader :spreadsheet_id, :service
