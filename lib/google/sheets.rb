@@ -25,12 +25,12 @@ module Google
     def get_spreadsheet_values(range:)
       response = @service.get_spreadsheet_values spreadsheet_id, range
       puts 'No data found.' if response.values.empty?
-      response.values.each do |row|
-        row.each do |cell|
-          print cell + ' | '
-        end
-        puts "\n"
-      end
+      # response.values.each do |row|
+      #   row.each do |cell|
+      #     print cell + ' | '
+      #   end
+      #   puts "\n"
+      # end
       response
     end
 
@@ -42,7 +42,7 @@ module Google
         request_body,
         value_input_option: 'USER_ENTERED'
       )
-      puts response.to_json
+      # puts response.to_json
       response
     end
 
@@ -73,7 +73,7 @@ module Google
         rescue Google::Apis::TransmissionError
           puts "Transmission timed out"
         rescue Google::Apis::ClientError
-          puts "Sheet with name already exists"
+          puts "❌ sheet with requested name already exists or spreadsheet not defined, please verify your credentials.secret.json file ❌"
         else
           puts "Sheet added successfully"
         ensure
