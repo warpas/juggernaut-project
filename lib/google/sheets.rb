@@ -25,12 +25,12 @@ module Google
     def get_spreadsheet_values(range:)
       response = @service.get_spreadsheet_values spreadsheet_id, range
       puts 'No data found.' if response.values.empty?
-      # response.values.each do |row|
-      #   row.each do |cell|
-      #     print cell + ' | '
-      #   end
-      #   puts "\n"
-      # end
+      response.values.each do |row|
+        row.each do |cell|
+          print cell + ' | '
+        end
+        puts "\n"
+      end
       response
     end
 
@@ -42,7 +42,7 @@ module Google
         request_body,
         value_input_option: 'USER_ENTERED'
       )
-      # puts response.to_json
+      puts response.to_json
       response
     end
 
@@ -67,17 +67,18 @@ module Google
       batch_request = Google::Apis::SheetsV4::Request.new(add_sheet: new_sheet_request)
       request_body = Google::Apis::SheetsV4::BatchUpdateSpreadsheetRequest.new(requests: [batch_request])
       begin
+        puts "🏗  Adding sheet: #{name} to the spreadsheet  🏗"
         result = service.batch_update_spreadsheet(
           spreadsheet_id,
           request_body)
         rescue Google::Apis::TransmissionError
-          puts "Transmission timed out"
+          puts "🕑  Transmission timed out  🕑"
         rescue Google::Apis::ClientError
-          puts "❌ sheet with requested name already exists or spreadsheet not defined, please verify your credentials.secret.json file ❌"
+          puts "❌  sheet with requested name already exists or spreadsheet not defined, please verify your credentials.secret.json file  ❌"
         else
-          puts "Sheet added successfully"
+          puts "✅  Sheet added successfully  ✅"
         ensure
-          puts "Script runtime complete"
+          puts "✅  Script runtime complete  ✅"
       end
     end
 

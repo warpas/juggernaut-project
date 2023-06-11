@@ -20,7 +20,7 @@ else
       puts "✅  Completed for #{partner}  ✅"
       puts "\n-----------------------------------\n"
     rescue Google::Apis::ClientError
-      puts "❌  INCOMPLETE: no #{partner} sheet defined, please verify your credentials.secret.json file ❌"
+      puts "❌  INCOMPLETE: no #{partner} sheet defined, please verify your credentials.secret.json file in the sheets folder ❌"
     end
   end
 end
