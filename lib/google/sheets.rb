@@ -67,17 +67,18 @@ module Google
       batch_request = Google::Apis::SheetsV4::Request.new(add_sheet: new_sheet_request)
       request_body = Google::Apis::SheetsV4::BatchUpdateSpreadsheetRequest.new(requests: [batch_request])
       begin
+        puts "🏗  Adding sheet: #{name} to the spreadsheet  🏗"
         result = service.batch_update_spreadsheet(
           spreadsheet_id,
           request_body)
         rescue Google::Apis::TransmissionError
-          puts "Transmission timed out"
+          puts "🕑  Transmission timed out  🕑"
         rescue Google::Apis::ClientError
-          puts "Sheet with name already exists"
+          puts "❌  sheet with requested name already exists or spreadsheet not defined, please verify your credentials.secret.json file  ❌"
         else
-          puts "Sheet added successfully"
+          puts "✅  Sheet added successfully  ✅"
         ensure
-          puts "Script runtime complete"
+          puts "✅  Script runtime complete  ✅"
       end
     end
 
