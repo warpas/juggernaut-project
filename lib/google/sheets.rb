@@ -25,13 +25,19 @@ module Google
     def get_spreadsheet_values(range:)
       response = @service.get_spreadsheet_values spreadsheet_id, range
       puts 'No data found.' if response.values.empty?
-      response.values.each do |row|
-        row.each do |cell|
-          print cell + ' | '
-        end
-        puts "\n"
-      end
+      # response.values.each do |row|
+      #   row.each do |cell|
+      #     print cell + ' | '
+      #   end
+      #   puts "\n"
+      # end
       response
+    end
+
+    def get_sheet_values_with_format(sheet:)
+      response = @service.get_spreadsheet(spreadsheet_id)
+      # response = @service.batch_get_spreadsheet_values(spreadsheet_id, ranges: sheet, value_render_option: "FORMATTED_VALUE")
+      puts response.value_ranges.class
     end
 
     def send_to_sheets(values: [['test']], range: 'Sheet1!B4')
@@ -42,7 +48,7 @@ module Google
         request_body,
         value_input_option: 'USER_ENTERED'
       )
-      puts response.to_json
+      # puts response.to_json
       response
     end
 

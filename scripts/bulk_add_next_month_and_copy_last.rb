@@ -14,9 +14,10 @@ else
       puts "📅 Adding next months sheet for #{partner}..  📅"
     test_sheet.add_sheet_to_spreadsheet(date)
       puts "🔍  Pulling data from last months sheet.. 🔍"
-    last_month = test_sheet.get_spreadsheet_values(range: Date.today.strftime("%B %Y"))
+    # last_month = test_sheet.get_spreadsheet_values(range: Date.today.strftime("%B %Y"))
+    last_month = test_sheet.get_sheet_values_with_format(sheet: Date.today.strftime("%B %Y"))
       puts "🏗  Populating data..  🏗"
-    next_month = test_sheet.send_to_sheets(values: last_month.values, range: date)
+    next_month = test_sheet.send_to_sheets(values: last_month, range: date)
       puts "✅  Completed for #{partner}  ✅"
       puts "\n-----------------------------------\n"
     rescue Google::Apis::ClientError
