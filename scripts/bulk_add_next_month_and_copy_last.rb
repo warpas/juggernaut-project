@@ -1,7 +1,7 @@
 
 # frozen_string_literal: true
 
-require_relative '../lib/google/sheets'
+require 'ruby_sheets_wrapper'
 
 if ARGV.empty?
   puts "Please provide sheet credentials names to run the script for a list of partners"
