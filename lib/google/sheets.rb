@@ -25,12 +25,12 @@ module Google
     def get_spreadsheet_values(range:)
       response = @service.get_spreadsheet_values spreadsheet_id, range
       puts 'No data found.' if response.values.empty?
-      response.values.each do |row|
-        row.each do |cell|
-          print cell + ' | '
-        end
-        puts "\n"
-      end
+      # response.values.each do |row|
+      #   row.each do |cell|
+      #     print cell + ' | '
+      #   end
+      #   puts "\n"
+      # end
       response
     end
 
@@ -42,7 +42,7 @@ module Google
         request_body,
         value_input_option: 'USER_ENTERED'
       )
-      puts response.to_json
+      # puts response.to_json
       response
     end
 
@@ -80,6 +80,40 @@ module Google
         ensure
           puts "✅  Script runtime complete  ✅"
       end
+    end
+
+    def duplicate_sheet(new_sheet_name, template_sheet_name)
+      target_spreadsheet = service.get_spreadsheet spreadsheet_id
+      sheets_within_target_spreadsheet = target_spreadsheet.sheets
+      new_index = target_spreadsheet.sheets.length
+      template_sheet_id = sheets_within_target_spreadsheet.filter { |x| x.properties.title == template_sheet_name}[0].properties.sheet_id
+      duplicate_request = Google::Apis::SheetsV4::DuplicateSheetRequest.new(insert_sheet_index: new_index, new_sheet_name: new_sheet_name, source_sheet_id: template_sheet_id)
+      batch_request = Google::Apis::SheetsV4::Request.new(duplicate_sheet: duplicate_request)
+      request_body = Google::Apis::SheetsV4::BatchUpdateSpreadsheetRequest.new(requests: [batch_request])
+      begin
+        puts "🏗  Duplicating sheet: #{template_sheet_name} as #{new_sheet_name} to the spreadsheet  🏗"
+          result = service.batch_update_spreadsheet(
+          spreadsheet_id,
+          request_body)
+        rescue Google::Apis::TransmissionError
+          puts "🕑  Transmission timed out  🕑"
+        rescue Google::Apis::ClientError
+          puts "❌  sheet with requested name already exists or spreadsheet not defined, please verify your credentials.secret.json file  ❌"
+        else
+          puts "🛡 Populating duplication shield marker 🛡"
+          # find sheet_id of created sheet if changes are made to the notation of send_to_sheets method
+          # result.replies[0].duplicate_sheet.properties.sheet_id
+          send_to_sheets(
+            values: [["X","X","X","X","X"],["X","X","X","X","X"],["X","X","X","X","X"],["X","X","X","X","X"],["X","X","X","X","X"],["X","X","X","X","X"],["X","X","X","X","X"],["X","X","X","X","X"],["X","X","X","X","X"],["X","X","X","X","X"],["X","X","X","X","X"],["X","X","X","X","X"],["X","X","X","X","X"],["X","X","X","X","X"],["X","X","X","X","X"]],
+            range: "#{new_sheet_name}!F3:J18"
+          )
+          puts "✅  Sheet duplicated successfully  ✅"
+        ensure
+          puts "✅  Script runtime complete  ✅"
+      end
+
+
+
     end
 
     private
