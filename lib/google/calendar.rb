@@ -1,5 +1,20 @@
 # frozen_string_literal: true
 
+class CalendarEvent
+  attr_reader :summary, :color_id
+
+  def initialize(summary:, color_id:)
+    @summary = summary
+    @color_id = color_id
+  end
+end
+
+module CalendarAdapter
+  # Google::Apis::CalendarV3::Event
+  class Event < CalendarEvent
+  end
+end
+
 module Google
   require_relative 'auth_wrapper'
   require 'google/apis/calendar_v3'

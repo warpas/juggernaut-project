@@ -5,7 +5,7 @@ class DefaultConfig
 
   def calendar
     @calendar ||= Google::Calendar.new(
-      calendar_name: 'primary'
+      calendar_name: 'test'
     )
   end
 

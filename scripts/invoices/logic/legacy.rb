@@ -37,7 +37,7 @@ class OldInvoice
     _head, *tail = *result_array
     return [] if tail.sum.zero?
 
-    result_array
+    p result_array
   end
 
   def build_list(month_number:, year_number:, calendar:)
@@ -88,8 +88,81 @@ class OldInvoice
     puts "row_list = #{row_list}"
     puts "Sending to #{file_code} file. Sheet name #{sheet_name}"
 
+    p row_list
     add_timestamp(destination_sheet: sheet_name)
     send_list_to_sheets(destination_sheet: sheet_name, row_list: row_list)
     puts "✅ sheet_name = #{sheet_name}"
+  end
+
+  ## NEW CODE ##
+
+  def run_test_script
+    file_code = @config.file_code
+
+    calendar = @config.calendar
+
+    month_number = @input_date.strftime('%m')
+    year_number = @input_date.strftime('%Y')
+    sheet_name = "#{@input_date.strftime('%B')}_#{year_number}"
+
+    row_list = build_list(month_number: month_number, year_number: year_number, calendar: calendar)
+
+    row_list
+  end
+
+  def run_mock_test_script
+    file_code = @config.file_code
+
+    calendar = @config.calendar
+
+    month_number = @input_date.strftime('%m')
+    year_number = @input_date.strftime('%Y')
+    sheet_name = "#{@input_date.strftime('%B')}_#{year_number}"
+
+    row_list = build_minimal_list(month_number: month_number, year_number: year_number, calendar: calendar)
+
+    row_list
+  end
+
+  def build_minimal_row(date:, events:)
+    # TODO: wypieprzyc pierwsza linijke (ze wzgledu na source_calendar) chodzi o pozbycie sie tego argumentu (dependency injection i rzeczy)
+    # zamiast tego argumentu bedzie to dostawac argument w postaci listy eventów :events
+    # jaki to ma mieć kształt? Nie pełne odtworzenie, ale część wartości
+
+
+    # p " lista eventów #{events.length}, #{events}"
+    daily_ns_count = 0
+    categories = @config.event_categories
+    event_categories_list = events.map do |event|
+      daily_ns_count += 1 if event.summary.include?('(NS)')
+      selection = categories.select { |category| category[:color] == event.color_id }
+
+      selection.empty? ? @config.default_category_name : selection.first[:name]
+    end
+
+    result_array = [date]
+    categories.each do |category|
+      result_array << event_categories_list.count(category[:name])
+    end
+    result_array << daily_ns_count
+
+    _head, *tail = *result_array
+    return [] if tail.sum.zero?
+
+    result_array
+  end
+
+  def get_events_from(date:, source_calendar:)
+    # TODO: tutaj trzeba dodać objekt który będzie parowany z mockiem na następnym etapie
+    events = source_calendar.fetch_events(date)
+    events.map { |event| CalendarAdapter::Event.new(summary: event.summary, color_id: event.color_id) }
+  end
+
+  def run_minimal_test_script
+   build_list(month_number: month_number, year_number: year_number, calendar: calendar)
+  end
+
+  def build_minimal_list
+    build_list(calendar_content:)
   end
 end
