@@ -5,6 +5,10 @@ module SheetOutput
     [["2023-07-12", 2, 0, 0], ["2023-07-13", 2, 0, 0]]
   end
 
+  def self.test_value_of_rows_list_with_ns
+    [["2023-07-12", 2, 0, 1], ["2023-07-13", 2, 0, 1]]
+  end
+
   def self.test_value_of_a_single_row
     ["2023-07-12", 2, 0, 0]
   end
@@ -41,6 +45,7 @@ module SheetOutput
         }
       )
     ]
+
   end
 
   def self.mock_event_list_with_ns
@@ -54,6 +59,7 @@ module SheetOutput
         color_id: 6
       )
     ]
+
   end
 end
 

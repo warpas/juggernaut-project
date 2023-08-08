@@ -5,6 +5,7 @@ require 'spec_helper'
 describe OldInvoice do
   subject { OldInvoice.new(config: DefaultConfig.new, input_date: Date.new(2023,7,11)) }
   let(:test_calendar) { Google::Calendar.new(calendar_name: 'test') }
+  let(:mock_calendar) { CalendarAdapter::MockCalendar.new(calendar_name: 'test') }
   let(:test_date_with_events) { Date.new(2023,7,12).to_s }
   let(:test_events) { subject.get_events_from(date: test_date_with_events, source_calendar: test_calendar) }
   let(:test_date_without_events) { Date.new(2023,7,11).to_s }
@@ -14,8 +15,15 @@ describe OldInvoice do
   let(:test_single_row_output) { SheetOutput.test_value_of_a_single_row }
   let(:test_single_row_output_with_ns) { SheetOutput.test_value_of_a_single_row_with_ns }
   let(:test_list_of_rows) {SheetOutput.test_value_of_rows_list}
+  let(:test_list_of_rows_with_ns) {SheetOutput.test_value_of_rows_list_with_ns}
   let(:test_mock_event_list_with_ns) {SheetOutput.mock_event_list_with_ns}
   it { should respond_to(:run_test_script) }
+
+  describe '#build_minimal_list' do
+    it 'returns expected values given a test calendar' do
+      expect(subject.build_minimal_list).to eq(1)
+    end
+  end
 
   describe '#run_test_script' do
     it 'returns a row list in the correct format' do
@@ -26,6 +34,9 @@ describe OldInvoice do
   describe '#run_mock_test_script' do
     it 'returns a row list in the correct format' do
       expect(subject.run_mock_test_script).to eq(test_list_of_rows)
+    end
+    it 'returns a row list in the correct format for a mock calendar' do
+      expect(subject.run_mock_test_script(calendar: mock_calendar)).to eq(test_list_of_rows_with_ns)
     end
   end
 

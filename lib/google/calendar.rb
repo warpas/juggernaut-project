@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+class CalendarInterface
+end
+
 class CalendarEvent
   attr_reader :summary, :color_id
 
@@ -10,7 +13,22 @@ class CalendarEvent
 end
 
 module CalendarAdapter
-  # Google::Apis::CalendarV3::Event
+  class MockCalendar < CalendarInterface
+    attr_reader :calendar_name
+
+    def initialize(calendar_name:)
+      @calendar_name = calendar_name
+    end
+
+    def fetch_events(date)
+      if date == '2023-07-12' || date == '2023-07-13'
+        SheetOutput.mock_event_list_with_ns
+      else
+        []
+      end
+    end
+  end
+  #Google::Apis::CalendarV3::Event
   class Event < CalendarEvent
   end
 end
