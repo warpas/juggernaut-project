@@ -5,8 +5,10 @@ require 'spec_helper'
 describe OldInvoice do
   subject { OldInvoice.new(config: DefaultConfig.new, input_date: Date.new(2023,7,11)) }
   let(:test_calendar) { Google::Calendar.new(calendar_name: 'test') }
-  let(:mock_calendar) { CalendarAdapter::MockCalendar.new(calendar_name: 'test') }
+  let(:mock_calendar) { MockCalendar.new(calendar_name: 'test') }
   let(:test_date_with_events) { Date.new(2023,7,12).to_s }
+  let(:test_date_with_events_string_with_zero) { "2023-07-12" }
+  let(:test_date_with_events_string_without_zero) { "2023-7-12" }
   let(:test_events) { subject.get_events_from(date: test_date_with_events, source_calendar: test_calendar) }
   let(:test_date_without_events) { Date.new(2023,7,11).to_s }
   let(:test_no_events) { subject.get_events_from(date: test_date_without_events, source_calendar: test_calendar) }
@@ -21,12 +23,13 @@ describe OldInvoice do
 
   describe '#build_minimal_list' do
     it 'returns expected values given a test calendar' do
-      expect(subject.build_minimal_list).to eq(1)
+      expect(subject.build_minimal_list(month_number: 7, year_number: 2023, calendar: mock_calendar)).to eq([["2023-7-12", 2, 0, 1], ["2023-7-13", 2, 0, 1]])
     end
   end
 
   describe '#run_test_script' do
     it 'returns a row list in the correct format' do
+      p Date.new(2023,7,12).to_s
       expect(subject.run_test_script).to eq(test_list_of_rows)
     end
   end
@@ -82,6 +85,18 @@ describe OldInvoice do
 
     it 'returns an array of CalendarAdapter::Event objects' do
       expect(subject.get_events_from(date: test_date_with_events, source_calendar: test_calendar).all? { |event| event.class == CalendarAdapter::Event }).to eq(true)
+    end
+
+    it 'can handle date without zero before month number' do
+      expect(subject.get_events_from(date: test_date_with_events_string_without_zero, source_calendar: test_calendar).map { |event| event.summary}).to eq(test_events.map{ |event| event.summary})
+
+      expect(subject.get_events_from(date: test_date_with_events_string_without_zero, source_calendar: test_calendar).map { |event| event.color_id}).to eq(test_events.map{ |event| event.color_id})
+    end
+
+    it 'can handle with zero before month number' do
+      expect(subject.get_events_from(date: test_date_with_events_string_with_zero, source_calendar: test_calendar).map { |event| event.summary}).to eq(test_events.map{ |event| event.summary})
+
+      expect(subject.get_events_from(date: test_date_with_events_string_with_zero, source_calendar: test_calendar).map { |event| event.color_id}).to eq(test_events.map{ |event| event.color_id})
     end
   end
 

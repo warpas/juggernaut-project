@@ -113,8 +113,8 @@ class OldInvoice
   def run_mock_test_script(calendar: @config.calendar)
     file_code = @config.file_code
 
-    p calendar.class
-    p calendar
+    # p calendar.class
+    # p calendar
     # calendar = @config.calendar
 
     month_number = @input_date.strftime('%m')
@@ -166,6 +166,7 @@ class OldInvoice
 
   def build_minimal_list(month_number: , year_number: , calendar: )
     # TODO: smarter cycle through days of month
+    p calendar
     days = (1..31)
     row_list = []
     skipped_dates = []
@@ -179,14 +180,20 @@ class OldInvoice
       next unless is_date_valid
 
       event = get_events_from(date: date, source_calendar: calendar)
+      p "events for the day are: #{event}"
       row_candidate = build_minimal_row(date: date, events: event)
+      puts "the row candidate is: #{row_candidate}"
       if !row_candidate.empty?
         row_list << row_candidate
+        puts "added row candidate to row_list"
       else
         # TODO: is this useful? Make it useful or get rid of it
         skipped_dates << [date]
+        puts "skipped"
       end
     end
+    puts "skipped: #{skipped_dates}"
+    p row_list
     row_list
   end
 end

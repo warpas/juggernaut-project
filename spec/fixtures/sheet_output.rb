@@ -65,3 +65,9 @@ end
 
 class MockEvent < CalendarEvent
 end
+
+class MockCalendar < CalendarInterface
+  def self.mock_calendar
+
+  end
+end

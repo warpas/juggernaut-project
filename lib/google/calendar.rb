@@ -1,6 +1,22 @@
 # frozen_string_literal: true
 
 class CalendarInterface
+  attr_reader :calendar_name
+
+  def initialize(calendar_name:)
+    @calendar_name = calendar_name
+  end
+
+  def fetch_events(date)
+    if date == '2023-7-12' || date == '2023-7-13'
+      SheetOutput.mock_event_list_with_ns
+    else
+      []
+    end
+    # response = @service.list_events(calendar_id, single_events: true, time_min: "#{date}T00:00:01+02:00", time_max: "#{date}T23:59:59+02:00")
+    # # TODO: line above warning: Using the last argument as keyword parameters is deprecated; maybe ** should be added to the call
+    # response.items
+  end
 end
 
 class CalendarEvent
@@ -13,21 +29,6 @@ class CalendarEvent
 end
 
 module CalendarAdapter
-  class MockCalendar < CalendarInterface
-    attr_reader :calendar_name
-
-    def initialize(calendar_name:)
-      @calendar_name = calendar_name
-    end
-
-    def fetch_events(date)
-      if date == '2023-07-12' || date == '2023-07-13'
-        SheetOutput.mock_event_list_with_ns
-      else
-        []
-      end
-    end
-  end
   #Google::Apis::CalendarV3::Event
   class Event < CalendarEvent
   end
