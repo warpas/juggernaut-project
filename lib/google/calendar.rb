@@ -8,14 +8,7 @@ class CalendarInterface
   end
 
   def fetch_events(date)
-    if date == '2023-7-12' || date == '2023-7-13'
-      SheetOutput.mock_event_list_with_ns
-    else
-      []
-    end
-    # response = @service.list_events(calendar_id, single_events: true, time_min: "#{date}T00:00:01+02:00", time_max: "#{date}T23:59:59+02:00")
-    # # TODO: line above warning: Using the last argument as keyword parameters is deprecated; maybe ** should be added to the call
-    # response.items
+    raise "implement fetch events"
   end
 end
 
@@ -43,7 +36,7 @@ module Google
   require 'fileutils'
   require 'json'
 
-  class Calendar
+  class Calendar < CalendarInterface
     # TODO: Design a clear and minimal interface.
     # TODO: Add unit tests.
 

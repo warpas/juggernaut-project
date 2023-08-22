@@ -75,20 +75,22 @@ class OldInvoice
   end
 
   def run_script
-    file_code = @config.file_code
+    # file_code = @config.file_code
 
-    puts "\n⌨️  Running #{file_code} script for #{@input_date}\n\n"
-    calendar = @config.calendar
+    # puts "\n⌨️  Running #{file_code} script for #{@input_date}\n\n"
+    # calendar = @config.calendar
 
     month_number = @input_date.strftime('%m')
     year_number = @input_date.strftime('%Y')
     sheet_name = "#{@input_date.strftime('%B')}_#{year_number}"
 
-    row_list = build_list(month_number: month_number, year_number: year_number, calendar: calendar)
-    puts "row_list = #{row_list}"
-    puts "Sending to #{file_code} file. Sheet name #{sheet_name}"
+    # row_list = build_list(month_number: month_number, year_number: year_number, calendar: calendar)
+    # puts "row_list = #{row_list}"
+    # puts "Sending to #{file_code} file. Sheet name #{sheet_name}"
 
-    p row_list
+    # p row_list
+
+    row_list = run_mock_test_script
     add_timestamp(destination_sheet: sheet_name)
     send_list_to_sheets(destination_sheet: sheet_name, row_list: row_list)
     puts "✅ sheet_name = #{sheet_name}"
@@ -96,18 +98,20 @@ class OldInvoice
 
   ## NEW CODE ##
 
+  # TODO: validate against production run_test_script
   def run_test_script
-    file_code = @config.file_code
+    run_mock_test_script
+    # file_code = @config.file_code
 
-    calendar = @config.calendar
+    # calendar = @config.calendar
 
-    month_number = @input_date.strftime('%m')
-    year_number = @input_date.strftime('%Y')
-    sheet_name = "#{@input_date.strftime('%B')}_#{year_number}"
+    # month_number = @input_date.strftime('%m')
+    # year_number = @input_date.strftime('%Y')
+    # sheet_name = "#{@input_date.strftime('%B')}_#{year_number}"
 
-    row_list = build_list(month_number: month_number, year_number: year_number, calendar: calendar)
+    # row_list = build_list(month_number: month_number, year_number: year_number, calendar: calendar)
 
-    row_list
+    # row_list
   end
 
   def run_mock_test_script(calendar: @config.calendar)
@@ -124,6 +128,45 @@ class OldInvoice
     row_list = build_minimal_list(month_number: month_number, year_number: year_number, calendar: calendar)
 
     row_list
+  end
+
+  def build_minimal_list(month_number: , year_number: , calendar: )
+    # TODO: smarter cycle through days of month
+    p calendar
+    days = (1..31)
+    row_list = []
+    skipped_dates = []
+    days.each do |day|
+      # TODO: connect date and sheet name for this case
+
+      date = "#{year_number}-#{month_number}-#{day}"
+      split_date = date.split('-')
+      is_date_valid = Date.valid_date?(split_date[0].to_i, split_date[1].to_i, split_date[2].to_i)
+      puts "is #{date} valid? #{is_date_valid}"
+      next unless is_date_valid
+
+      event = get_events_from(date: date, source_calendar: calendar)
+      p "events for the day are: #{event}"
+      row_candidate = build_minimal_row(date: date, events: event)
+      puts "the row candidate is: #{row_candidate}"
+      if !row_candidate.empty?
+        row_list << row_candidate
+        puts "added row candidate to row_list"
+      else
+        # TODO: is this useful? Make it useful or get rid of it
+        skipped_dates << [date]
+        puts "skipped"
+      end
+    end
+    puts "skipped: #{skipped_dates}"
+    p row_list
+    row_list
+  end
+
+  def get_events_from(date:, source_calendar:)
+    # TODO: tutaj trzeba dodać objekt który będzie parowany z mockiem na następnym etapie
+    events = source_calendar.fetch_events(date)
+    events.map { |event| CalendarAdapter::Event.new(summary: event.summary, color_id: event.color_id) }
   end
 
   def build_minimal_row(date:, events:)
@@ -162,38 +205,5 @@ class OldInvoice
 
   def run_minimal_test_script
    build_list(month_number: month_number, year_number: year_number, calendar: calendar)
-  end
-
-  def build_minimal_list(month_number: , year_number: , calendar: )
-    # TODO: smarter cycle through days of month
-    p calendar
-    days = (1..31)
-    row_list = []
-    skipped_dates = []
-    days.each do |day|
-      # TODO: connect date and sheet name for this case
-
-      date = "#{year_number}-#{month_number}-#{day}"
-      split_date = date.split('-')
-      is_date_valid = Date.valid_date?(split_date[0].to_i, split_date[1].to_i, split_date[2].to_i)
-      puts "is #{date} valid? #{is_date_valid}"
-      next unless is_date_valid
-
-      event = get_events_from(date: date, source_calendar: calendar)
-      p "events for the day are: #{event}"
-      row_candidate = build_minimal_row(date: date, events: event)
-      puts "the row candidate is: #{row_candidate}"
-      if !row_candidate.empty?
-        row_list << row_candidate
-        puts "added row candidate to row_list"
-      else
-        # TODO: is this useful? Make it useful or get rid of it
-        skipped_dates << [date]
-        puts "skipped"
-      end
-    end
-    puts "skipped: #{skipped_dates}"
-    p row_list
-    row_list
   end
 end

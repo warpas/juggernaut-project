@@ -28,8 +28,9 @@ describe OldInvoice do
   end
 
   describe '#run_test_script' do
+    xit 'add_empty_rows is missing'
+
     it 'returns a row list in the correct format' do
-      p Date.new(2023,7,12).to_s
       expect(subject.run_test_script).to eq(test_list_of_rows)
     end
   end

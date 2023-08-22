@@ -67,7 +67,11 @@ class MockEvent < CalendarEvent
 end
 
 class MockCalendar < CalendarInterface
-  def self.mock_calendar
-
+  def fetch_events(date_string)
+    if Date.parse(date_string) == Date.new(2023,7,12) || Date.parse(date_string) == Date.new(2023,7,13)
+      SheetOutput.mock_event_list_with_ns
+    else
+      []
+    end
   end
 end
