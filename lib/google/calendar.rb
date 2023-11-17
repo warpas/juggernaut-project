@@ -84,6 +84,7 @@ module Google
       #     time_max: "#{date}T23:59:59+02:00"
       #   }
       response = @service.list_events(calendar_id, single_events: true, time_min: "#{date}T00:00:01+02:00", time_max: "#{date}T23:59:59+02:00")
+      p response.class
       # TODO: line above warning: Using the last argument as keyword parameters is deprecated; maybe ** should be added to the call
       response.items
     end
