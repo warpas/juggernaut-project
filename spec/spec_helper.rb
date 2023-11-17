@@ -22,3 +22,8 @@ require 'time'
 
 # TODO: structure needed for the following
 require_relative '../scripts/invoice_abstract.rb'
+
+# TODO: Move relatives/items neccessary for testing under this
+require_relative '../scripts/invoices/logic/legacy'
+require_relative '../scripts/invoices/config/default'
+require_relative 'fixtures/sheet_output'

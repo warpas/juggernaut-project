@@ -44,7 +44,7 @@ module Google
     end
 
     def self.user_id
-      "default".freeze
+      # "default".freeze
     end
   end
 end

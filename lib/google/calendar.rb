@@ -1,5 +1,32 @@
 # frozen_string_literal: true
 
+class CalendarInterface
+  attr_reader :calendar_name
+
+  def initialize(calendar_name:)
+    @calendar_name = calendar_name
+  end
+
+  def fetch_events(date)
+    raise "implement fetch events"
+  end
+end
+
+class CalendarEvent
+  attr_reader :summary, :color_id
+
+  def initialize(summary:, color_id:)
+    @summary = summary
+    @color_id = color_id
+  end
+end
+
+module CalendarAdapter
+  #Google::Apis::CalendarV3::Event
+  class Event < CalendarEvent
+  end
+end
+
 module Google
   require_relative 'auth_wrapper'
   require 'google/apis/calendar_v3'
@@ -9,7 +36,7 @@ module Google
   require 'fileutils'
   require 'json'
 
-  class Calendar
+  class Calendar < CalendarInterface
     # TODO: Design a clear and minimal interface.
     # TODO: Add unit tests.
 
@@ -57,6 +84,7 @@ module Google
       #     time_max: "#{date}T23:59:59+02:00"
       #   }
       response = @service.list_events(calendar_id, single_events: true, time_min: "#{date}T00:00:01+02:00", time_max: "#{date}T23:59:59+02:00")
+      p response.class
       # TODO: line above warning: Using the last argument as keyword parameters is deprecated; maybe ** should be added to the call
       response.items
     end
